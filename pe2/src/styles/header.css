@@ -1,16 +1,33 @@
 header {
-    width: 100%;
-    position: fixed;
-    top: 0;
-    left: 0;
-    z-index: 1000;
+    background-color: #343a40;
+    width: 100%; 
+    display: flex; 
+    justify-content: space-between; 
+    align-items: center; 
+    padding: 1rem 2rem;
+    position: relative; 
   }
   
-  .navbar {
-    width: 100%;
+  .navbar-brand {
+    color: white;
+    font-size: 1.5rem;
+    text-decoration: none;
   }
   
-  body {
-    padding-top: 4rem; /* Juster denne verdien for å gi plass til headeren */
+  .navbar-nav {
+    display: flex;
+    align-items: center;
+  }
+  
+  .nav-item {
+    margin-left: 20px;
+  }
+  
+  .navbar-toggler {
+    border-color: white;
+  }
+  
+  .navbar-toggler-icon {
+    background-image: url("data:image/svg+xml;charset=UTF8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3E%3Cpath stroke='rgba%280, 0, 0, 0.5%29' stroke-width='2' stroke-linecap='round' stroke-miterlimit='10' d='M4 7h22M4 15h22M4 23h22'/%3E%3C/svg%3E");
   }
   
