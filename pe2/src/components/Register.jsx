@@ -6,71 +6,80 @@ const Register = () => {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [bio, setBio] = useState('');
-  const [avatar, setAvatar] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
   const [error, setError] = useState(null);
   const navigate = useNavigate();
 
   const handleSubmit = async (event) => {
     event.preventDefault();
 
+    if (password !== confirmPassword) {
+      setError("Passwords do not match");
+      return;
+    }
+
     try {
-      await registerUser({ name, email, password, bio, avatar });
-      navigate('/login'); 
+      await registerUser({ name, email, password });
+      navigate('/profile'); 
     } catch (err) {
-      setError('Failed to register. Please check your details.');
+      setError('Failed to register. Please try again.');
     }
   };
 
   return (
-    <div>
+    <div className="container mt-5">
       <h2>Register</h2>
-      {error && <p style={{ color: 'red' }}>{error}</p>}
-      <form onSubmit={handleSubmit}>
-        <div>
-          <label>Name:</label>
+      {error && <div className="alert alert-danger">{error}</div>}
+      <form onSubmit={handleSubmit} className="mt-4">
+        <div className="mb-3">
+          <label htmlFor="name" className="form-label">Name</label>
           <input
             type="text"
+            id="name"
+            className="form-control"
             value={name}
             onChange={(e) => setName(e.target.value)}
             required
           />
         </div>
-        <div>
-          <label>Email:</label>
+
+        <div className="mb-3">
+          <label htmlFor="email" className="form-label">Email</label>
           <input
             type="email"
+            id="email"
+            className="form-control"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             required
           />
         </div>
-        <div>
-          <label>Password:</label>
+
+        <div className="mb-3">
+          <label htmlFor="password" className="form-label">Password</label>
           <input
             type="password"
+            id="password"
+            className="form-control"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             required
           />
         </div>
-        <div>
-          <label>Bio:</label>
+
+        <div className="mb-3">
+          <label htmlFor="confirmPassword" className="form-label">Confirm Password</label>
           <input
-            type="text"
-            value={bio}
-            onChange={(e) => setBio(e.target.value)}
+            type="password"
+            id="confirmPassword"
+            className="form-control"
+            value={confirmPassword}
+            onChange={(e) => setConfirmPassword(e.target.value)}
+            required
           />
         </div>
-        <div>
-          <label>Avatar (URL):</label>
-          <input
-            type="text"
-            value={avatar}
-            onChange={(e) => setAvatar(e.target.value)}
-          />
-        </div>
-        <button type="submit">Register</button>
+
+        <button type="submit" className="btn btn-primary">Register</button>
       </form>
     </div>
   );

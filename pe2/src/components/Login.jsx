@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { loginUser } from '../api/auth';  
+import { loginUser } from '../api/auth';
 
 const Login = () => {
   const [email, setEmail] = useState('');
@@ -13,36 +13,42 @@ const Login = () => {
 
     try {
       await loginUser({ email, password });
-      navigate('/profile');  
+      navigate('/profile');
     } catch (err) {
       setError('Failed to login. Please check your credentials.');
     }
   };
 
   return (
-    <div>
+    <div className="container mt-5">
       <h2>Login</h2>
-      {error && <p style={{ color: 'red' }}>{error}</p>}  {}
-      <form onSubmit={handleSubmit}>
-        <div>
-          <label>Email:</label>
+      {error && <div className="alert alert-danger">{error}</div>}
+      <form onSubmit={handleSubmit} className="mt-4">
+        <div className="mb-3">
+          <label htmlFor="email" className="form-label">Email</label>
           <input
             type="email"
+            id="email"
+            className="form-control"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             required
           />
         </div>
-        <div>
-          <label>Password:</label>
+
+        <div className="mb-3">
+          <label htmlFor="password" className="form-label">Password</label>
           <input
             type="password"
+            id="password"
+            className="form-control"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             required
           />
         </div>
-        <button type="submit">Login</button>
+
+        <button type="submit" className="btn btn-primary">Login</button>
       </form>
     </div>
   );
