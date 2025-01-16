@@ -1,28 +1,9 @@
-export const API_BASE = "https://v2.api.noroff.dev/";
+export const API_BASE = "https://v2.api.noroff.dev"; // Fjern en ekstra skråstrek
 
-export async function registerUser({ name, email, password, bio, avatar, banner, venueManager }) {
-  const payload = {
-    name,
-    email,
-    password,
-  };
+export async function registerUser({ name, email, password, bio, avatar, banner }) {
+  const payload = { name, email, password, bio, avatar, banner };
 
-  if (bio) {
-    payload.bio = bio;
-  }
-  if (venueManager) {
-    payload.venueManager = venueManager;
-  }
-  if (avatar) {
-    payload.avatar = { url: avatar, alt: "User avatar" };
-  }
-  if (banner) {
-    payload.banner = { url: banner, alt: "User banner" };
-  }
-
-  console.log("Payload being sent:", payload); 
-
-  const response = await fetch(`${API_BASE}/auth/register`, {
+  const response = await fetch(`${API_BASE}/auth/register`, { // Sørg for at det ikke er dobbel skråstrek
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -32,22 +13,20 @@ export async function registerUser({ name, email, password, bio, avatar, banner,
 
   if (!response.ok) {
     const error = await response.json();
-    console.error("Registration failed:", error); 
+    console.error("Registration failed:", error);
     throw new Error(error.message || "Registration failed");
   }
 
   return await response.json();
 }
 
-export async function loginUser({ email, password }) {
-  const payload = { email, password };
-
+export async function loginUser(email, password) {
   const response = await fetch(`${API_BASE}/auth/login`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
     },
-    body: JSON.stringify(payload),
+    body: JSON.stringify({ email, password }),
   });
 
   if (!response.ok) {
@@ -56,6 +35,5 @@ export async function loginUser({ email, password }) {
     throw new Error(error.message || "Login failed");
   }
 
-  const userData = await response.json();
-  return userData.data; 
+  return await response.json();
 }
