@@ -1,9 +1,22 @@
-export const API_BASE = "https://v2.api.noroff.dev"; // Fjern en ekstra skråstrek
+export const API_BASE = "https://v2.api.noroff.dev";
 
+// Funksjon for å registrere en ny bruker
 export async function registerUser({ name, email, password, bio, avatar, banner }) {
-  const payload = { name, email, password, bio, avatar, banner };
+  const payload = {
+    name,
+    email,
+    password,
+    bio: bio || "No bio available",
+  };
 
-  const response = await fetch(`${API_BASE}/auth/register`, { // Sørg for at det ikke er dobbel skråstrek
+  if (avatar) {
+    payload.avatar = { url: avatar, alt: "User avatar" };
+  }
+  if (banner) {
+    payload.banner = { url: banner, alt: "User banner" };
+  }
+
+  const response = await fetch(`${API_BASE}/auth/register`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -20,13 +33,19 @@ export async function registerUser({ name, email, password, bio, avatar, banner 
   return await response.json();
 }
 
-export async function loginUser(email, password) {
+// Funksjon for å logge inn en bruker
+export async function loginUser({ email, password }) {
+  const payload = {
+    email,
+    password,
+  };
+
   const response = await fetch(`${API_BASE}/auth/login`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
     },
-    body: JSON.stringify({ email, password }),
+    body: JSON.stringify(payload),
   });
 
   if (!response.ok) {
@@ -35,5 +54,29 @@ export async function loginUser(email, password) {
     throw new Error(error.message || "Login failed");
   }
 
-  return await response.json();
+  const data = await response.json();
+
+  // Sjekk om data er tilgjengelig og riktig formatert
+  if (data && data.data) {
+    const { accessToken, bio = "No bio available", ...profile } = data.data;
+
+    // Lagre accessToken og profile i localStorage
+    localStorage.setItem('Token', accessToken);
+    localStorage.setItem('Profile', JSON.stringify(profile)); // Legg til profil
+
+    console.log('Logged in successfully');
+    return { accessToken, profile };
+  } else {
+    console.error('Unexpected response format:', data);
+    throw new Error('Unexpected response format');
+  }
+}
+
+// Funksjon for å logge ut en bruker
+export function logout() {
+  // Fjerne accessToken og profile fra localStorage
+  localStorage.removeItem('Token');
+  localStorage.removeItem('Profile');
+
+  console.log('Logged out successfully');
 }

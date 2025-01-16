@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { registerUser } from '../api/auth';
+import { loginUser } from '../api/auth';  // Importer loginUser i stedet for registerUser
 
 const Login = () => {
   const [email, setEmail] = useState('');
@@ -12,17 +12,18 @@ const Login = () => {
     event.preventDefault();
 
     try {
-      await registerUser({ email, password });
-      navigate('/profile');  
+      // Bruk loginUser i stedet for registerUser
+      await loginUser({ email, password });
+      navigate('/profile');  // Når pålogging er vellykket, naviger til profil
     } catch (err) {
-      setError('Failed to login. Please check your credentials.');
+      setError('Failed to login. Please check your credentials.');  // Feilmelding ved feil pålogging
     }
   };
 
   return (
     <div>
       <h2>Login</h2>
-      {error && <p style={{ color: 'red' }}>{error}</p>}
+      {error && <p style={{ color: 'red' }}>{error}</p>}  {/* Feilmelding hvis pålogging feiler */}
       <form onSubmit={handleSubmit}>
         <div>
           <label>Email:</label>
@@ -49,3 +50,4 @@ const Login = () => {
 };
 
 export default Login;
+
