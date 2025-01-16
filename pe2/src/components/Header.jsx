@@ -3,8 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 import './../styles/header.css';
-import { useAuth } from './../hooks/useAuth'; // Bruk små bokstaver
-
+import { useAuth } from './../hooks/useAuth'; 
 
 function Header() {
   const { authData, logout } = useAuth();
@@ -12,7 +11,7 @@ function Header() {
 
   const handleLogout = () => {
     logout(); 
-    navigate('/'); 
+    navigate('/');  
   };
 
   return (
@@ -48,6 +47,7 @@ function Header() {
               </Link>
             </li>
 
+            {}
             {authData && (
               <>
                 <li className="nav-item">
@@ -56,6 +56,7 @@ function Header() {
                   </Link>
                 </li>
 
+                {}
                 {authData.profile?.venueManager && (
                   <li className="nav-item">
                     <Link className="nav-link" to="/my-venues">
@@ -70,6 +71,7 @@ function Header() {
                   </Link>
                 </li>
 
+                {}
                 <li className="nav-item">
                   <button
                     className="btn btn-link nav-link"
@@ -81,6 +83,7 @@ function Header() {
               </>
             )}
 
+            {}
             {!authData && (
               <li className="nav-item">
                 <Link className="nav-link" to="/login">
@@ -96,4 +99,5 @@ function Header() {
 }
 
 export default Header;
+
 

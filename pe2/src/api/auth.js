@@ -1,6 +1,5 @@
 export const API_BASE = "https://v2.api.noroff.dev";
 
-// Funksjon for å registrere en ny bruker
 export async function registerUser({ name, email, password, bio, avatar, banner }) {
   const payload = {
     name,
@@ -33,7 +32,6 @@ export async function registerUser({ name, email, password, bio, avatar, banner 
   return await response.json();
 }
 
-// Funksjon for å logge inn en bruker
 export async function loginUser({ email, password }) {
   const payload = {
     email,
@@ -56,13 +54,11 @@ export async function loginUser({ email, password }) {
 
   const data = await response.json();
 
-  // Sjekk om data er tilgjengelig og riktig formatert
   if (data && data.data) {
     const { accessToken, bio = "No bio available", ...profile } = data.data;
 
-    // Lagre accessToken og profile i localStorage
     localStorage.setItem('Token', accessToken);
-    localStorage.setItem('Profile', JSON.stringify(profile)); // Legg til profil
+    localStorage.setItem('Profile', JSON.stringify(profile)); 
 
     console.log('Logged in successfully');
     return { accessToken, profile };
@@ -72,9 +68,7 @@ export async function loginUser({ email, password }) {
   }
 }
 
-// Funksjon for å logge ut en bruker
 export function logout() {
-  // Fjerne accessToken og profile fra localStorage
   localStorage.removeItem('Token');
   localStorage.removeItem('Profile');
 

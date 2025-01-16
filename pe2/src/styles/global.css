@@ -25,10 +25,10 @@ a:hover {
 body {
   margin: 0;
   display: flex;
-  flex-direction: column; /* Setter opp vertikal layout */
-  justify-content: flex-start; /* Sørger for at innholdet starter øverst */
+  flex-direction: column; 
+  justify-content: flex-start; 
   min-width: 320px;
-  min-height: 100vh; /* Sørger for at body tar hele høyden på skjermen */
+  min-height: 100vh; 
 }
 
 
