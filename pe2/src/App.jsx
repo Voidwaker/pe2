@@ -4,7 +4,7 @@ import Header from './components/Header';
 import VenueList from './components/VenueList';
 import Login from './components/login';
 import Register from './components/Register';
-import { useAuth } from './Hooks/useAuth';
+import { useAuth } from './hooks/useAuth';
 import Modal from 'react-modal';
 
 function App() {
