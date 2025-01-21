@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { fetchVenues } from '../services/venues';
 import VenueCard from './VenueCard';
+import './../styles/venueList.css';  
 
 const VenueList = () => {
   const [venues, setVenues] = useState([]);
@@ -47,4 +48,3 @@ const VenueList = () => {
 };
 
 export default VenueList;
-

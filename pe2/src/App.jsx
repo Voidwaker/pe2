@@ -1,14 +1,18 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
 import Header from './components/Header';
 import VenueList from './components/VenueList';
-import Login from './components/Login';
-import Register from './components/Register'; 
-import { useAuth } from './hooks/useAuth'; // små bokstaver
-
+import Login from './components/login';
+import Register from './components/Register';
+import { useAuth } from './Hooks/useAuth';
+import Modal from 'react-modal';
 
 function App() {
-  const { authData, logout } = useAuth(); // Bruk authData fra useAuth-hooken
+  const { authData, logout } = useAuth();
+
+  useEffect(() => {
+    Modal.setAppElement('#root');
+  }, []);
 
   return (
     <Router>
@@ -46,4 +50,3 @@ function App() {
 }
 
 export default App;
-
