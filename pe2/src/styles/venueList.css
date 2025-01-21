@@ -1,47 +1,81 @@
-.venue-list {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-    gap: 20px;
-    padding: 20px;
+.venue-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));  
+  gap: 20px;
+  padding: 20px;
+}
+
+.venue-card {
+  background-color: white;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  text-align: center;
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.venue-image {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+  border-radius: 10px;
+  margin-bottom: 20px;
+}
+
+.venue-info h3 {
+  font-size: 1.5rem;
+  margin: 10px 0;
+}
+
+.venue-info p {
+  font-size: 1rem;
+  color: #555;
+}
+
+.venue-card:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+.venue-card {
+  background-color: white;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  text-align: center;
+  transition: transform 0.3s, box-shadow 0.3s;
+  position: relative;
+}
+
+.venue-info p {
+  font-size: 1rem;
+  color: #555;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  line-clamp: 3;
+  -webkit-box-orient: vertical;
+  height: 60px;  
+}
+
+.view-more-btn {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  position: absolute;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.view-more-btn:hover {
+  background-color: #0056b3;
+}
+
+@media (max-width: 768px) {
+  .venue-cards {
+    grid-template-columns: 1fr;
   }
-  
-  .venue-card {
-    background-color: #fff;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    overflow: hidden;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    height: 400px;
-  }
-  
-  .venue-card img {
-    width: 100%;
-    height: 200px;
-    object-fit: cover;
-  }
-  
-  .venue-card h2 {
-    font-size: 1.5rem;
-    margin: 10px;
-  }
-  
-  .venue-card p {
-    font-size: 1rem;
-    margin: 10px;
-    flex-grow: 1;
-  }
-  
-  .venue-card .price {
-    font-weight: bold;
-    margin: 10px;
-    color: #333;
-  }
-  
-  .venue-card .rating {
-    font-size: 0.9rem;
-    margin: 10px;
-  }
-  
+}
