@@ -1,15 +1,11 @@
 .profile-container {
-    display: flex; 
-    padding: 20px;
-    gap: 30px;
+    display: flex;
+    flex-direction: column; 
+    align-items: center;
+    gap: 20px; 
     background-color: #f9f9f9;
     border-radius: 10px;
-  }
-  
-  .profile-info {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
+    padding: 20px;
   }
   
   .profile-image {
@@ -17,8 +13,14 @@
     height: 120px;
     border-radius: 50%;
     object-fit: cover;
-    margin-right: 20px; 
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); 
+    margin-bottom: 20px; 
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+  
+  .profile-info {
+    display: flex;
+    flex-direction: column; 
+    align-items: center; 
   }
   
   .profile-details {
@@ -36,7 +38,6 @@
     color: #555;
   }
   
-
   .profile-actions {
     margin-top: 20px;
   }

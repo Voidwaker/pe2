@@ -1,6 +1,6 @@
 import React from "react";
-import { useAuth } from "../hooks/useAuth";
-import './../styles/Profile.css'; 
+import { useAuth } from "../hooks/useAuth"; 
+import './../styles/profile.css';  
 
 const Profile = () => {
   const { authData } = useAuth(); 
@@ -20,8 +20,8 @@ const Profile = () => {
         />
       </div>
 
+      {}
       <div className="profile-info">
-        {}
         <div className="profile-details">
           <h2>{authData.profile?.name}</h2>
           <p>{authData.profile?.email}</p>
@@ -37,3 +37,4 @@ const Profile = () => {
 };
 
 export default Profile;
+
