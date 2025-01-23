@@ -1,38 +1,32 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { logout } from '../api/auth';
+
 const Profile = () => {
-  const [profileData, setProfileData] = useState(null);
   const navigate = useNavigate();
-
-  useEffect(() => {
-    const profile = localStorage.getItem('Profile');
-    if (profile) {
-      setProfileData(JSON.parse(profile));
-    } else {
-      navigate('/login'); 
-    }
-  }, [navigate]);
-
-  const handleLogout = () => {
-    logout(); 
-    navigate('/');
-  };
+  
+  // Get user profile data from localStorage
+  const profile = JSON.parse(localStorage.getItem('Profile'));
+  const profileImage = profile?.avatar?.url || 'default-avatar-url.jpg'; // Set a default if not found
+  const userName = profile?.name || 'User Name';  // Use a default name if not found
+  
+  // Add a fallback if the profile isn't available
+  if (!profile) {
+    navigate('/login'); // Redirect to login if no profile found
+  }
 
   return (
-    <div>
-      <h1>Profile</h1>
-      {profileData ? (
-        <>
-          <p>Name: {profileData.name}</p>
-          <p>Email: {profileData.email}</p>
-          <p>Bio: {profileData.bio}</p>
-          {}
-          <button onClick={handleLogout}>Logout</button>
-        </>
-      ) : (
-        <p>Loading...</p>
-      )}
+    <div className="profile-container">
+      <div className="profile-header">
+        <img src={profileImage} alt="Profile" className="profile-image" />
+        <h2>{userName}</h2>
+      </div>
+      <div className="profile-details">
+        <p><strong>Email:</strong> {profile?.email}</p>
+        {/* You can add more profile details here */}
+      </div>
+      <div className="profile-actions">
+        {/* Add buttons or links for editing profile or other actions */}
+      </div>
     </div>
   );
 };
