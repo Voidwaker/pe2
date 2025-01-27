@@ -1,3 +1,5 @@
+// src/App.jsx
+
 import React, { useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
 import Header from './components/Header';
@@ -5,7 +7,7 @@ import VenueList from './components/VenueList';
 import Login from './components/Login';
 import Register from './components/Register';
 import Profile from './pages/Profile';
-import VenueDetails from './pages/VenueDetails';  
+import VenueDetails from './pages/VenueDetails';
 import { useAuth } from './hooks/useAuth';
 import Modal from 'react-modal';
 
@@ -44,7 +46,7 @@ function App() {
         <Route path="/bookings" element={<h1>My Bookings</h1>} />
         <Route path="/my-venues" element={<h1>My Venues</h1>} />
         <Route path="/profile" element={<Profile />} />
-        <Route path="/venue/:id" element={<VenueDetails />} /> {}
+        <Route path="/venue/:id" element={<VenueDetails />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
       </Routes>
@@ -53,3 +55,4 @@ function App() {
 }
 
 export default App;
+

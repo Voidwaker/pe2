@@ -1,73 +1,116 @@
-import React, { useState, useEffect } from 'react';
-import { useParams, Link } from 'react-router-dom';
-import { fetchVenueById } from '../services/venues';  
-import Calendar from 'react-calendar';  
-import './../styles/VenueDetails.css'; 
-import 'react-calendar/dist/Calendar.css';
+// src/pages/VenueDetails.jsx
 
-const VenueDetails = () => {
-  const { id } = useParams();  
+import React, { useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom';
+import { fetchVenueById } from '../services/venues'; // Importer den nye funksjonen for å hente venue
+import Calendar from 'react-calendar';
+import 'react-calendar/dist/Calendar.css';
+import './../styles/VenueDetails.css';
+
+function VenueDetails() {
+  const { id } = useParams(); // Få id fra URL-en
   const [venue, setVenue] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [bookedDates, setBookedDates] = useState([]);
 
   useEffect(() => {
-    const getVenueDetails = async () => {
+    const fetchVenue = async () => {
       try {
-        const data = await fetchVenueById(id);
-        setVenue(data);  
+        const data = await fetchVenueById(id); // Bruk den importerte funksjonen
+        setVenue(data);
+        
+        const bookings = data.bookings || [];
+        const bookedRanges = bookings.map((booking) => ({
+          from: booking.dateFrom,
+          to: booking.dateTo,
+        }));
+        setBookedDates(bookedRanges);
       } catch (error) {
-        console.error("Error fetching venue details:", error);
+        console.error('Error fetching venue details:', error);
+        setError('Error fetching venue details');
+      } finally {
+        setLoading(false);
       }
     };
-  
-    getVenueDetails();
+
+    fetchVenue();
   }, [id]);
 
-  if (!venue) {
-    return <div>Loading...</div>;  
+  if (loading) {
+    return <div>Loading venue details...</div>;
   }
 
-  const bookedDates = venue.bookings && Array.isArray(venue.bookings) ? venue.bookings.map((booking) => {
-    const startDate = new Date(booking.dateFrom).toISOString().split('T')[0];
-    const endDate = new Date(booking.dateTo).toISOString().split('T')[0];
-    
-    let allBookedDates = [];
-    let currentDate = new Date(startDate);
-    const end = new Date(endDate);
+  if (error) {
+    return <div>{error}</div>;
+  }
 
-    while (currentDate <= end) {
-      allBookedDates.push(currentDate.toISOString().split('T')[0]);
-      currentDate.setDate(currentDate.getDate() + 1);
+  const tileClassName = ({ date, view }) => {
+    if (view === 'month') {
+      const dateString = date.toISOString().split('T')[0];
+
+      const isBooked = bookedDates.some((range) => {
+        return dateString >= range.from && dateString <= range.to;
+      });
+
+      return isBooked ? 'react-calendar__tile--booked' : null;
     }
-    
-    return allBookedDates;
-  }).flat() : []; 
+  };
 
-  const availableDates = venue.availableDates || [];
+  const tileDisabled = ({ date, view }) => {
+    if (view === 'month') {
+      const dateString = date.toISOString().split('T')[0];
+      const today = new Date().toISOString().split('T')[0];
+
+      const isBooked = bookedDates.some((range) => {
+        return dateString >= range.from && dateString <= range.to;
+      });
+
+      return isBooked || dateString < today;
+    }
+    return false;
+  };
 
   return (
-    <div className="venue-details">
-      <h1>{venue.name}</h1>
-      <img src={venue.media[0]?.url} alt={venue.name} className="venue-image" />
-      <p><strong>Description:</strong> {venue.description}</p>
-      <p><strong>Price:</strong> ${venue.price}</p>
-      <p><strong>Location:</strong> {venue.location.city}, {venue.location.country}</p>
-
-      <Calendar
-        tileClassName={({ date }) => {
-          const dateString = date.toISOString().split('T')[0];
-
-          if (availableDates.includes(dateString)) {
-            return 'react-calendar__tile--available';  
-          } else if (bookedDates.includes(dateString)) {
-            return 'react-calendar__tile--booked';  
-          }
-          return '';  
-        }}
+    <div className="venue-details-container">
+      <img
+        className="venue-hero"
+        src={venue.media[0]?.url || 'https://via.placeholder.com/150'}
+        alt={venue.media[0]?.alt || 'Venue Image'}
       />
+      <h1 className="venue-title">{venue.name}</h1>
+      <p className="venue-description">{venue.description}</p>
 
-      <Link to="/venues" className="back-to-venues">Back to Venues</Link>
+      <div className="venue-details-grid">
+        <p className="venue-detail">Price: ${venue.price}</p>
+        <p className="venue-detail">Max Guests: {venue.maxGuests}</p>
+        <p className="venue-detail">Rating: {venue.rating}</p>
+      </div>
+
+      <div className="venue-features">
+        <h3>Features</h3>
+        <ul>
+          <li>WiFi: {venue.meta?.wifi ? 'Yes' : 'No'}</li>
+          <li>Parking: {venue.meta?.parking ? 'Yes' : 'No'}</li>
+          <li>Breakfast: {venue.meta?.breakfast ? 'Yes' : 'No'}</li>
+          <li>Pets Allowed: {venue.meta?.pets ? 'Yes' : 'No'}</li>
+        </ul>
+      </div>
+
+      <div className="venue-location">
+        <strong>Location:</strong> {venue.location?.address}, {venue.location?.city}, {venue.location?.country}
+      </div>
+
+      <div className="venue-calendar">
+        <h2>Availability Calendar</h2>
+        <p>All booked dates are shown in red and cannot be selected. Dates before today are also disabled.</p>
+        <Calendar 
+          tileClassName={tileClassName}
+          tileDisabled={tileDisabled}
+        />
+      </div>
     </div>
   );
-};
+}
 
 export default VenueDetails;

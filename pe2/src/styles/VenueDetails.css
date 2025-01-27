@@ -1,5 +1,5 @@
 .react-calendar {
-  background-color: gray; /* Juster bakgrunnsfarge */
+  background-color: gray;
   border-radius: 10px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   width: 100%;
@@ -12,36 +12,30 @@
   border-radius: 5px;
   cursor: pointer;
   transition: all 0.3s ease;
-  font-size: 1.2rem; /* Øk skriftstørrelse for bedre lesbarhet */
 }
 
-/* Aktiv dato */
 .react-calendar__tile--active {
   background-color: #007bff;
   color: white;
 }
 
-/* Ledig dato */
 .react-calendar__tile--available {
-  background-color: #28a745;  /* Grønn for tilgjengelige datoer */
-  color: black;
-  font-weight: bold;
-}
-
-/* Booket dato */
-.react-calendar__tile--booked {
-  background-color: #dc3545;  /* Rød for bookede datoer */
+  background-color: #28a745;  
   color: white;
   font-weight: bold;
 }
 
-/* Disablede datoer (datoer før dagens dato) */
+.react-calendar__tile--booked {
+  background-color: #dc3545;  
+  color: white;
+  font-weight: bold;
+}
+
 .react-calendar__tile--disabled {
   background-color: #f0f0f0;
   color: #aaa;
 }
 
-/* Styling på navigasjonsknapper */
 .react-calendar__navigation button {
   background-color: #007bff;
   color: white;
