@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { fetchVenueById } from '../services/venues';  
 import Calendar from 'react-calendar';  
-import './../styles/VenueDetails.css'; 
+import './../styles/VenueDetails.css';  
 
 const VenueDetails = () => {
   const { id } = useParams();  
@@ -41,9 +41,9 @@ const VenueDetails = () => {
           const dateString = date.toISOString().split('T')[0];  
 
           if (availableDates.includes(dateString)) {
-            return 'react-calendar__tile--available'; 
+            return 'available';  
           } else if (bookedDates.includes(dateString)) {
-            return 'react-calendar__tile--booked';  
+            return 'booked';  
           }
           return '';  
         }}
