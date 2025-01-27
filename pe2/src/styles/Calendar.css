@@ -6,25 +6,24 @@
     background-color: white;
     border-radius: 10px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  }
-  
-  .react-calendar {
+}
+
+.react-calendar {
     border: none;
-  }
-  
-  .react-calendar__tile--active {
+}
+
+.react-calendar__tile--active {
     background-color: #007bff;
     color: white;
-  }
-  
-  .react-calendar__tile {
+}
+
+.react-calendar__tile {
     cursor: pointer;
-  }
-  
-  .react-calendar__navigation button {
+}
+
+.react-calendar__navigation button {
     background-color: #007bff;
     color: white;
     border-radius: 5px;
     padding: 5px 10px;
-  }
-  
+}

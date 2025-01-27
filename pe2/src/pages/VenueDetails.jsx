@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import { fetchVenueById } from '../services/venues';
+import { fetchVenueById } from '../services/venues';  
 import Calendar from 'react-calendar';  
 import './../styles/VenueDetails.css'; 
 import 'react-calendar/dist/Calendar.css';
@@ -13,9 +13,6 @@ const VenueDetails = () => {
     const getVenueDetails = async () => {
       try {
         const data = await fetchVenueById(id);
-        console.log("Venue data:", data); 
-        console.log("Bookings:", data.bookings);
-        console.log("Available Dates:", data.availableDates); 
         setVenue(data);  
       } catch (error) {
         console.error("Error fetching venue details:", error);
@@ -55,7 +52,6 @@ const VenueDetails = () => {
       <p><strong>Price:</strong> ${venue.price}</p>
       <p><strong>Location:</strong> {venue.location.city}, {venue.location.country}</p>
 
-      {}
       <Calendar
         tileClassName={({ date }) => {
           const dateString = date.toISOString().split('T')[0];
