@@ -1,7 +1,8 @@
-import React, { useEffect, useState } from 'react';
-import { useParams, Link } from 'react-router-dom';  
+import React, { useState, useEffect } from 'react';
+import { useParams, Link } from 'react-router-dom';
 import { fetchVenueById } from '../services/venues';  
 import Calendar from 'react-calendar';  
+import './../styles/VenueDetails.css'; 
 
 const VenueDetails = () => {
   const { id } = useParams();  
@@ -18,13 +19,14 @@ const VenueDetails = () => {
     };
 
     getVenueDetails();
-  }, [id]); 
+  }, [id]);  
 
   if (!venue) {
-    return <div>Loading...</div>; 
+    return <div>Loading...</div>;  
   }
 
   const availableDates = venue.availableDates || [];
+  const bookedDates = venue.bookedDates || []; 
 
   return (
     <div className="venue-details">
@@ -34,14 +36,19 @@ const VenueDetails = () => {
       <p><strong>Price:</strong> ${venue.price}</p>
       <p><strong>Location:</strong> {venue.location.city}, {venue.location.country}</p>
 
-      {}
       <Calendar
         tileClassName={({ date }) => {
-          return availableDates.includes(date.toISOString().split('T')[0]) ? 'available' : '';
+          const dateString = date.toISOString().split('T')[0];  
+
+          if (availableDates.includes(dateString)) {
+            return 'react-calendar__tile--available'; 
+          } else if (bookedDates.includes(dateString)) {
+            return 'react-calendar__tile--booked';  
+          }
+          return '';  
         }}
       />
       
-      {}
       <Link to="/venues" className="back-to-venues">Back to Venues</Link>
     </div>
   );
