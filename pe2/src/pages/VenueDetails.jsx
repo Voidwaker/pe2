@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import { fetchVenueById } from '../services/venues';  
+import { fetchVenueById } from '../services/venues';
 import Calendar from 'react-calendar';  
-import './../styles/VenueDetails.css';  
+import './../styles/VenueDetails.css'; 
+import 'react-calendar/dist/Calendar.css';
 
 const VenueDetails = () => {
   const { id } = useParams();  
@@ -12,21 +13,39 @@ const VenueDetails = () => {
     const getVenueDetails = async () => {
       try {
         const data = await fetchVenueById(id);
+        console.log("Venue data:", data); 
+        console.log("Bookings:", data.bookings);
+        console.log("Available Dates:", data.availableDates); 
         setVenue(data);  
       } catch (error) {
         console.error("Error fetching venue details:", error);
       }
     };
-
+  
     getVenueDetails();
-  }, [id]);  
+  }, [id]);
 
   if (!venue) {
     return <div>Loading...</div>;  
   }
 
+  const bookedDates = venue.bookings && Array.isArray(venue.bookings) ? venue.bookings.map((booking) => {
+    const startDate = new Date(booking.dateFrom).toISOString().split('T')[0];
+    const endDate = new Date(booking.dateTo).toISOString().split('T')[0];
+    
+    let allBookedDates = [];
+    let currentDate = new Date(startDate);
+    const end = new Date(endDate);
+
+    while (currentDate <= end) {
+      allBookedDates.push(currentDate.toISOString().split('T')[0]);
+      currentDate.setDate(currentDate.getDate() + 1);
+    }
+    
+    return allBookedDates;
+  }).flat() : []; 
+
   const availableDates = venue.availableDates || [];
-  const bookedDates = venue.bookedDates || []; 
 
   return (
     <div className="venue-details">
@@ -36,19 +55,20 @@ const VenueDetails = () => {
       <p><strong>Price:</strong> ${venue.price}</p>
       <p><strong>Location:</strong> {venue.location.city}, {venue.location.country}</p>
 
+      {}
       <Calendar
         tileClassName={({ date }) => {
-          const dateString = date.toISOString().split('T')[0];  
+          const dateString = date.toISOString().split('T')[0];
 
           if (availableDates.includes(dateString)) {
-            return 'available';  
+            return 'react-calendar__tile--available';  
           } else if (bookedDates.includes(dateString)) {
-            return 'booked';  
+            return 'react-calendar__tile--booked';  
           }
           return '';  
         }}
       />
-      
+
       <Link to="/venues" className="back-to-venues">Back to Venues</Link>
     </div>
   );

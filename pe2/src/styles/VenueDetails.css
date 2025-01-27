@@ -20,12 +20,12 @@
   }
   
   .react-calendar__tile--available {
-    background-color: #28a745;
+    background-color: #28a745;  
     color: white;
   }
   
   .react-calendar__tile--booked {
-    background-color: #dc3545;
+    background-color: #dc3545;  
     color: white;
   }
   
