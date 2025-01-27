@@ -1,12 +1,8 @@
-import React, { useState } from 'react';
-import Modal from 'react-modal';
+import React from 'react';
+import { Link } from 'react-router-dom';
 
 const VenueCard = ({ venue }) => {
   const { id, name, description, price, media, location } = venue;
-  const [isModalOpen, setIsModalOpen] = useState(false);
-
-  const openModal = () => setIsModalOpen(true);
-  const closeModal = () => setIsModalOpen(false);
 
   return (
     <div className="venue-card">
@@ -16,19 +12,13 @@ const VenueCard = ({ venue }) => {
         <p>{description}</p>
         <p><strong>Price:</strong> ${price}</p>
         <p><strong>Location:</strong> {location.city}, {location.country}</p>
-        <button className="view-more-btn" onClick={openModal}>View More</button>
+        
+        {}
+        <Link to={`/venue/${id}`} className="view-more-btn">View More</Link>
       </div>
-
-      {}
-      <Modal isOpen={isModalOpen} onRequestClose={closeModal} contentLabel="Venue Details">
-        <h2>{name}</h2>
-        <p>{description}</p>
-        <p><strong>Price:</strong> ${price}</p>
-        <p><strong>Location:</strong> {location.city}, {location.country}</p>
-        <button onClick={closeModal}>Close</button>
-      </Modal>
     </div>
   );
 };
 
 export default VenueCard;
+

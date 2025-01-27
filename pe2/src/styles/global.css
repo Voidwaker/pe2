@@ -56,6 +56,12 @@ button:focus-visible {
   outline: 4px auto -webkit-focus-ring-color;
 }
 
+.react-calendar .available {
+  background-color: #4caf50;
+  color: white;
+}
+
+
 @media (prefers-color-scheme: light) {
   :root {
     color: #213547;

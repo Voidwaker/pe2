@@ -11,3 +11,13 @@ export const fetchVenues = async () => {
     throw error;
   }
 };
+
+export const fetchVenueById = async (id) => {
+  try {
+    const response = await axios.get(`${API_URL}/${id}`); 
+    return response.data.data;
+  } catch (error) {
+    console.error('Error fetching venue details:', error);
+    throw error;
+  }
+};
