@@ -1,5 +1,3 @@
-// src/App.jsx
-
 import React, { useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
 import Header from './components/Header';

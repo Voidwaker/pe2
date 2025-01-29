@@ -58,16 +58,14 @@ export async function loginUser({ email, password }) {
   if (data && data.data) {
     const { accessToken, bio = "No bio available", ...profile } = data.data;
 
-    // Lagre accessToken og profile i localStorage
     localStorage.setItem('Token', accessToken);
     localStorage.setItem('Profile', JSON.stringify(profile)); 
 
-    // Etter at brukeren har logget inn, opprett API-nøkkel og lagre den i localStorage
-    const apiKey = await createApiKey();  // Kall funksjonen som lager API-nøkkelen
-    localStorage.setItem('ApiKey', apiKey);  // Lagre API-nøkkelen i localStorage
+    const apiKey = await createApiKey(); 
+    localStorage.setItem('ApiKey', apiKey);
 
     console.log('Logged in successfully');
-    return { accessToken, profile, apiKey };  // Returner apiKey sammen med accessToken og profile
+    return { accessToken, profile, apiKey }; 
   } else {
     console.error('Unexpected response format:', data);
     throw new Error('Unexpected response format');
@@ -77,7 +75,7 @@ export async function loginUser({ email, password }) {
 export function logout() {
   localStorage.removeItem('Token');
   localStorage.removeItem('Profile');
-  localStorage.removeItem('ApiKey');  // Fjern API-nøkkelen ved utlogging
+  localStorage.removeItem('ApiKey'); 
 
   console.log('Logged out successfully');
 }
