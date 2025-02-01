@@ -1,4 +1,5 @@
 export const API_BASE = "https://v2.api.noroff.dev";
+import { createApiKey } from './create-api-key';
 
 export async function registerUser({ name, email, password, bio, avatar, banner }) {
   const payload = {
@@ -60,8 +61,11 @@ export async function loginUser({ email, password }) {
     localStorage.setItem('Token', accessToken);
     localStorage.setItem('Profile', JSON.stringify(profile)); 
 
+    const apiKey = await createApiKey(); 
+    localStorage.setItem('ApiKey', apiKey);
+
     console.log('Logged in successfully');
-    return { accessToken, profile };
+    return { accessToken, profile, apiKey }; 
   } else {
     console.error('Unexpected response format:', data);
     throw new Error('Unexpected response format');
@@ -71,6 +75,7 @@ export async function loginUser({ email, password }) {
 export function logout() {
   localStorage.removeItem('Token');
   localStorage.removeItem('Profile');
+  localStorage.removeItem('ApiKey'); 
 
   console.log('Logged out successfully');
 }

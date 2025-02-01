@@ -10,6 +10,8 @@ const VenueDetails = () => {
   const { id } = useParams();  
   const [venue, setVenue] = useState(null);
   const [error, setError] = useState(null); 
+  const [selectedDate, setSelectedDate] = useState(null); // Hold selected date
+  const [bookingMessage, setBookingMessage] = useState(""); // To display booking confirmation message
 
   useEffect(() => {
     if (!id) {
@@ -28,6 +30,19 @@ const VenueDetails = () => {
 
     getVenueDetails();
   }, [id]);
+
+  const handleDateChange = (date) => {
+    setSelectedDate(date);
+  };
+
+  const handleBooking = async () => {
+    if (!selectedDate) {
+      setBookingMessage("Please select a date to book.");
+      return;
+    }
+    // You can implement actual booking logic here, like sending a POST request
+    setBookingMessage("Your booking is confirmed!");
+  };
 
   if (error) {
     return <div>{error}</div>; 
@@ -55,9 +70,6 @@ const VenueDetails = () => {
 
   const availableDates = venue.availableDates || []; 
 
-  console.log('Booked Dates:', bookedDates);
-  console.log('Available Dates:', availableDates);
-
   return (
     <div className="venue-details">
       <div className="venue-card">
@@ -83,10 +95,10 @@ const VenueDetails = () => {
       <div className="venue-calendar">
         <h4>Availability Calendar</h4>
         <Calendar
+          onChange={handleDateChange}
+          value={selectedDate}
           tileClassName={({ date }) => {
             const dateString = date.toISOString().split('T')[0];
-            console.log('Date being checked:', dateString);
-
             if (availableDates.includes(dateString)) {
               return 'react-calendar__tile--available';  
             } else if (bookedDates.includes(dateString)) {
@@ -95,6 +107,11 @@ const VenueDetails = () => {
             return '';  
           }}
         />
+      </div>
+
+      <div className="booking-actions">
+        <button onClick={handleBooking}>Book Now</button>
+        {bookingMessage && <p>{bookingMessage}</p>}
       </div>
 
       <Link to="/venues" className="back-to-venues">Back to Venues</Link>
