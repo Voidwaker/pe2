@@ -7,6 +7,7 @@ const Register = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
+  const [venueManager, setVenueManager] = useState(false); 
   const [error, setError] = useState(null);
   const navigate = useNavigate();
 
@@ -19,7 +20,7 @@ const Register = () => {
     }
 
     try {
-      await registerUser({ name, email, password });
+      await registerUser({ name, email, password, venueManager });
       navigate('/profile'); 
     } catch (err) {
       setError('Failed to register. Please try again.');
@@ -77,6 +78,17 @@ const Register = () => {
             onChange={(e) => setConfirmPassword(e.target.value)}
             required
           />
+        </div>
+
+        <div className="mb-3 form-check">
+          <input
+            type="checkbox"
+            id="venueManager"
+            className="form-check-input"
+            checked={venueManager}
+            onChange={() => setVenueManager(!venueManager)} 
+          />
+          <label htmlFor="venueManager" className="form-check-label">I want to be a Venue Manager</label>
         </div>
 
         <button type="submit" className="btn btn-primary">Register</button>
