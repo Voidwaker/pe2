@@ -13,19 +13,20 @@ const Register = () => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-
+  
     if (password !== confirmPassword) {
       setError("Passwords do not match");
       return;
     }
-
+  
     try {
-      await registerUser({ name, email, password, venueManager });
+      await registerUser({ name, email, password, venueManager });  // Sender venueManager også
       navigate('/profile'); 
     } catch (err) {
       setError('Failed to register. Please try again.');
     }
   };
+  
 
   return (
     <div className="container mt-5">

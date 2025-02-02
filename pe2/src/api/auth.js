@@ -1,12 +1,13 @@
 export const API_BASE = "https://v2.api.noroff.dev";
 import { createApiKey } from './create-api-key';
 
-export async function registerUser({ name, email, password, bio, avatar, banner }) {
+export async function registerUser({ name, email, password, bio, avatar, banner, venueManager }) {
   const payload = {
     name,
     email,
     password,
     bio: bio || "No bio available",
+    venueManager: venueManager || false,
   };
 
   if (avatar) {
