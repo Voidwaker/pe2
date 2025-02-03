@@ -6,6 +6,7 @@ import Login from './components/Login';
 import Register from './components/Register';
 import Profile from './pages/Profile';
 import VenueDetails from './pages/VenueDetails';
+import CreateVenue from './pages/CreateVenue';
 import { useAuth } from './hooks/useAuth';
 import Modal from 'react-modal';
 
@@ -45,6 +46,7 @@ function App() {
         <Route path="/my-venues" element={<h1>My Venues</h1>} />
         <Route path="/profile" element={<Profile />} />
         <Route path="/venue/:id" element={<VenueDetails />} />
+        <Route path="/create-venue" element={<CreateVenue />} /> {}
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
       </Routes>
@@ -53,4 +55,3 @@ function App() {
 }
 
 export default App;
-

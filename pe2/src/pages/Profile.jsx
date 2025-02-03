@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom"; // Importer navigate
+import { useNavigate } from "react-router-dom";
 import { fetchBookings } from "../api/bookings";  
 import './../styles/profile.css';
 
@@ -8,7 +8,7 @@ const Profile = () => {
   const [bookedVenues, setBookedVenues] = useState([]); 
   const [loadingBookings, setLoadingBookings] = useState(true);
   const [error, setError] = useState(null);
-  const navigate = useNavigate(); // Bruk navigate hook
+  const navigate = useNavigate(); 
 
   useEffect(() => {
     const storedProfile = localStorage.getItem("Profile");
@@ -68,7 +68,7 @@ const Profile = () => {
 
         <div className="profile-actions">
           <button>Edit Profile</button>
-          <button onClick={() => navigate('/create-venue')}>Create Venue</button> {/* Legg til knapp */}
+          <button onClick={() => navigate('/create-venue')}>Create Venue</button> {}
         </div>
       </div>
 
