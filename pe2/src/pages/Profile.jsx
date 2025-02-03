@@ -1,42 +1,53 @@
 import React, { useState, useEffect } from "react";
-import { useAuth } from "../hooks/useAuth";
-import { fetchBookings } from "../api/bookings"; // Importer funksjonen
+import { useNavigate } from "react-router-dom"; // Importer navigate
+import { fetchBookings } from "../api/bookings";  
 import './../styles/profile.css';
 
 const Profile = () => {
-  const { authData } = useAuth();  // Henter brukerens autentiseringsdata
-  const [bookedVenues, setBookedVenues] = useState([]);  // Sørg for at bookedVenues starter som en tom array
+  const [authData, setAuthData] = useState(null); 
+  const [bookedVenues, setBookedVenues] = useState([]); 
   const [loadingBookings, setLoadingBookings] = useState(true);
   const [error, setError] = useState(null);
+  const navigate = useNavigate(); // Bruk navigate hook
 
-  // Hent bookinger når authData er tilgjengelig
   useEffect(() => {
-    if (authData) {
+    const storedProfile = localStorage.getItem("Profile");
+    const storedToken = localStorage.getItem("Token");
+    if (storedProfile && storedToken) {
+      setAuthData({
+        profile: JSON.parse(storedProfile),
+        token: storedToken,
+      });
+    }
+  }, []);
+
+  useEffect(() => {
+    if (authData && authData.token) {
       const fetchUserBookings = async () => {
         try {
-          const bookings = await fetchBookings();  // Bruk fetchBookings for å hente bookinger
-          setBookedVenues(bookings.data);  // Sett de hentede bookingene (vennligst merk at vi må bruke bookings.data hvis API'et returnerer data i denne strukturen)
+          const bookings = await fetchBookings();  
+          setBookedVenues(bookings.data);  
         } catch (error) {
           setError('Failed to load bookings');
         } finally {
-          setLoadingBookings(false);  // Ferdig med å laste inn
+          setLoadingBookings(false);
         }
       };
 
       fetchUserBookings();
     }
-  }, [authData]);  // Når authData endres, hentes bookings på nytt
+  }, [authData]);
 
   if (!authData) {
-    return <div>Loading...</div>;  // Hvis authData ikke er tilgjengelig, vis loading
+    return <div>Loading...</div>;  
   }
 
   if (loadingBookings) {
-    return <div>Loading your bookings...</div>;  // Vist når bookingene lastes
+    return <div>Loading your bookings...</div>; 
   }
 
   if (error) {
-    return <div>{error}</div>;  // Hvis det er en feil med henting av bookinger
+    return <div>{error}</div>; 
   }
 
   return (
@@ -57,6 +68,7 @@ const Profile = () => {
 
         <div className="profile-actions">
           <button>Edit Profile</button>
+          <button onClick={() => navigate('/create-venue')}>Create Venue</button> {/* Legg til knapp */}
         </div>
       </div>
 
@@ -71,7 +83,7 @@ const Profile = () => {
               </div>
             ))
           ) : (
-            <p>No bookings found</p>  // Vist hvis ingen bookinger er funnet
+            <p>No bookings found</p>  
           )}
         </div>
       </div>
