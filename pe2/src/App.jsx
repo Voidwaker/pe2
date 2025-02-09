@@ -7,50 +7,44 @@ import Register from './components/Register';
 import Profile from './pages/Profile';
 import VenueDetails from './pages/VenueDetails';
 import CreateVenue from './pages/CreateVenue';
-import { useAuth } from './hooks/useAuth';
+import { AuthProvider } from './context/authContext';
 import Modal from 'react-modal';
 
 function App() {
-  const { authData, logout } = useAuth();
-
   useEffect(() => {
     Modal.setAppElement('#root');
   }, []);
 
   return (
-    <Router>
-      <Header />
-      <Routes>
-        <Route
-          path="/"
-          element={
-            <div>
-              <h1>Welcome to Holihub!</h1>
-              {authData ? (
-                <div>
-                  <p>Welcome, {authData.profile.name}!</p>
-                  <button onClick={logout}>Logout</button>
-                </div>
-              ) : (
+    <AuthProvider>
+      <Router>
+        <Header />
+        <Routes>
+          <Route
+            path="/"
+            element={
+              <div>
+                <h1>Welcome to Holihub!</h1>
+                {}
                 <p>
                   Discover amazing venues. Please{' '}
                   <Link to="/login">login</Link> or{' '}
                   <Link to="/register">register</Link> to get started.
                 </p>
-              )}
-            </div>
-          }
-        />
-        <Route path="/venues" element={<VenueList />} />
-        <Route path="/bookings" element={<h1>My Bookings</h1>} />
-        <Route path="/my-venues" element={<h1>My Venues</h1>} />
-        <Route path="/profile" element={<Profile />} />
-        <Route path="/venue/:id" element={<VenueDetails />} />
-        <Route path="/create-venue" element={<CreateVenue />} /> {}
-        <Route path="/login" element={<Login />} />
-        <Route path="/register" element={<Register />} />
-      </Routes>
-    </Router>
+              </div>
+            }
+          />
+          <Route path="/venues" element={<VenueList />} />
+          <Route path="/bookings" element={<h1>My Bookings</h1>} />
+          <Route path="/my-venues" element={<h1>My Venues</h1>} />
+          <Route path="/profile" element={<Profile />} />
+          <Route path="/venue/:id" element={<VenueDetails />} />
+          <Route path="/create-venue" element={<CreateVenue />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
+        </Routes>
+      </Router>
+    </AuthProvider>
   );
 }
 

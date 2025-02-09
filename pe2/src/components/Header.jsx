@@ -40,14 +40,12 @@ function Header() {
                 Home
               </Link>
             </li>
-
             <li className="nav-item">
               <Link className="nav-link" to="/venues">
                 Venues
               </Link>
             </li>
 
-            {}
             {authData && (
               <>
                 <li className="nav-item">
@@ -55,8 +53,6 @@ function Header() {
                     My Bookings
                   </Link>
                 </li>
-
-                {}
                 {authData.profile?.venueManager && (
                   <li className="nav-item">
                     <Link className="nav-link" to="/my-venues">
@@ -64,26 +60,19 @@ function Header() {
                     </Link>
                   </li>
                 )}
-
                 <li className="nav-item">
                   <Link className="nav-link" to="/profile">
                     Profile
                   </Link>
                 </li>
-
-                {}
                 <li className="nav-item">
-                  <button
-                    className="btn btn-link nav-link"
-                    onClick={handleLogout} 
-                  >
+                  <button className="btn btn-link nav-link" onClick={handleLogout}>
                     Logout
                   </button>
                 </li>
               </>
             )}
 
-            {}
             {!authData && (
               <li className="nav-item">
                 <Link className="nav-link" to="/login">
@@ -99,5 +88,3 @@ function Header() {
 }
 
 export default Header;
-
-
