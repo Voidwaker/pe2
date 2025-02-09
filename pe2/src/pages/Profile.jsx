@@ -68,22 +68,40 @@ const Profile = () => {
 
         <div className="profile-actions">
           <button>Edit Profile</button>
-          <button onClick={() => navigate('/create-venue')}>Create Venue</button> {}
+          <button onClick={() => navigate('/create-venue')}>Create Venue</button>
         </div>
       </div>
 
-      <div className="bookings">
-        <h3>Your Booked Venues</h3>
-        <div className="bookings-list">
-          {bookedVenues && bookedVenues.length > 0 ? (
-            bookedVenues.map((venue) => (
-              <div key={venue.id} className="booking-item">
-                <h4>{venue.name}</h4>
-                <p>{venue.dateFrom} - {venue.dateTo}</p>
-              </div>
-            ))
+      <div className="user-bookings-container">
+        <div className="user-bookings">
+          <h2 className="user-bookings-your-bookings-title">Your Bookings:</h2>
+          {bookedVenues.length === 0 ? (
+            <p>You have no bookings yet.</p>
           ) : (
-            <p>No bookings found</p>  
+            <ul className="booking-list">
+              {bookedVenues.map((booking) => (
+                <li key={booking.id} className="booking-item">
+                  <h3>{booking.venue.name}</h3>
+                  <p>
+                    <strong>Location:</strong> {booking.venue.location.city}, {booking.venue.location.country}
+                  </p>
+                  <p>
+                    <strong>Check-in:</strong> {new Date(booking.dateFrom).toLocaleDateString()}
+                  </p>
+                  <p>
+                    <strong>Check-out:</strong> {new Date(booking.dateTo).toLocaleDateString()}
+                  </p>
+                  <p>
+                    <strong>Guests:</strong> {booking.guests}
+                  </p>
+                  <img
+                    src={booking.venue.media[0]?.url || "https://via.placeholder.com/150"}
+                    alt={booking.venue.media[0]?.alt || "Venue Image"}
+                    className="booking-image"
+                  />
+                </li>
+              ))}
+            </ul>
           )}
         </div>
       </div>
@@ -92,3 +110,4 @@ const Profile = () => {
 };
 
 export default Profile;
+
