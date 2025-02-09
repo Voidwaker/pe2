@@ -2,30 +2,32 @@ import { API_BASE, API_BOOKINGS_BY_PROFILE } from './../config/constants';
 
 export async function fetchBookings() {
   const token = localStorage.getItem("Token");
-
   if (!token) {
     throw new Error("No access token found. Please log in first.");
   }
 
   const apiKey = localStorage.getItem("ApiKey");
-
   if (!apiKey) {
     console.error("No API key found in localStorage. Please create an API key.");
-    return;
+    throw new Error("No API key found in localStorage.");
   }
 
-  const profile = JSON.parse(localStorage.getItem("Profile"));
-  const profileName = profile ? profile.name : null;
-
+  const profileString = localStorage.getItem("Profile");
+  if (!profileString) {
+    throw new Error("No profile found in localStorage.");
+  }
+  const profile = JSON.parse(profileString);
+  const profileName = profile && profile.name ? profile.name : null;
   if (!profileName) {
     throw new Error("No profile name found in localStorage.");
   }
 
   try {
-    const response = await fetch(`${API_BASE}${API_BOOKINGS_BY_PROFILE(profileName)}`, {
+    const url = `${API_BASE}${API_BOOKINGS_BY_PROFILE(profileName)}`;
+    const response = await fetch(url, {
       method: "GET",
       headers: {
-        Authorization: `Bearer ${token}`,
+        "Authorization": `Bearer ${token}`,
         "X-Noroff-API-Key": apiKey,
         "Content-Type": "application/json",
       },
@@ -39,10 +41,10 @@ export async function fetchBookings() {
 
     const bookingsData = await response.json();
     console.log("Bookings fetched successfully:", bookingsData);
-
     return bookingsData;
   } catch (error) {
     console.error("Error in fetchBookings:", error.message);
     throw error;
   }
 }
+

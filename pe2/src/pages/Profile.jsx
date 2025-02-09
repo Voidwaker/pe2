@@ -25,10 +25,21 @@ const Profile = () => {
     if (authData && authData.token) {
       const fetchUserBookings = async () => {
         try {
-          const bookings = await fetchBookings();  
-          setBookedVenues(bookings.data);  
+          const bookings = await fetchBookings();
+          console.log("Bookings fetched successfully:", bookings);
+
+          const fetchedBookings = Array.isArray(bookings)
+            ? bookings
+            : bookings.data;
+
+          const validBookings = (fetchedBookings || []).filter(
+            (booking) => booking && booking.venue
+          );
+          
+          setBookedVenues(validBookings);
         } catch (error) {
-          setError('Failed to load bookings');
+          console.error("Error fetching bookings:", error.message);
+          setError("Failed to load bookings");
         } finally {
           setLoadingBookings(false);
         }
@@ -81,9 +92,9 @@ const Profile = () => {
             <ul className="booking-list">
               {bookedVenues.map((booking) => (
                 <li key={booking.id} className="booking-item">
-                  <h3>{booking.venue.name}</h3>
+                  <h3>{booking.venue?.name || "No Venue Name"}</h3>
                   <p>
-                    <strong>Location:</strong> {booking.venue.location.city}, {booking.venue.location.country}
+                    <strong>Location:</strong> {booking.venue?.location?.city || "N/A"}, {booking.venue?.location?.country || "N/A"}
                   </p>
                   <p>
                     <strong>Check-in:</strong> {new Date(booking.dateFrom).toLocaleDateString()}
@@ -95,8 +106,8 @@ const Profile = () => {
                     <strong>Guests:</strong> {booking.guests}
                   </p>
                   <img
-                    src={booking.venue.media[0]?.url || "https://via.placeholder.com/150"}
-                    alt={booking.venue.media[0]?.alt || "Venue Image"}
+                    src={booking.venue?.media && booking.venue.media[0] ? booking.venue.media[0].url : "https://via.placeholder.com/150"}
+                    alt={booking.venue?.media && booking.venue.media[0] ? booking.venue.media[0].alt : "Venue Image"}
                     className="booking-image"
                   />
                 </li>
@@ -110,4 +121,3 @@ const Profile = () => {
 };
 
 export default Profile;
-
