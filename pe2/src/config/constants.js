@@ -6,4 +6,5 @@ export const API_LOGIN = `${API_AUTH}/login`;
 export const API_CREATE_API_KEY = `${API_AUTH}/create-api-key`;  
 export const API_BOOKINGS = "/holidaze/bookings";
 export const API_PROFILES = "/holidaze/profiles";
-export const API_BOOKINGS_BY_PROFILE = (name) => `/holidaze/profiles/${name}/bookings`;
+export const API_BOOKINGS_BY_PROFILE = (name) => `/holidaze/profiles/${name}/bookings?_venue=true`;
+
