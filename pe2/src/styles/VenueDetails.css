@@ -1,49 +1,154 @@
-.react-calendar {
-  background-color: gray;
+.venue-details-container {
+  background-color: white;
   border-radius: 10px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  width: 100%;
-  max-width: 400px;
-  margin: 0 auto;
+  margin: 20px auto;
+  max-width: 800px;
   padding: 20px;
+  font-family: 'Arial', sans-serif;
 }
 
-.react-calendar__tile {
-  border-radius: 5px;
-  cursor: pointer;
-  transition: all 0.3s ease;
+.venue-hero {
+  width: 100%;
+  height: auto;
+  border-radius: 10px;
+  object-fit: cover;
+  margin-bottom: 20px;
 }
 
-.react-calendar__tile--active {
+.venue-title {
+  font-size: 2rem;
+  margin-bottom: 10px;
+  text-align: center;
+  color: #333;
+}
+
+.venue-description {
+  font-size: 1.1rem;
+  margin-bottom: 20px;
+  color: #555;
+  text-align: justify;
+}
+
+.venue-details-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  justify-content: space-around;
+  margin-bottom: 20px;
+}
+
+.venue-detail {
+  flex: 1 1 30%;
+  font-size: 1rem;
+  color: #333;
+  text-align: center;
+}
+
+.venue-features {
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.venue-features h3 {
+  font-size: 1.5rem;
+  margin-bottom: 10px;
+  color: #333;
+}
+
+.venue-features ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.venue-features li {
+  font-size: 1rem;
+  color: #555;
+  margin-bottom: 5px;
+}
+
+.venue-location {
+  font-size: 1rem;
+  color: #555;
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.venue-calendar {
+  margin-top: 20px;
+  text-align: center;
+}
+
+.venue-calendar h2 {
+  font-size: 1.5rem;
+  margin-bottom: 10px;
+  color: #333;
+}
+
+.booking-button {
   background-color: #007bff;
   color: white;
-}
-
-.react-calendar__tile--available {
-  background-color: #28a745;  
-  color: white;
-  font-weight: bold;
-}
-
-.react-calendar__tile--booked {
-  background-color: #dc3545;  
-  color: white;
-  font-weight: bold;
-}
-
-.react-calendar__tile--disabled {
-  background-color: #f0f0f0;
-  color: #aaa;
-}
-
-.react-calendar__navigation button {
-  background-color: #007bff;
-  color: white;
+  border: none;
+  padding: 10px 20px;
   border-radius: 5px;
-  padding: 5px 10px;
   cursor: pointer;
+  transition: background-color 0.3s ease;
+  margin-top: 15px;
 }
 
-.react-calendar__navigation button:hover {
+.booking-button:hover {
   background-color: #0056b3;
+}
+
+@media (max-width: 768px) {
+  .venue-details-container {
+    padding: 15px;
+    margin: 10px;
+    max-width: 90%;
+  }
+  
+  .venue-title {
+    font-size: 1.8rem;
+  }
+  
+  .venue-description {
+    font-size: 1rem;
+  }
+  
+  .venue-detail {
+    flex: 1 1 45%;
+    font-size: 0.9rem;
+  }
+  
+  .booking-button {
+    padding: 8px 16px;
+    font-size: 0.9rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .venue-details-container {
+    padding: 10px;
+    margin: 5px;
+    max-width: 95%;
+  }
+  
+  .venue-title {
+    font-size: 1.5rem;
+  }
+  
+  .venue-description {
+    font-size: 0.9rem;
+  }
+  
+  .venue-detail {
+    flex: 1 1 100%;
+    font-size: 0.85rem;
+  }
+  
+  .booking-button {
+    padding: 6px 12px;
+    font-size: 0.85rem;
+  }
 }

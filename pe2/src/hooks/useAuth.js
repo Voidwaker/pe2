@@ -1,13 +1,16 @@
 import { useState, useEffect } from 'react';
 
-export const useAuth = () => {
+export function useAuth() {
   const [authData, setAuthData] = useState(null);
 
   useEffect(() => {
-    const storedToken = localStorage.getItem('Token');
-    const storedProfile = localStorage.getItem('Profile');
-    if (storedToken && storedProfile) {
-      setAuthData({ token: storedToken, profile: JSON.parse(storedProfile) });
+    const token = localStorage.getItem('Token');
+    const profile = localStorage.getItem('Profile');
+    if (token && profile) {
+      setAuthData({
+        token,
+        profile: JSON.parse(profile),
+      });
     }
   }, []);
 
@@ -18,4 +21,4 @@ export const useAuth = () => {
   };
 
   return { authData, logout };
-};
+}

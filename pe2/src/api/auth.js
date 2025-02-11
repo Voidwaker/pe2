@@ -1,12 +1,13 @@
 export const API_BASE = "https://v2.api.noroff.dev";
 import { createApiKey } from './create-api-key';
 
-export async function registerUser({ name, email, password, bio, avatar, banner }) {
+export async function registerUser({ name, email, password, bio, avatar, banner, venueManager }) {
   const payload = {
     name,
     email,
     password,
     bio: bio || "No bio available",
+    venueManager: venueManager || false,
   };
 
   if (avatar) {
@@ -39,7 +40,7 @@ export async function loginUser({ email, password }) {
     password,
   };
 
-  const response = await fetch(`${API_BASE}/auth/login`, {
+  const response = await fetch(`${API_BASE}/auth/login?_holidaze=true`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -56,16 +57,18 @@ export async function loginUser({ email, password }) {
   const data = await response.json();
 
   if (data && data.data) {
-    const { accessToken, bio = "No bio available", ...profile } = data.data;
+    const { accessToken, bio = "No bio available", venueManager, ...profile } = data.data;
 
     localStorage.setItem('Token', accessToken);
     localStorage.setItem('Profile', JSON.stringify(profile)); 
+
+    localStorage.setItem('VenueManager', venueManager);
 
     const apiKey = await createApiKey(); 
     localStorage.setItem('ApiKey', apiKey);
 
     console.log('Logged in successfully');
-    return { accessToken, profile, apiKey }; 
+    return { accessToken, profile, apiKey, venueManager }; 
   } else {
     console.error('Unexpected response format:', data);
     throw new Error('Unexpected response format');
