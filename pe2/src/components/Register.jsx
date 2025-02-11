@@ -20,7 +20,7 @@ const Register = () => {
     }
   
     try {
-      await registerUser({ name, email, password, venueManager });  // Sender venueManager også
+      await registerUser({ name, email, password, venueManager }); 
       navigate('/profile'); 
     } catch (err) {
       setError('Failed to register. Please try again.');

@@ -25,12 +25,12 @@ export async function createApiKey() {
     }
 
     const apiKeyData = await response.json();
-    console.log("API Key generated:", apiKeyData); // Log the generated API key
+    console.log("API Key generated:", apiKeyData); 
     const apiKey = apiKeyData.data.key;
     
     if (apiKey) {
       localStorage.setItem("ApiKey", apiKey);
-      console.log("API Key stored in localStorage:", apiKey); // Log the key stored in localStorage
+      console.log("API Key stored in localStorage:", apiKey); 
     } else {
       console.error("API key is missing in the response!");
     }

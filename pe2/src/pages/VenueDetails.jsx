@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import Calendar from 'react-calendar'; 
-import '../styles/venuedetails.css'; 
-import '../styles/calendar.css';
+import '../styles/venueDetails.css'; 
+import '../styles/Calendar.css';
 <styles></styles>
 
 const API_URL = 'https://v2.api.noroff.dev/holidaze/venues';

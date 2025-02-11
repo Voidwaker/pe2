@@ -1,9 +1,9 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { useAuth } from './../hooks/useAuth';  // Vi antar at du har en custom hook for auth
+import { useAuth } from './../hooks/useAuth';
 
 function Header() {
-  const { authData, logout } = useAuth(); // Får authData og logout-funksjonen fra custom hooken
+  const { authData, logout } = useAuth(); 
 
   return (
     <nav className="navbar navbar-expand-lg navbar-light bg-light">
@@ -31,7 +31,7 @@ function Header() {
               <Link className="nav-link" to="/venues">Venues</Link>
             </li>
 
-            {/* Vist kun hvis bruker er logget inn */}
+            {}
             {authData && (
               <>
                 <li className="nav-item">
@@ -46,7 +46,7 @@ function Header() {
                   </Link>
                 </li>
 
-                {/* Vist kun for venue manager */}
+                {}
                 {authData.profile?.venueManager && (
                   <li className="nav-item">
                     <Link className="nav-link" to="/create-venue">
@@ -63,7 +63,7 @@ function Header() {
               </>
             )}
 
-            {/* Vist kun hvis bruker ikke er logget inn */}
+            {}
             {!authData && (
               <>
                 <li className="nav-item">
