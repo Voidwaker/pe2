@@ -1,3 +1,4 @@
+<<<<<<< Updated upstream
 logs
 *.log
 npm-debug.log*
@@ -34,3 +35,6 @@ coverage
 .Thumbs.db
 .desktop.ini
 .DS_Store
+=======
+node_modules
+>>>>>>> Stashed changes
