@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { Routes, Route, Link, useNavigate } from 'react-router-dom';  // Ikke importere Router her, bare de andre nødvendige komponentene
+import { Routes, Route, Link, useNavigate } from 'react-router-dom';
 import Header from './components/Header';
 import VenueList from './components/VenueList';
 import Login from './components/Login';

@@ -110,7 +110,6 @@
   background-color: #0056b3;
 }
 
-/* Media queries for responsiveness */
 @media (max-width: 768px) {
   .venue-details-container {
     padding: 20px;

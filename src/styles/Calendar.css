@@ -1,5 +1,5 @@
 .react-calendar {
-  background-color: #ffffff; /* Hvit bakgrunn */
+  background-color: #ffffff; 
   border-radius: 10px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   width: 100%;
@@ -10,7 +10,6 @@
   font-family: 'Arial', sans-serif;
 }
 
-/* Navigasjon for å bytte måneder */
 .react-calendar__navigation {
   display: flex;
   justify-content: space-between;
@@ -31,38 +30,33 @@
   background-color: #0056b3;
 }
 
-/* Styling av dato-feltene */
 .react-calendar__tile {
-  background-color: #ffffff; /* Hvit bakgrunn */
-  color: #333; /* Mørk tekst */
+  background-color: #ffffff; 
+  color: #333; 
   border-radius: 5px;
   cursor: pointer;
   transition: background-color 0.2s ease, color 0.2s ease;
 }
 
-/* Når en dato er valgt */
 .react-calendar__tile--active {
   background-color: #007bff;
   color: #ffffff;
 }
 
-/* Når man holder musepekeren over en dato */
 .react-calendar__tile:hover {
   background-color: #0056b3;
   color: #ffffff;
 }
 
-/* Tilgjengelige datoer (kan bookes) */
 .react-calendar__tile--available {
-  background-color: #28a745; /* Grønn for tilgjengelige datoer */
+  background-color: #28a745; 
   color: #ffffff;
   font-weight: bold;
 }
 
-/* Bookede datoer */
 .react-calendar__tile--booked {
-  background-color: #ffcccc; /* Lys rød bakgrunn for booked */
-  color: #900; /* Mørk rød tekst */
+  background-color: #ffcccc; 
+  color: #900; 
   font-weight: bold;
 }
 
