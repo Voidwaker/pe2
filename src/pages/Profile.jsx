@@ -1,4 +1,3 @@
-// src/pages/Profile.jsx
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { fetchBookings } from "../api/bookings";  
@@ -11,7 +10,6 @@ const Profile = () => {
   const [error, setError] = useState(null);
   const navigate = useNavigate(); 
 
-  // Hent profil- og token-data fra localStorage
   useEffect(() => {
     const storedProfile = localStorage.getItem("Profile");
     const storedToken = localStorage.getItem("Token");
@@ -23,22 +21,19 @@ const Profile = () => {
     }
   }, []);
 
-  // Hent bookings når authData er tilgjengelig
   useEffect(() => {
     if (authData && authData.token) {
       const fetchUserBookings = async () => {
         try {
           const bookingsResponse = await fetchBookings();
           console.log("Bookings fetched successfully:", bookingsResponse);
-          
-          // Sjekk om responsen er et array direkte eller et objekt med en 'data'-nøkkel
+
           const fetchedBookings = Array.isArray(bookingsResponse)
             ? bookingsResponse
             : bookingsResponse.data;
           
           console.log("Fetched bookings array:", fetchedBookings);
           
-          // Filtrer bort elementer som ikke har en definert venue
           const validBookings = (fetchedBookings || []).filter(
             (booking) => booking && booking.venue
           );
