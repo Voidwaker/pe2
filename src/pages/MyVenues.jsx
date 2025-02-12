@@ -1,69 +1,64 @@
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
 import { useAuth } from "../context/authContext";
 import { getUserVenues, deleteVenue } from "../api/venues";
-import "../styles/myVenues.css";
+import { useNavigate } from "react-router-dom";
+import "../styles/myVenues.css"; 
 
 const MyVenues = () => {
   const { authData } = useAuth();
   const [venues, setVenues] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
-    if (!authData || !authData.profile || !authData.profile.name) {
-      setError("You must be logged in to view your venues.");
-      setLoading(false);
-      return;
-    }
-
     const fetchVenues = async () => {
+      if (!authData || !authData.profile) return;
       try {
-        const data = await getUserVenues(authData.profile.name);
-        setVenues(data);
-      } catch (err) {
-        setError("Failed to fetch venues.");
+        const userVenues = await getUserVenues(authData.profile.name);
+        setVenues(userVenues);
+      } catch (error) {
+        console.error("Error fetching venues:", error);
+        setError("Failed to load venues.");
       } finally {
         setLoading(false);
       }
     };
-
     fetchVenues();
   }, [authData]);
 
   const handleDelete = async (venueId) => {
-    const confirmDelete = window.confirm("Are you sure you want to delete this venue?");
-    if (!confirmDelete) return;
-
+    if (!window.confirm("Are you sure you want to delete this venue?")) return;
     try {
       await deleteVenue(venueId);
-      setVenues(venues.filter((venue) => venue.id !== venueId));
-    } catch (err) {
-      setError("Failed to delete venue.");
+      setVenues(venues.filter(venue => venue.id !== venueId));
+    } catch (error) {
+      console.error("Failed to delete venue:", error);
+      alert("Error deleting venue. Please try again.");
     }
   };
 
+  if (!authData) return <p>Loading...</p>;
   if (loading) return <p>Loading your venues...</p>;
   if (error) return <p>{error}</p>;
 
   return (
     <div className="my-venues-container">
-      <h1>My Venues</h1>
+      <h2>My Venues</h2>
       {venues.length === 0 ? (
         <p>You have not created any venues yet.</p>
       ) : (
-        <div className="venues-list">
+        <div className="venue-list">
           {venues.map((venue) => (
             <div key={venue.id} className="venue-card">
               <img src={venue.media[0]?.url || "https://via.placeholder.com/150"} alt={venue.name} />
-              <div className="venue-info">
-                <h3>{venue.name}</h3>
-                <p>{venue.description}</p>
-                <p><strong>Price:</strong> ${venue.price}</p>
-                <p><strong>Location:</strong> {venue.location.city}, {venue.location.country}</p>
-                <Link to={`/venue/${venue.id}`} className="view-more-btn">View Details</Link>
-                <Link to={`/edit-venue/${venue.id}`} className="edit-btn">Edit</Link>
-                <button onClick={() => handleDelete(venue.id)} className="delete-btn">Delete</button>
+              <h3>{venue.name}</h3>
+              <p>{venue.description}</p>
+              <p>Price: ${venue.price}</p>
+              <p>Guests: {venue.maxGuests}</p>
+              <div className="venue-actions">
+                <button onClick={() => navigate(`/edit-venue/${venue.id}`)}>Edit</button>
+                <button onClick={() => handleDelete(venue.id)}>Delete</button>
               </div>
             </div>
           ))}
