@@ -10,10 +10,11 @@ import './styles/global.css';
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
-    <Router> {}
-      <AuthProvider> {}
+    <AuthProvider> {}
+      <Router>
         <App />
-      </AuthProvider>
-    </Router>
+      </Router>
+    </AuthProvider>
   </StrictMode>
 );
+

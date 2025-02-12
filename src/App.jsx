@@ -6,7 +6,8 @@ import Login from './components/Login';
 import Register from './components/Register';
 import Profile from './pages/Profile';
 import VenueDetails from './pages/VenueDetails';
-import CreateVenue from './pages/CreateVenue'; 
+import CreateVenue from './pages/CreateVenue';
+import MyVenues from './pages/MyVenues';
 import { useAuth } from './hooks/useAuth';
 import Modal from 'react-modal';
 
@@ -25,19 +26,12 @@ function App() {
         <Route path="/" element={<div>Welcome to Holihub!</div>} />
         <Route path="/venues" element={<VenueList />} />
         <Route path="/bookings" element={<h1>My Bookings</h1>} />
-        <Route path="/my-venues" element={<h1>My Venues</h1>} />
         <Route path="/profile" element={<Profile />} />
         <Route path="/venue/:id" element={<VenueDetails />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
-        {}
         <Route path="/create-venue" element={<CreateVenue />} />
-        {}
-        {authData && authData.profile?.venueManager && (
-          <>
-            {}
-          </>
-        )}
+        <Route path="/my-venues" element={<MyVenues />} />
       </Routes>
     </div>
   );

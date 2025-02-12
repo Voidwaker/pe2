@@ -1,7 +1,7 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { logout as apiLogout } from '../api/auth'; 
 
-const AuthContext = createContext(null); // 🔥 Setter en default verdi for å unngå feil
+const AuthContext = createContext(null);
 
 export const AuthProvider = ({ children }) => {
   const [authData, setAuthData] = useState(null);
@@ -34,7 +34,6 @@ export const AuthProvider = ({ children }) => {
   );
 };
 
-// 🔥 Sørger for at `useAuth()` kun brukes innenfor `AuthProvider`
 export function useAuth() {
   const context = useContext(AuthContext);
   if (!context) {
