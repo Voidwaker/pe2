@@ -1,6 +1,6 @@
-import { API_BASE } from '../config/constants';
+import { API_BASE } from "../config/constants";
 
-export async function createVenue({ name, description, location, price, maxGuests, media }) {
+function getAuthHeaders() {
   const token = localStorage.getItem("Token");
   const apiKey = localStorage.getItem("ApiKey");
 
@@ -8,40 +8,82 @@ export async function createVenue({ name, description, location, price, maxGuest
     throw new Error("No token or API key found. Please log in first.");
   }
 
-  const payload = {
-    name,
-    description,
-    location: {
-      address: location.address, 
-      city: location.city, 
-      country: location.country, 
-      zip: location.zip, 
-      continent: location.continent, 
-      lat: location.lat, 
-      lng: location.lng, 
-    },
-    price: Number(price), 
-    maxGuests: Number(maxGuests), 
-    media,
+  return {
+    Authorization: `Bearer ${token}`,
+    "X-Noroff-API-Key": apiKey,
+    "Content-Type": "application/json",
   };
-  
-  
+}
 
-  const response = await fetch(`${API_BASE}/holidaze/venues`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${token}`,
-      "X-Noroff-API-Key": apiKey,
-    },
-    body: JSON.stringify(payload),
-  });
-  
+export async function createVenue({ name, description, location, price, maxGuests, media }) {
+  try {
+    const payload = {
+      name,
+      description,
+      location: {
+        address: location.address,
+        city: location.city,
+        country: location.country,
+        zip: location.zip,
+        continent: location.continent,
+        lat: location.lat,
+        lng: location.lng,
+      },
+      price: Number(price),
+      maxGuests: Number(maxGuests),
+      media,
+    };
 
-  if (!response.ok) {
-    const errorData = await response.json();
-    throw new Error(errorData.message || "Failed to create venue");
+    const response = await fetch(`${API_BASE}/holidaze/venues`, {
+      method: "POST",
+      headers: getAuthHeaders(),
+      body: JSON.stringify(payload),
+    });
+
+    if (!response.ok) {
+      const errorData = await response.json();
+      throw new Error(errorData.message || "Failed to create venue");
+    }
+
+    return await response.json();
+  } catch (error) {
+    console.error("Error creating venue:", error);
+    throw error;
   }
+}
 
-  return await response.json();
+export async function getUserVenues(username) {
+  try {
+    const response = await fetch(`${API_BASE}/holidaze/profiles/${username}/venues`, {
+      headers: getAuthHeaders(),
+    });
+
+    if (!response.ok) {
+      throw new Error("Failed to fetch user's venues");
+    }
+
+    const data = await response.json();
+    return data.data;
+  } catch (error) {
+    console.error("Error fetching user venues:", error);
+    throw error;
+  }
+}
+
+export async function deleteVenue(venueId) {
+  try {
+    const response = await fetch(`${API_BASE}/holidaze/venues/${venueId}`, {
+      method: "DELETE",
+      headers: getAuthHeaders(),
+    });
+
+    if (!response.ok) {
+      throw new Error("Failed to delete venue");
+    }
+
+    return true;
+  } catch (error) {
+    console.error("Error deleting venue:", error);
+    throw error;
+  }
 }

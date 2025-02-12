@@ -19,21 +19,12 @@ function VenueDetails() {
 
   useEffect(() => {
     const user = localStorage.getItem("userProfile");
-    if (user) {
-      setIsUserLoggedIn(true);
-    }
+    setIsUserLoggedIn(!!user);
 
     const fetchVenue = async () => {
       try {
-        const response = await fetch(`${API_URL}/${id}?_bookings=true`, {
-          method: "GET",
-          headers: { "Content-Type": "application/json" },
-        });
-
-        if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
-        }
-
+        const response = await fetch(`${API_URL}/${id}?_bookings=true`);
+        if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
         const data = await response.json();
         setVenue(data.data);
 
@@ -49,7 +40,6 @@ function VenueDetails() {
           }
           return dates;
         });
-
         setBookedDates(bookedRanges);
       } catch (error) {
         console.error("Error fetching venue details:", error);
@@ -58,7 +48,6 @@ function VenueDetails() {
         setLoading(false);
       }
     };
-
     fetchVenue();
   }, [id]);
 
@@ -74,36 +63,21 @@ function VenueDetails() {
       return;
     }
 
-    let rawToken = localStorage.getItem("Token");
-    let authToken = rawToken ? rawToken.replace(/^"+|"+$/g, "").trim() : null;
-    if (!authToken) {
-      alert("Authentication error: Missing token.");
-      return;
-    }
-
-    let rawApiKey = localStorage.getItem("ApiKey");
-    let API_KEY = rawApiKey ? rawApiKey.replace(/^"+|"+$/g, "").trim() : null;
-
-    if (!API_KEY) {
-      alert("Failed to get API Key. Please log out and log in again.");
-      return;
-    }
-
-    if (guests < 1 || guests > venue.maxGuests) {
-      alert(`Please select a number of guests between 1 and ${venue.maxGuests}.`);
+    let authToken = localStorage.getItem("Token")?.replace(/^"+|"+$/g, "").trim();
+    let API_KEY = localStorage.getItem("ApiKey")?.replace(/^"+|"+$/g, "").trim();
+    if (!authToken || !API_KEY) {
+      alert("Authentication error. Please log out and log in again.");
       return;
     }
 
     const bookingData = {
       dateFrom: selectedFrom.toISOString(),
       dateTo: selectedTo.toISOString(),
-      guests: guests,
+      guests,
       venueId: id,
     };
 
     try {
-      console.log("🔵 Sending booking request...", bookingData);
-
       const response = await fetch("https://v2.api.noroff.dev/holidaze/bookings", {
         method: "POST",
         headers: {
@@ -132,19 +106,18 @@ function VenueDetails() {
 
   return (
     <div className="venue-details-container">
-      {venue && venue.media && venue.media.length > 0 ? (
+      {venue?.media?.length > 0 ? (
         <img className="venue-hero" src={venue.media[0].url} alt={venue.media[0].alt || "Venue Image"} />
       ) : (
         <p>Loading image...</p>
       )}
 
-      <h1 className="venue-title">{venue ? venue.name : "Loading venue..."}</h1>
+      <h1 className="venue-title">{venue?.name || "Loading venue..."}</h1>
       <p className="venue-description">{venue?.description || "No description available"}</p>
       <p className="venue-detail">Price: ${venue?.price || "N/A"}</p>
       <p className="venue-detail">Max Guests: {venue?.maxGuests || "N/A"}</p>
       <p className="venue-detail">Rating: {venue?.rating || "N/A"}</p>
 
-      {}
       <div className="venue-features">
         <h3>Features</h3>
         <ul>
@@ -157,7 +130,6 @@ function VenueDetails() {
 
       <div className="venue-calendar">
         <h2>Availability Calendar</h2>
-
         <label htmlFor="fromDate">From:</label>
         <DatePicker
           id="fromDate"
@@ -167,7 +139,6 @@ function VenueDetails() {
           minDate={new Date()}
           dateFormat="yyyy-MM-dd"
           placeholderText="Select start date"
-          className="date-picker-input"
         />
 
         <label htmlFor="toDate">To:</label>
@@ -179,7 +150,6 @@ function VenueDetails() {
           minDate={selectedFrom || new Date()}
           dateFormat="yyyy-MM-dd"
           placeholderText="Select end date"
-          className="date-picker-input"
         />
 
         <div>
@@ -192,12 +162,6 @@ function VenueDetails() {
         </div>
 
         <button onClick={handleBooking} className="booking-button">Book Venue</button>
-
-        {isUserLoggedIn ? (
-          <p>Select a start and end date to book this venue.</p>
-        ) : (
-          <p><strong>Note:</strong> Only registered users can book a venue. Please register to book your holiday.</p>
-        )}
       </div>
     </div>
   );

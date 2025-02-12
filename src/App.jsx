@@ -31,7 +31,7 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         {authData && authData.profile?.venueManager && (
-          <Route path="/CreateVenue" element={<CreateVenue />} />
+          <Route path="/Create-Venue" element={<CreateVenue />} />
         )}
       </Routes>
     </div>
