@@ -53,6 +53,11 @@ export async function createVenue({ name, description, location, price, maxGuest
 }
 
 export async function getUserVenues(username) {
+  if (!username) {
+    console.error("Error: Username is undefined. Make sure the user is logged in.");
+    return []; // Returnerer en tom liste for å unngå feil
+  }
+
   try {
     const response = await fetch(`${API_BASE}/holidaze/profiles/${username}/venues`, {
       headers: getAuthHeaders(),
@@ -84,6 +89,44 @@ export async function deleteVenue(venueId) {
     return true;
   } catch (error) {
     console.error("Error deleting venue:", error);
+    throw error;
+  }
+}
+
+export async function getVenueById(venueId) {
+  try {
+    const response = await fetch(`${API_BASE}/holidaze/venues/${venueId}`, {
+      headers: getAuthHeaders(),
+    });
+
+    if (!response.ok) {
+      throw new Error("Failed to fetch venue details");
+    }
+
+    const data = await response.json();
+    return data.data;
+  } catch (error) {
+    console.error("Error fetching venue details:", error);
+    throw error;
+  }
+}
+
+export async function updateVenue(venueId, updatedData) {
+  try {
+    const response = await fetch(`${API_BASE}/holidaze/venues/${venueId}`, {
+      method: "PUT",
+      headers: getAuthHeaders(),
+      body: JSON.stringify(updatedData),
+    });
+
+    if (!response.ok) {
+      const errorData = await response.json();
+      throw new Error(errorData.message || "Failed to update venue");
+    }
+
+    return await response.json();
+  } catch (error) {
+    console.error("Error updating venue:", error);
     throw error;
   }
 }

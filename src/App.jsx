@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { Routes, Route, Link, useNavigate } from 'react-router-dom';
+import { Routes, Route, useNavigate } from 'react-router-dom';
 import Header from './components/Header';
 import VenueList from './components/VenueList';
 import Login from './components/Login';
@@ -8,6 +8,7 @@ import Profile from './pages/Profile';
 import VenueDetails from './pages/VenueDetails';
 import CreateVenue from './pages/CreateVenue';
 import MyVenues from './pages/MyVenues';
+import EditVenue from './pages/EditVenue';
 import { useAuth } from './hooks/useAuth';
 import Modal from 'react-modal';
 
@@ -32,6 +33,7 @@ function App() {
         <Route path="/register" element={<Register />} />
         <Route path="/create-venue" element={<CreateVenue />} />
         <Route path="/my-venues" element={<MyVenues />} />
+        <Route path="/edit-venue/:id" element={<EditVenue />} />
       </Routes>
     </div>
   );
