@@ -1,10 +1,14 @@
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { getUserVenues, updateVenue } from "../api/venues"; // Opprett updateVenue i API-filen
-import "../styles/createVenue.css"; 
+import { getVenueById, updateVenue } from "../api/venues";
+import "../styles/createVenue.css";
 
+/**
+ * EditVenue Component - Allows a venue manager to edit a venue they manage.
+ * @returns {JSX.Element} The rendered component.
+ */
 const EditVenue = () => {
-  const { id } = useParams(); 
+  const { id } = useParams();
   const navigate = useNavigate();
   const [venue, setVenue] = useState(null);
   const [name, setName] = useState("");
@@ -18,17 +22,16 @@ const EditVenue = () => {
   useEffect(() => {
     const fetchVenue = async () => {
       try {
-        const venues = await getUserVenues(); // Henter brukerens venues
-        const venueToEdit = venues.find((v) => v.id === id);
-        if (!venueToEdit) {
+        const venueData = await getVenueById(id); // Fetches the specific venue
+        if (!venueData) {
           throw new Error("Venue not found");
         }
-        setVenue(venueToEdit);
-        setName(venueToEdit.name);
-        setDescription(venueToEdit.description);
-        setPrice(venueToEdit.price);
-        setMaxGuests(venueToEdit.maxGuests);
-        setImageUrl(venueToEdit.media[0]?.url || "");
+        setVenue(venueData);
+        setName(venueData.name);
+        setDescription(venueData.description);
+        setPrice(venueData.price);
+        setMaxGuests(venueData.maxGuests);
+        setImageUrl(venueData.media[0]?.url || "");
       } catch (err) {
         setError(err.message);
       } finally {
@@ -39,6 +42,10 @@ const EditVenue = () => {
     fetchVenue();
   }, [id]);
 
+  /**
+   * Handles venue update submission.
+   * @param {Event} event - The form submission event.
+   */
   const handleUpdate = async (event) => {
     event.preventDefault();
 
