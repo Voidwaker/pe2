@@ -1,6 +1,11 @@
-import { API_BASE } from '../config/constants';
+import {
+  API_BASE,
+  API_VENUES,
+  API_VENUE_BY_ID,
+  API_PROFILE_VENUES
+} from "../config/constants";
 
-export async function createVenue({ name, description, location, price, maxGuests, media }) {
+function getAuthHeaders() {
   const token = localStorage.getItem("Token");
   const apiKey = localStorage.getItem("ApiKey");
 
@@ -8,40 +13,147 @@ export async function createVenue({ name, description, location, price, maxGuest
     throw new Error("No token or API key found. Please log in first.");
   }
 
-  const payload = {
-    name,
-    description,
-    location: {
-      address: location.address, 
-      city: location.city, 
-      country: location.country, 
-      zip: location.zip, 
-      continent: location.continent, 
-      lat: location.lat, 
-      lng: location.lng, 
-    },
-    price: Number(price), 
-    maxGuests: Number(maxGuests), 
-    media,
+  return {
+    Authorization: `Bearer ${token}`,
+    "X-Noroff-API-Key": apiKey,
+    "Content-Type": "application/json",
   };
-  
-  
+}
 
-  const response = await fetch(`${API_BASE}/holidaze/venues`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${token}`,
-      "X-Noroff-API-Key": apiKey,
-    },
-    body: JSON.stringify(payload),
-  });
-  
+export async function fetchVenues({ search = "", sort = "created", sortOrder = "desc" } = {}) {
+  try {
+    const url = new URL(`${API_BASE}${API_VENUES}`);
+    
+    if (search) url.searchParams.append("q", search);
+    if (sort) url.searchParams.append("sort", sort);
+    if (sortOrder) url.searchParams.append("sortOrder", sortOrder);
 
-  if (!response.ok) {
-    const errorData = await response.json();
-    throw new Error(errorData.message || "Failed to create venue");
+    const response = await fetch(url);
+
+    if (!response.ok) {
+      throw new Error("Failed to fetch venues");
+    }
+
+    const data = await response.json();
+    return data.data;
+  } catch (error) {
+    console.error("Error fetching venues:", error);
+    throw error;
+  }
+}
+
+export async function createVenue({ name, description, location, price, maxGuests, media }) {
+  try {
+    const payload = {
+      name,
+      description,
+      location: {
+        address: location.address || null,
+        city: location.city || null,
+        country: location.country || null,
+        zip: location.zip || null,
+        continent: location.continent || null,
+        lat: location.lat || 0,
+        lng: location.lng || 0,
+      },
+      price: Number(price),
+      maxGuests: Number(maxGuests),
+      media,
+    };
+
+    const response = await fetch(`${API_BASE}${API_VENUES}`, {
+      method: "POST",
+      headers: getAuthHeaders(),
+      body: JSON.stringify(payload),
+    });
+
+    if (!response.ok) {
+      const errorData = await response.json();
+      throw new Error(errorData.message || "Failed to create venue");
+    }
+
+    return await response.json();
+  } catch (error) {
+    console.error("Error creating venue:", error);
+    throw error;
+  }
+}
+
+export async function getUserVenues(username) {
+  if (!username) {
+    console.error(" Error: Username is undefined. Make sure the user is logged in.");
+    return [];
   }
 
-  return await response.json();
+  try {
+    const response = await fetch(`${API_BASE}${API_PROFILE_VENUES(username)}`, {
+      headers: getAuthHeaders(),
+    });
+
+    if (!response.ok) {
+      throw new Error("Failed to fetch user's venues");
+    }
+
+    const data = await response.json();
+    return data.data;
+  } catch (error) {
+    console.error("Error fetching user venues:", error);
+    throw error;
+  }
+}
+
+export async function getVenueById(venueId) {
+  try {
+    const response = await fetch(`${API_BASE}${API_VENUE_BY_ID(venueId)}`, {
+      headers: getAuthHeaders(),
+    });
+
+    if (!response.ok) {
+      throw new Error("Failed to fetch venue details");
+    }
+
+    const data = await response.json();
+    return data.data;
+  } catch (error) {
+    console.error("Error fetching venue details:", error);
+    throw error;
+  }
+}
+
+export async function updateVenue(venueId, updatedData) {
+  try {
+    const response = await fetch(`${API_BASE}${API_VENUE_BY_ID(venueId)}`, {
+      method: "PUT",
+      headers: getAuthHeaders(),
+      body: JSON.stringify(updatedData),
+    });
+
+    if (!response.ok) {
+      const errorData = await response.json();
+      throw new Error(errorData.message || "Failed to update venue");
+    }
+
+    return await response.json();
+  } catch (error) {
+    console.error("Error updating venue:", error);
+    throw error;
+  }
+}
+
+export async function deleteVenue(venueId) {
+  try {
+    const response = await fetch(`${API_BASE}${API_VENUE_BY_ID(venueId)}`, {
+      method: "DELETE",
+      headers: getAuthHeaders(),
+    });
+
+    if (!response.ok) {
+      throw new Error("Failed to delete venue");
+    }
+
+    return true;
+  } catch (error) {
+    console.error("Error deleting venue:", error);
+    throw error;
+  }
 }

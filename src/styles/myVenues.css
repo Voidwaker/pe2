@@ -1,0 +1,53 @@
+.my-venues-container {
+    max-width: 900px;
+    margin: auto;
+    padding: 20px;
+  }
+  
+  .venues-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+  }
+  
+  .venue-card {
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 15px;
+    width: 100%;
+    max-width: 300px;
+    text-align: center;
+  }
+  
+  .venue-card img {
+    width: 100%;
+    border-radius: 10px;
+  }
+  
+  .view-more-btn, .edit-btn, .delete-btn {
+    display: block;
+    text-align: center;
+    padding: 8px;
+    margin-top: 5px;
+    border-radius: 5px;
+    text-decoration: none;
+  }
+  
+  .view-more-btn {
+    background-color: #007bff;
+    color: white;
+  }
+  
+  .edit-btn {
+    background-color: #28a745;
+    color: white;
+  }
+  
+  .delete-btn {
+    background-color: #dc3545;
+    color: white;
+    border: none;
+    cursor: pointer;
+  }
+  

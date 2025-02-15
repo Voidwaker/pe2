@@ -41,8 +41,8 @@ function Header() {
                 </li>
 
                 <li className="nav-item">
-                  <Link className="nav-link" to="/bookings">
-                    My Bookings
+                  <Link className="nav-link" to="/my-venues">
+                    My Venues
                   </Link>
                 </li>
 
