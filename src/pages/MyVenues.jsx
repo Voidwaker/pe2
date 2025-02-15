@@ -1,29 +1,38 @@
+/**
+ * MyVenues Component - Displays a list of venues created by the logged-in user.
+ * Allows the user to edit, delete, and view bookings for their venues.
+ */
 import React, { useEffect, useState } from "react";
-import { getUserVenues, deleteVenue } from "../api/venues"; 
+import { getUserVenues, deleteVenue } from "../api/venues";
 import { useAuth } from "../hooks/useAuth";
 import { useNavigate } from "react-router-dom";
 import "./../styles/myVenues.css";
 
+/**
+ * MyVenues Component - Displays the venues managed by the logged-in user.
+ * @returns {JSX.Element} The rendered component.
+ */
 function MyVenues() {
   const { authData } = useAuth();
   const [venues, setVenues] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [expandedVenue, setExpandedVenue] = useState(null);
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (authData?.profile?.name) {
-      console.log("Username:", authData.profile.name);
-      getUserVenues(authData.profile.name)
-        .then((data) => setVenues(data))
-        .catch((err) => setError("Failed to fetch venues"))
-        .finally(() => setLoading(false));
-    } else {
-      console.error("No username found in authData:", authData);
-    }
-  }, [authData]);
-  
+    if (!authData?.profile?.name) return;
 
+    getUserVenues(authData.profile.name)
+      .then((data) => setVenues(data))
+      .catch(() => setError("Failed to fetch venues"))
+      .finally(() => setLoading(false));
+  }, [authData]);
+
+  /**
+   * Handles venue deletion.
+   * @param {string} venueId - The ID of the venue to be deleted.
+   */
   const handleDelete = async (venueId) => {
     const confirmDelete = window.confirm("Are you sure you want to delete this venue?");
     if (!confirmDelete) return;
@@ -63,6 +72,26 @@ function MyVenues() {
                 <button className="delete-btn" onClick={() => handleDelete(venue.id)}>
                   Delete
                 </button>
+                {venue.bookings && venue.bookings.length > 0 && (
+                  <div className="bookings-dropdown">
+                    <button
+                      className="toggle-bookings-btn"
+                      onClick={() => setExpandedVenue(expandedVenue === venue.id ? null : venue.id)}
+                    >
+                      {expandedVenue === venue.id ? "Hide Bookings" : "Show Bookings"}
+                    </button>
+                    {expandedVenue === venue.id && (
+                      <ul className="bookings-list">
+                        {venue.bookings.map((booking) => (
+                          <li key={booking.id}>
+                            {booking.customer.name} - {new Date(booking.dateFrom).toLocaleDateString()} to {" "}
+                            {new Date(booking.dateTo).toLocaleDateString()}
+                          </li>
+                        ))}
+                      </ul>
+                    )}
+                  </div>
+                )}
               </div>
             </div>
           ))}

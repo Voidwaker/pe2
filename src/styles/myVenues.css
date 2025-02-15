@@ -1,53 +1,111 @@
 .my-venues-container {
-    max-width: 900px;
-    margin: auto;
-    padding: 20px;
-  }
-  
-  .venues-list {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 20px;
-  }
-  
-  .venue-card {
-    background: white;
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    padding: 15px;
-    width: 100%;
-    max-width: 300px;
-    text-align: center;
-  }
-  
-  .venue-card img {
-    width: 100%;
-    border-radius: 10px;
-  }
-  
-  .view-more-btn, .edit-btn, .delete-btn {
-    display: block;
-    text-align: center;
-    padding: 8px;
-    margin-top: 5px;
-    border-radius: 5px;
-    text-decoration: none;
-  }
-  
-  .view-more-btn {
-    background-color: #007bff;
-    color: white;
-  }
-  
-  .edit-btn {
-    background-color: #28a745;
-    color: white;
-  }
-  
-  .delete-btn {
-    background-color: #dc3545;
-    color: white;
-    border: none;
-    cursor: pointer;
-  }
-  
+  max-width: 900px;
+  margin: auto;
+  padding: 20px;
+}
+
+.venues-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+.venue-card {
+  background: white;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  padding: 15px;
+  width: 100%;
+  max-width: 300px;
+  text-align: center;
+}
+
+.venue-card img {
+  width: 100%;
+  border-radius: 10px;
+}
+
+.view-more-btn, .edit-btn, .delete-btn {
+  display: block;
+  text-align: center;
+  padding: 8px;
+  margin-top: 5px;
+  border-radius: 5px;
+  text-decoration: none;
+}
+
+.view-more-btn {
+  background-color: #007bff;
+  color: white;
+}
+
+.edit-btn {
+  background-color: #28a745;
+  color: white;
+}
+
+.delete-btn {
+  background-color: #dc3545;
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+
+/* ▼▼▼ STYLING FOR DROPDOWN ▼▼▼ */
+.bookings-dropdown {
+  margin-top: 10px;
+  text-align: center;
+  position: relative;
+}
+
+.bookings-dropdown button {
+  background-color: #6c757d;
+  color: white;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.bookings-dropdown button:hover {
+  background-color: #5a6268;
+}
+
+/* Style for dropdown-listen */
+.booking-list {
+  list-style: none;
+  padding: 0;
+  margin-top: 5px;
+  background: #f8f9fa;
+  border-radius: 5px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  max-height: 0;
+  transition: max-height 0.3s ease-in-out, opacity 0.3s ease-in-out;
+  opacity: 0;
+  visibility: hidden;
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100%;
+  min-width: 200px;
+  z-index: 10;
+}
+
+.booking-list li {
+  padding: 10px;
+  border-bottom: 1px solid #504a4a;
+  text-align: left;
+}
+
+.booking-list li:last-child {
+  border-bottom: none;
+}
+
+.bookings-dropdown.open .booking-list {
+  max-height: 500px; 
+  opacity: 1;
+  visibility: visible;
+  padding: 10px;
+}
