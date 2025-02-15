@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { getUserVenues, deleteVenue } from "../api/venues"; 
 import { useAuth } from "../hooks/useAuth";
 import { useNavigate } from "react-router-dom";
-import "../styles/venueList.css";
+import "./../styles/MyVenues.css";
 
 function MyVenues() {
   const { authData } = useAuth();
@@ -13,7 +13,7 @@ function MyVenues() {
 
   useEffect(() => {
     if (authData?.profile?.name) {
-      console.log("Username:", authData.profile.name); // Debugging!
+      console.log("Username:", authData.profile.name);
       getUserVenues(authData.profile.name)
         .then((data) => setVenues(data))
         .catch((err) => setError("Failed to fetch venues"))
