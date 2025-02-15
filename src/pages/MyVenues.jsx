@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { getUserVenues, deleteVenue } from "../api/venues"; 
 import { useAuth } from "../hooks/useAuth";
 import { useNavigate } from "react-router-dom";
-import "./../styles/MyVenues.css";
+import "./../styles/myVenues.css";
 
 function MyVenues() {
   const { authData } = useAuth();
