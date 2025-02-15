@@ -20,7 +20,28 @@ function getAuthHeaders() {
   };
 }
 
-// Opprett ny venue
+export async function fetchVenues({ search = "", sort = "created", sortOrder = "desc" } = {}) {
+  try {
+    const url = new URL(`${API_BASE}${API_VENUES}`);
+    
+    if (search) url.searchParams.append("q", search);
+    if (sort) url.searchParams.append("sort", sort);
+    if (sortOrder) url.searchParams.append("sortOrder", sortOrder);
+
+    const response = await fetch(url);
+
+    if (!response.ok) {
+      throw new Error("Failed to fetch venues");
+    }
+
+    const data = await response.json();
+    return data.data;
+  } catch (error) {
+    console.error("Error fetching venues:", error);
+    throw error;
+  }
+}
+
 export async function createVenue({ name, description, location, price, maxGuests, media }) {
   try {
     const payload = {
@@ -58,11 +79,10 @@ export async function createVenue({ name, description, location, price, maxGuest
   }
 }
 
-// Hent alle venues som en bruker eier
 export async function getUserVenues(username) {
   if (!username) {
-    console.error("❌ Error: Username is undefined. Make sure the user is logged in.");
-    return []; // Returnerer en tom liste for å unngå feil
+    console.error(" Error: Username is undefined. Make sure the user is logged in.");
+    return [];
   }
 
   try {
@@ -82,7 +102,6 @@ export async function getUserVenues(username) {
   }
 }
 
-// Hent en spesifikk venue etter ID
 export async function getVenueById(venueId) {
   try {
     const response = await fetch(`${API_BASE}${API_VENUE_BY_ID(venueId)}`, {
@@ -101,7 +120,6 @@ export async function getVenueById(venueId) {
   }
 }
 
-// Oppdater en venue
 export async function updateVenue(venueId, updatedData) {
   try {
     const response = await fetch(`${API_BASE}${API_VENUE_BY_ID(venueId)}`, {
@@ -122,7 +140,6 @@ export async function updateVenue(venueId, updatedData) {
   }
 }
 
-// Slett en venue
 export async function deleteVenue(venueId) {
   try {
     const response = await fetch(`${API_BASE}${API_VENUE_BY_ID(venueId)}`, {
@@ -140,4 +157,3 @@ export async function deleteVenue(venueId) {
     throw error;
   }
 }
-
