@@ -1,4 +1,9 @@
-import { API_BASE } from "../config/constants";
+import {
+  API_BASE,
+  API_VENUES,
+  API_VENUE_BY_ID,
+  API_PROFILE_VENUES
+} from "../config/constants";
 
 function getAuthHeaders() {
   const token = localStorage.getItem("Token");
@@ -15,26 +20,27 @@ function getAuthHeaders() {
   };
 }
 
+// Opprett ny venue
 export async function createVenue({ name, description, location, price, maxGuests, media }) {
   try {
     const payload = {
       name,
       description,
       location: {
-        address: location.address,
-        city: location.city,
-        country: location.country,
-        zip: location.zip,
-        continent: location.continent,
-        lat: location.lat,
-        lng: location.lng,
+        address: location.address || null,
+        city: location.city || null,
+        country: location.country || null,
+        zip: location.zip || null,
+        continent: location.continent || null,
+        lat: location.lat || 0,
+        lng: location.lng || 0,
       },
       price: Number(price),
       maxGuests: Number(maxGuests),
       media,
     };
 
-    const response = await fetch(`${API_BASE}/holidaze/venues`, {
+    const response = await fetch(`${API_BASE}${API_VENUES}`, {
       method: "POST",
       headers: getAuthHeaders(),
       body: JSON.stringify(payload),
@@ -52,14 +58,15 @@ export async function createVenue({ name, description, location, price, maxGuest
   }
 }
 
+// Hent alle venues som en bruker eier
 export async function getUserVenues(username) {
   if (!username) {
-    console.error("Error: Username is undefined. Make sure the user is logged in.");
+    console.error("❌ Error: Username is undefined. Make sure the user is logged in.");
     return []; // Returnerer en tom liste for å unngå feil
   }
 
   try {
-    const response = await fetch(`${API_BASE}/holidaze/profiles/${username}/venues`, {
+    const response = await fetch(`${API_BASE}${API_PROFILE_VENUES(username)}`, {
       headers: getAuthHeaders(),
     });
 
@@ -75,27 +82,10 @@ export async function getUserVenues(username) {
   }
 }
 
-export async function deleteVenue(venueId) {
-  try {
-    const response = await fetch(`${API_BASE}/holidaze/venues/${venueId}`, {
-      method: "DELETE",
-      headers: getAuthHeaders(),
-    });
-
-    if (!response.ok) {
-      throw new Error("Failed to delete venue");
-    }
-
-    return true;
-  } catch (error) {
-    console.error("Error deleting venue:", error);
-    throw error;
-  }
-}
-
+// Hent en spesifikk venue etter ID
 export async function getVenueById(venueId) {
   try {
-    const response = await fetch(`${API_BASE}/holidaze/venues/${venueId}`, {
+    const response = await fetch(`${API_BASE}${API_VENUE_BY_ID(venueId)}`, {
       headers: getAuthHeaders(),
     });
 
@@ -111,9 +101,10 @@ export async function getVenueById(venueId) {
   }
 }
 
+// Oppdater en venue
 export async function updateVenue(venueId, updatedData) {
   try {
-    const response = await fetch(`${API_BASE}/holidaze/venues/${venueId}`, {
+    const response = await fetch(`${API_BASE}${API_VENUE_BY_ID(venueId)}`, {
       method: "PUT",
       headers: getAuthHeaders(),
       body: JSON.stringify(updatedData),
@@ -130,3 +121,23 @@ export async function updateVenue(venueId, updatedData) {
     throw error;
   }
 }
+
+// Slett en venue
+export async function deleteVenue(venueId) {
+  try {
+    const response = await fetch(`${API_BASE}${API_VENUE_BY_ID(venueId)}`, {
+      method: "DELETE",
+      headers: getAuthHeaders(),
+    });
+
+    if (!response.ok) {
+      throw new Error("Failed to delete venue");
+    }
+
+    return true;
+  } catch (error) {
+    console.error("Error deleting venue:", error);
+    throw error;
+  }
+}
+
