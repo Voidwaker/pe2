@@ -1,69 +1,102 @@
 .create-venue-container {
-    max-width: 600px;
-    margin: 50px auto;
-    padding: 20px;
-    border: 1px solid #ccc;
-    border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    background-color: #f9f9f9;
+  max-width: 600px;
+  margin: 50px auto;
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  background-color: #ffffff;
+}
+
+.create-venue-container h2 {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.create-venue-form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.form-group label {
+  font-weight: bold;
+  margin-bottom: 5px;
+  color: #333;
+}
+
+.form-group input,
+.form-group textarea {
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  background-color: white !important;
+  color: black !important;
+  font-size: 16px;
+}
+
+.form-group textarea {
+  resize: vertical;
+  height: 120px;
+}
+
+.amenities-section {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.amenities-section label {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.create-venue-container button {
+  padding: 12px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: background-color 0.3s ease;
+}
+
+.create-venue-container button:hover {
+  background-color: #0056b3;
+}
+
+.alert {
+  color: red;
+  background-color: #f8d7da;
+  padding: 10px;
+  border-radius: 5px;
+  text-align: center;
+  font-weight: bold;
+}
+
+@media (max-width: 768px) {
+  .create-venue-container {
+    max-width: 90%;
+    padding: 15px;
   }
-  
-  .create-venue-container h2 {
-    text-align: center;
-    margin-bottom: 20px;
-  }
-  
-  .create-venue-form {
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
-  }
-  
-  .form-group {
-    display: flex;
-    flex-direction: column;
-  }
-  
-  .form-group label {
-    font-weight: bold;
-    margin-bottom: 5px;
-  }
-  
+
   .form-group input,
   .form-group textarea {
-    padding: 8px;
-    border: 1px solid #ddd;
-    border-radius: 4px;
+    font-size: 14px;
   }
-  
-  .form-group textarea {
-    resize: vertical;
-    height: 150px;
-  }
-  
-  .form-check {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-  }
-  
+
   .create-venue-container button {
+    font-size: 14px;
     padding: 10px;
-    background-color: #007bff;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
   }
-  
-  .create-venue-container button:hover {
-    background-color: #0056b3;
-  }
-  
-  .alert {
-    color: red;
-    background-color: #f8d7da;
-    padding: 10px;
-    border-radius: 5px;
-  }
-  
+}

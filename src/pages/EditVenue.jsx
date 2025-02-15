@@ -22,7 +22,7 @@ const EditVenue = () => {
   useEffect(() => {
     const fetchVenue = async () => {
       try {
-        const venueData = await getVenueById(id); // Fetches the specific venue
+        const venueData = await getVenueById(id);
         if (!venueData) {
           throw new Error("Venue not found");
         }
@@ -53,9 +53,10 @@ const EditVenue = () => {
       await updateVenue(id, {
         name,
         description,
-        price,
-        maxGuests,
+        price: Number(price),
+        maxGuests: Number(maxGuests),
         media: [{ url: imageUrl }],
+        location: venue.location,
       });
 
       alert("Venue updated successfully!");
@@ -79,13 +80,28 @@ const EditVenue = () => {
         <textarea value={description} onChange={(e) => setDescription(e.target.value)} required />
 
         <label>Price:</label>
-        <input type="number" value={price} onChange={(e) => setPrice(e.target.value)} required />
+        <input
+          type="number"
+          value={price}
+          onChange={(e) => setPrice(e.target.value)}
+          required
+        />
 
         <label>Max Guests:</label>
-        <input type="number" value={maxGuests} onChange={(e) => setMaxGuests(e.target.value)} required />
+        <input
+          type="number"
+          value={maxGuests}
+          onChange={(e) => setMaxGuests(Number(e.target.value))}
+          required
+        />
 
         <label>Image URL:</label>
-        <input type="url" value={imageUrl} onChange={(e) => setImageUrl(e.target.value)} required />
+        <input
+          type="url"
+          value={imageUrl}
+          onChange={(e) => setImageUrl(e.target.value)}
+          required
+        />
 
         <button type="submit" className="btn btn-primary">Save Changes</button>
       </form>

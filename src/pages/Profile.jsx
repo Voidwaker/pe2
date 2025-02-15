@@ -1,14 +1,25 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { fetchBookings } from "../api/bookings";  
-import './../styles/profile.css';
+import { fetchBookings } from "../api/bookings";
+import "../styles/profile.css";
 
+const API_BASE = "https://v2.api.noroff.dev";
+
+/**
+ * Profile component.
+ *
+ * Retrieves the authenticated user's profile and bookings from localStorage and API,
+ * and displays the profile information along with the bookings in a card layout.
+ *
+ * @component
+ * @returns {JSX.Element} The Profile page.
+ */
 const Profile = () => {
-  const [authData, setAuthData] = useState(null); 
-  const [bookedVenues, setBookedVenues] = useState([]); 
+  const [authData, setAuthData] = useState(null);
+  const [bookedVenues, setBookedVenues] = useState([]);
   const [loadingBookings, setLoadingBookings] = useState(true);
   const [error, setError] = useState(null);
-  const navigate = useNavigate(); 
+  const navigate = useNavigate();
 
   useEffect(() => {
     const storedProfile = localStorage.getItem("Profile");
@@ -22,27 +33,38 @@ const Profile = () => {
   }, []);
 
   useEffect(() => {
-    if (authData && authData.token) {
+    if (authData && authData.profile?.name) {
       const fetchUserBookings = async () => {
         try {
-          const bookingsResponse = await fetchBookings();
-          console.log("Bookings fetched successfully:", bookingsResponse);
+          const token = localStorage.getItem("Token");
+          const apiKey = localStorage.getItem("ApiKey");
 
-          const fetchedBookings = Array.isArray(bookingsResponse)
-            ? bookingsResponse
-            : bookingsResponse.data;
-          
-          console.log("Fetched bookings array:", fetchedBookings);
-          
-          const validBookings = (fetchedBookings || []).filter(
-            (booking) => booking && booking.venue
+          if (!token || !apiKey) {
+            console.error("Missing authentication details");
+            return;
+          }
+
+          const response = await fetch(
+            `${API_BASE}/holidaze/profiles/${authData.profile.name}/bookings?_venue=true`,
+            {
+              method: "GET",
+              headers: {
+                Authorization: `Bearer ${token}`,
+                "X-Noroff-API-Key": apiKey,
+                "Content-Type": "application/json",
+              },
+            }
           );
-          console.log("Valid bookings:", validBookings);
-          
-          setBookedVenues(validBookings);
+
+          if (!response.ok) {
+            throw new Error(`HTTP error! Status: ${response.status}`);
+          }
+
+          const data = await response.json();
+          setBookedVenues(data.data || []);
         } catch (err) {
-          console.error("Error fetching bookings:", err.message);
-          setError("Failed to load bookings");
+          console.error("Error fetching user bookings:", err);
+          setError("Failed to load bookings.");
         } finally {
           setLoadingBookings(false);
         }
@@ -53,22 +75,22 @@ const Profile = () => {
   }, [authData]);
 
   if (!authData) {
-    return <div>Loading...</div>;  
+    return <div>Loading...</div>;
   }
 
   if (loadingBookings) {
-    return <div>Loading your bookings...</div>; 
+    return <div>Loading your bookings...</div>;
   }
 
   if (error) {
-    return <div>{error}</div>; 
+    return <div>{error}</div>;
   }
 
   return (
     <div className="profile-container">
       <div>
         <img
-          src={authData.profile?.avatar?.url || "default-avatar-url"}
+          src={authData.profile?.avatar?.url || "https://via.placeholder.com/150"}
           alt={authData.profile?.avatar?.alt || "Profile Avatar"}
           className="profile-image"
         />
@@ -81,8 +103,8 @@ const Profile = () => {
         </div>
 
         <div className="profile-actions">
-          <button>Edit Profile</button>
-          <button onClick={() => navigate('/create-venue')}>Create Venue</button>
+          <button onClick={() => navigate("/edit-profile")}>Edit Profile</button>
+          <button onClick={() => navigate("/create-venue")}>Create Venue</button>
         </div>
       </div>
 
@@ -92,30 +114,35 @@ const Profile = () => {
           {bookedVenues.length === 0 ? (
             <p>You have no bookings yet.</p>
           ) : (
-            <ul className="booking-list">
-              {bookedVenues.map((booking) => (
-                <li key={booking.id} className="booking-item">
-                  <h3>{booking.venue?.name || "No Venue Name"}</h3>
-                  <p>
-                    <strong>Location:</strong> {booking.venue?.location?.city || "N/A"}, {booking.venue?.location?.country || "N/A"}
-                  </p>
-                  <p>
-                    <strong>Check-in:</strong> {new Date(booking.dateFrom).toLocaleDateString()}
-                  </p>
-                  <p>
-                    <strong>Check-out:</strong> {new Date(booking.dateTo).toLocaleDateString()}
-                  </p>
-                  <p>
-                    <strong>Guests:</strong> {booking.guests}
-                  </p>
-                  <img
-                    src={booking.venue?.media && booking.venue.media[0] ? booking.venue.media[0].url : "https://via.placeholder.com/150"}
-                    alt={booking.venue?.media && booking.venue.media[0] ? booking.venue.media[0].alt : "Venue Image"}
-                    className="booking-image"
-                  />
-                </li>
-              ))}
-            </ul>
+            <div className="venue-cards">
+              {bookedVenues.map((booking) => {
+                const venue = booking.venue || booking.venueData || booking;
+                return (
+                  <div key={booking.id} className="venue-card">
+                    <img
+                      src={venue.media?.[0]?.url || "https://via.placeholder.com/150"}
+                      alt={venue.media?.[0]?.alt || "Venue Image"}
+                      className="venue-image"
+                    />
+                    <div className="venue-info">
+                      <h3>{venue.name || "No Venue Name"}</h3>
+                      <p>
+                        <strong>Location:</strong> {venue.location?.city || "N/A"}, {venue.location?.country || "N/A"}
+                      </p>
+                      <p>
+                        <strong>Check-in:</strong> {new Date(booking.dateFrom).toLocaleDateString()}
+                      </p>
+                      <p>
+                        <strong>Check-out:</strong> {new Date(booking.dateTo).toLocaleDateString()}
+                      </p>
+                      <p>
+                        <strong>Guests:</strong> {booking.guests}
+                      </p>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
           )}
         </div>
       </div>
@@ -124,4 +151,3 @@ const Profile = () => {
 };
 
 export default Profile;
-
