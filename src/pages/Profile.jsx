@@ -103,7 +103,7 @@ const Profile = () => {
         </div>
 
         <div className="profile-actions">
-          <button onClick={() => navigate("/edit-profile")}>Edit Profile</button>
+          <button onClick={() => navigate('/edit-profile')}>Edit Profile</button>
           <button onClick={() => navigate("/create-venue")}>Create Venue</button>
         </div>
       </div>
