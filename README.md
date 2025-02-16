@@ -4,6 +4,7 @@
 ![JavaScript](https://img.shields.io/badge/JavaScript-ES6+-yellow?style=for-the-badge&logo=javascript)
 ![E2E Testing](https://img.shields.io/badge/Cypress-13.17.0-green?style=for-the-badge&logo=cypress)
 [![Run Unit Tests](https://github.com/Voidwaker/pe2/actions/workflows/tests.yml/badge.svg)](https://github.com/Voidwaker/pe2/actions/workflows/tests.yml)
+[![pages-build-deployment](https://github.com/Voidwaker/pe2/actions/workflows/pages/pages-build-deployment/badge.svg)](https://github.com/Voidwaker/pe2/actions/workflows/pages/pages-build-deployment)
 
 # 🏡 Holihub - Accommodation Booking Platform  
 
