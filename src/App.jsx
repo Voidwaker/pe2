@@ -25,7 +25,7 @@ function App() {
     <div>
       <Header />
       <Routes>
-        <Route path="/" element={<div>Welcome to Holihub!</div>} />
+        <Route path="/" element={<div>Welcome to Holihub! hope you find the holiday u want!</div>} />
         <Route path="/venues" element={<VenueList />} />
         <Route path="/bookings" element={<h1>My Bookings</h1>} />
         <Route path="/profile" element={<Profile />} />
