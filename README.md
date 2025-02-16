@@ -3,8 +3,7 @@
 ![Vite](https://img.shields.io/badge/Vite-6.0-yellow?style=for-the-badge&logo=vite)
 ![JavaScript](https://img.shields.io/badge/JavaScript-ES6+-yellow?style=for-the-badge&logo=javascript)
 ![E2E Testing](https://img.shields.io/badge/Cypress-13.17.0-green?style=for-the-badge&logo=cypress)
-![Tests](https://img.shields.io/github/actions/workflow/status/Voidwaker/Holihub1/tests.yml?label=tests)
-![Unit Tests](https://github.com/Voidwaker/Holihub1/actions/workflows/tests.yml/badge.svg)
+[![Run Unit Tests](https://github.com/Voidwaker/pe2/actions/workflows/tests.yml/badge.svg)](https://github.com/Voidwaker/pe2/actions/workflows/tests.yml)
 
 # 🏡 Holihub - Accommodation Booking Platform  
 
