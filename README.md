@@ -77,7 +77,7 @@ To run this project locally, follow these steps:
 
 1️⃣ **Clone the repository:**  
 ```sh
-git clone https://github.com/Voidwaker/holihub1.git
+git clone https://github.com/Voidwaker/pe2.git
 cd pe2  
 ```
 
