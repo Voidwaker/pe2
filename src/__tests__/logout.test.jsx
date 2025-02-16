@@ -1,23 +1,13 @@
-import { vi } from "vitest";
 import { render, screen, fireEvent } from "@testing-library/react";
 import { MemoryRouter } from "react-router-dom";
-import { AuthProvider, useAuth } from "../context/authContext";
+import { AuthProvider } from "../context/authContext";
 import Header from "../components/Header";
 
-// Mock useAuth hook
-vi.mock("../context/authContext", async (importOriginal) => {
-  const actual = await importOriginal();
-  return {
-    ...actual,
-    useAuth: vi.fn(() => ({
-      authData: { profile: { name: "TestUser" } },
-      logout: vi.fn(),
-    })),
-  };
-});
-
 describe("Logout Functionality", () => {
-  it("logs out successfully when clicking the logout button", () => {
+  it("logs out successfully when clicking the logout button", async () => {
+    localStorage.setItem("Token", "fake-token");
+    localStorage.setItem("Profile", JSON.stringify({ name: "TestUser" }));
+
     render(
       <MemoryRouter>
         <AuthProvider>
@@ -26,11 +16,14 @@ describe("Logout Functionality", () => {
       </MemoryRouter>
     );
 
-    const logoutButton = screen.getByText(/logout/i);
+    const logoutButton = screen.getByRole("button", { name: /logout/i });
     expect(logoutButton).toBeInTheDocument();
 
     fireEvent.click(logoutButton);
 
-    expect(useAuth().logout).toHaveBeenCalled();
+    expect(localStorage.getItem("Token")).toBeNull();
+    expect(localStorage.getItem("Profile")).toBeNull();
+
+    expect(await screen.findByText(/login/i)).toBeInTheDocument();
   });
 });

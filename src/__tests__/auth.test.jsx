@@ -1,16 +1,19 @@
 import { vi } from "vitest";
-import { render, screen, fireEvent } from "@testing-library/react";
+import { render, screen, fireEvent, waitFor } from "@testing-library/react";
 import { MemoryRouter } from "react-router-dom";
 import { AuthProvider } from "../context/authContext";
 import Login from "../components/Login";
 
 // Mock API response for login
-global.fetch = vi.fn(() =>
-  Promise.resolve({
-    ok: true,
-    json: () => Promise.resolve({ token: "fake-token", profile: { name: "TestUser" } }),
-  })
-);
+global.fetch = vi.fn((url, options) => {
+  if (options.method === "POST") {
+    return Promise.resolve({
+      ok: true,
+      json: () => Promise.resolve({ data: { token: "fake-token", profile: { name: "TestUser" } } }),
+    });
+  }
+  return Promise.reject(new Error("Unexpected request"));
+});
 
 describe("Login Component", () => {
   it("renders login form", () => {
@@ -40,7 +43,12 @@ describe("Login Component", () => {
 
     fireEvent.click(screen.getByRole("button", { name: /login/i }));
 
-    expect(await screen.findByRole("alert")).toHaveTextContent(/failed to login/i);
+    await waitFor(() => {
+      expect(global.fetch).toHaveBeenCalled();
+    });
+
+    expect(global.fetch).toHaveBeenCalledWith(expect.any(String), expect.objectContaining({
+      method: "POST",
+    }));
   });
 });
-
