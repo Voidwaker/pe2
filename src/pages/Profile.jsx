@@ -100,6 +100,7 @@ const Profile = () => {
         <div className="profile-details">
           <h2>{authData.profile?.name}</h2>
           <p>{authData.profile?.email}</p>
+          {authData.profile?.bio && <p className="profile-bio">{authData.profile.bio}</p>}
         </div>
 
         <div className="profile-actions">
