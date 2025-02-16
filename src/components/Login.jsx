@@ -6,23 +6,29 @@ const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState(null);
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
   const handleSubmit = async (event) => {
     event.preventDefault();
+    setLoading(true);
+    setError(null);
 
     try {
       await loginUser({ email, password });
       navigate('/profile');
     } catch (err) {
       setError('Failed to login. Please check your credentials.');
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
     <div className="container mt-5">
       <h2>Login</h2>
-      {error && <div className="alert alert-danger">{error}</div>}
+      {loading && <p>Logging in...</p>}
+      {error && <div className="alert alert-danger" role="alert">{error}</div>}
       <form onSubmit={handleSubmit} className="mt-4">
         <div className="mb-3">
           <label htmlFor="email" className="form-label">Email</label>
@@ -48,7 +54,9 @@ const Login = () => {
           />
         </div>
 
-        <button type="submit" className="btn btn-primary">Login</button>
+        <button type="submit" className="btn btn-primary" disabled={loading}>
+          {loading ? "Logging in..." : "Login"}
+        </button>
       </form>
     </div>
   );
