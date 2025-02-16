@@ -1,3 +1,9 @@
+![React](https://img.shields.io/badge/React-18.0.0-blue?style=for-the-badge&logo=react)
+![Bootstrap](https://img.shields.io/badge/Bootstrap-5.3-purple?style=for-the-badge&logo=bootstrap)
+![Vite](https://img.shields.io/badge/Vite-6.0-yellow?style=for-the-badge&logo=vite)
+![JavaScript](https://img.shields.io/badge/JavaScript-ES6+-yellow?style=for-the-badge&logo=javascript)
+![E2E Testing](https://img.shields.io/badge/Cypress-13.17.0-green?style=for-the-badge&logo=cypress)
+![Tests](https://img.shields.io/github/actions/workflow/status/Voidwaker/Holihub1/tests.yml?label=tests)
 # 🏡 Holihub - Accommodation Booking Platform  
 
 Welcome to **Holidaze**, a modern and responsive **accommodation booking** application built with React! The platform allows users to **browse, book, and manage venues**, while venue managers can **create, update, and delete** their listings.
