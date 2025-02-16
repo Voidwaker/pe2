@@ -1,4 +1,4 @@
-# 🏡 Holidaze - Accommodation Booking Platform  
+# 🏡 Holihub - Accommodation Booking Platform  
 
 Welcome to **Holidaze**, a modern and responsive **accommodation booking** application built with React! The platform allows users to **browse, book, and manage venues**, while venue managers can **create, update, and delete** their listings.
 
@@ -54,7 +54,7 @@ Holidaze is a **front-end application** that interacts with the Noroff API to en
 
 ## 🌐 Live Demo  
 
-🔎 **[Holidaze on Netlify](https://your-live-demo-link.netlify.app/)**  
+🔎 **[Holihub on Netlify](https://holihub.netlify.app/)**  
 
 ---
 
