@@ -3,7 +3,14 @@
 ![Vite](https://img.shields.io/badge/Vite-6.0-yellow?style=for-the-badge&logo=vite)
 ![JavaScript](https://img.shields.io/badge/JavaScript-ES6+-yellow?style=for-the-badge&logo=javascript)
 ![E2E Testing](https://img.shields.io/badge/Cypress-13.17.0-green?style=for-the-badge&logo=cypress)
-![Tests](https://img.shields.io/github/actions/workflow/status/Voidwaker/Holihub1/tests.yml?label=tests)
+[![Run Unit Tests](https://github.com/Voidwaker/pe2/actions/workflows/tests.yml/badge.svg)](https://github.com/Voidwaker/pe2/actions/workflows/tests.yml)
+[![pages-build-deployment](https://github.com/Voidwaker/pe2/actions/workflows/pages/pages-build-deployment/badge.svg)](https://github.com/Voidwaker/pe2/actions/workflows/pages/pages-build-deployment)
+[![Netlify Status](https://api.netlify.com/api/v1/badges/39cedb62-6284-4a8c-97cc-e5fba225d73a/deploy-status)](https://app.netlify.com/sites/holihub/deploys)
+![ESLint](https://img.shields.io/badge/code%20style-eslint-brightgreen)
+![Repo Size](https://img.shields.io/github/repo-size/Voidwaker/Holihub1)
+![GitHub issues](https://img.shields.io/github/issues/Voidwaker/Holihub1)
+
+
 # 🏡 Holihub - Accommodation Booking Platform  
 
 Welcome to **Holidaze**, a modern and responsive **accommodation booking** application built with React! The platform allows users to **browse, book, and manage venues**, while venue managers can **create, update, and delete** their listings.
@@ -70,8 +77,8 @@ To run this project locally, follow these steps:
 
 1️⃣ **Clone the repository:**  
 ```sh
-git clone https://github.com/Voidwaker/holihub1.git
-cd holihub1  
+git clone https://github.com/Voidwaker/pe2.git
+cd pe2  
 ```
 
 2️⃣ **Install dependencies:**  
