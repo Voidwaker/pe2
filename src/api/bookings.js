@@ -1,5 +1,11 @@
 import { API_BASE, API_BOOKINGS_BY_PROFILE } from './../config/constants';
 
+/**
+ * Fetches the bookings for the currently authenticated user.
+ *
+ * @returns {Promise<Object>} The fetched bookings data.
+ * @throws {Error} If the user is not authenticated or an error occurs while fetching data.
+ */
 export async function fetchBookings() {
   const token = localStorage.getItem("Token");
   if (!token) {
@@ -8,7 +14,6 @@ export async function fetchBookings() {
 
   const apiKey = localStorage.getItem("ApiKey");
   if (!apiKey) {
-    console.error("No API key found in localStorage. Please create an API key.");
     throw new Error("No API key found in localStorage.");
   }
 
@@ -16,6 +21,7 @@ export async function fetchBookings() {
   if (!profileString) {
     throw new Error("No profile found in localStorage.");
   }
+
   const profile = JSON.parse(profileString);
   const profileName = profile && profile.name ? profile.name : null;
   if (!profileName) {
@@ -35,16 +41,13 @@ export async function fetchBookings() {
 
     if (!response.ok) {
       const errorData = await response.json();
-      console.error("Error fetching bookings:", errorData);
       throw new Error(errorData.message || "Failed to fetch bookings");
     }
 
-    const bookingsData = await response.json();
-    console.log("Bookings fetched successfully:", bookingsData);
-    return bookingsData;
+    return await response.json();
   } catch (error) {
-    console.error("Error in fetchBookings:", error.message);
     throw error;
   }
 }
+
 
