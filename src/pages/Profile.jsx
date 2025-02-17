@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { fetchBookings } from "../api/bookings";
 import "../styles/profile.css";
 
 const API_BASE = "https://v2.api.noroff.dev";
@@ -21,6 +20,9 @@ const Profile = () => {
   const [error, setError] = useState(null);
   const navigate = useNavigate();
 
+  /**
+   * Fetches stored authentication data from localStorage on component mount.
+   */
   useEffect(() => {
     const storedProfile = localStorage.getItem("Profile");
     const storedToken = localStorage.getItem("Token");
@@ -32,6 +34,9 @@ const Profile = () => {
     }
   }, []);
 
+  /**
+   * Fetches the user's booked venues from the API if authenticated.
+   */
   useEffect(() => {
     if (authData && authData.profile?.name) {
       const fetchUserBookings = async () => {
@@ -40,7 +45,6 @@ const Profile = () => {
           const apiKey = localStorage.getItem("ApiKey");
 
           if (!token || !apiKey) {
-            console.error("Missing authentication details");
             return;
           }
 
@@ -63,7 +67,6 @@ const Profile = () => {
           const data = await response.json();
           setBookedVenues(data.data || []);
         } catch (err) {
-          console.error("Error fetching user bookings:", err);
           setError("Failed to load bookings.");
         } finally {
           setLoadingBookings(false);
