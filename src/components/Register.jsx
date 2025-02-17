@@ -2,31 +2,52 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { registerUser } from '../api/auth';
 
+/**
+ * Register Component
+ * 
+ * Allows new users to register with a name, email, password, and an optional avatar URL.
+ * Users can also opt to register as a Venue Manager.
+ *
+ * @component
+ */
 const Register = () => {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
-  const [venueManager, setVenueManager] = useState(false); 
+  const [venueManager, setVenueManager] = useState(false);
+  const [avatarUrl, setAvatarUrl] = useState('');
   const [error, setError] = useState(null);
   const navigate = useNavigate();
 
+  /**
+   * Handles form submission, validating passwords and registering the user.
+   *
+   * @param {React.FormEvent<HTMLFormElement>} event - The form submit event.
+   */
   const handleSubmit = async (event) => {
     event.preventDefault();
-  
+
     if (password !== confirmPassword) {
       setError("Passwords do not match");
       return;
     }
-  
+
+    const userData = {
+      name,
+      email,
+      password,
+      venueManager,
+      avatar: avatarUrl || undefined, // 📌 Sender kun avatar om det er oppgitt
+    };
+
     try {
-      await registerUser({ name, email, password, venueManager }); 
-      navigate('/profile'); 
+      await registerUser(userData);
+      navigate('/profile');
     } catch (err) {
-      setError('Failed to register. Please try again.');
+      setError(err.message || 'Failed to register. Please try again.');
     }
   };
-  
 
   return (
     <div className="container mt-5">
@@ -81,13 +102,24 @@ const Register = () => {
           />
         </div>
 
+        <div className="mb-3">
+          <label htmlFor="avatarUrl" className="form-label">Avatar URL (optional)</label>
+          <input
+            type="url"
+            id="avatarUrl"
+            className="form-control"
+            value={avatarUrl}
+            onChange={(e) => setAvatarUrl(e.target.value)}
+          />
+        </div>
+
         <div className="mb-3 form-check">
           <input
             type="checkbox"
             id="venueManager"
             className="form-check-input"
             checked={venueManager}
-            onChange={() => setVenueManager(!venueManager)} 
+            onChange={() => setVenueManager(!venueManager)}
           />
           <label htmlFor="venueManager" className="form-check-label">I want to be a Venue Manager</label>
         </div>
