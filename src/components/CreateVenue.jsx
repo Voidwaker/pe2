@@ -1,6 +1,12 @@
 import React, { useState } from 'react';
 import { createVenue } from '../api/venues';
 
+/**
+ * Component for creating a new venue.
+ *
+ * @component
+ * @returns {JSX.Element} The CreateVenue form.
+ */
 const CreateVenue = () => {
   const [name, setName] = useState('');
   const [description, setDescription] = useState('');
@@ -8,6 +14,11 @@ const CreateVenue = () => {
   const [maxGuests, setMaxGuests] = useState('');
   const [error, setError] = useState(null);
 
+  /**
+   * Handles form submission to create a new venue.
+   *
+   * @param {React.FormEvent} event - The form submission event.
+   */
   const handleSubmit = async (event) => {
     event.preventDefault();
 
