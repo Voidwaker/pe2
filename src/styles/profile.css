@@ -95,6 +95,11 @@
 .booking-item h3 {
   font-size: 1.5rem;
   margin: 10px 0;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  white-space: normal; 
+  max-width: 100%;
+  text-align: center;
 }
 
 .booking-item p {
@@ -124,6 +129,8 @@
   
   .booking-item h3 {
     font-size: 1.25rem;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
   }
   
   .booking-item p {
