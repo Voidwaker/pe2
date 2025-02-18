@@ -3,13 +3,25 @@ import { Link } from 'react-router-dom';
 import { fetchVenues } from '../services/venues';  
 import './../styles/venueList.css';
 
+/**
+ * VenueList Component
+ *
+ * Fetches and displays a list of venues with search and sorting functionality.
+ * Users can filter venues by name and sort them by different criteria.
+ *
+ * @component
+ * @returns {JSX.Element} The rendered VenueList component.
+ */
 function VenueList() {
-  const [venues, setVenues] = useState([]);
-  const [filteredVenues, setFilteredVenues] = useState([]);
-  const [searchTerm, setSearchTerm] = useState('');
-  const [sortOrder, setSortOrder] = useState('newest');
-  const [error, setError] = useState(null);
+  const [venues, setVenues] = useState([]); // State to store all venues
+  const [filteredVenues, setFilteredVenues] = useState([]); // State for filtered venues
+  const [searchTerm, setSearchTerm] = useState(''); // Search term state
+  const [sortOrder, setSortOrder] = useState('newest'); // Sorting state
+  const [error, setError] = useState(null); // Error handling state
 
+  /**
+   * Fetch venues from API on component mount.
+   */
   useEffect(() => {
     const getVenues = async () => {
       try {
@@ -23,17 +35,33 @@ function VenueList() {
     getVenues();
   }, []);
 
+  /**
+   * Handles sorting and filtering venues based on search input and selected sort order.
+   */
   useEffect(() => {
     let sortedVenues = [...venues];
 
-    if (sortOrder === 'a-z') {
-      sortedVenues.sort((a, b) => a.name.localeCompare(b.name));
-    } else if (sortOrder === 'z-a') {
-      sortedVenues.sort((a, b) => b.name.localeCompare(a.name));
-    } else if (sortOrder === 'newest') {
-      sortedVenues.sort((a, b) => new Date(b.created) - new Date(a.created));
-    } else if (sortOrder === 'oldest') {
-      sortedVenues.sort((a, b) => new Date(a.created) - new Date(b.created));
+    switch (sortOrder) {
+      case 'a-z':
+        sortedVenues.sort((a, b) => a.name.localeCompare(b.name));
+        break;
+      case 'z-a':
+        sortedVenues.sort((a, b) => b.name.localeCompare(a.name));
+        break;
+      case 'newest':
+        sortedVenues.sort((a, b) => new Date(b.created) - new Date(a.created));
+        break;
+      case 'oldest':
+        sortedVenues.sort((a, b) => new Date(a.created) - new Date(b.created));
+        break;
+      case 'price-low-high':
+        sortedVenues.sort((a, b) => a.price - b.price);
+        break;
+      case 'price-high-low':
+        sortedVenues.sort((a, b) => b.price - a.price);
+        break;
+      default:
+        break;
     }
 
     setFilteredVenues(
@@ -67,6 +95,8 @@ function VenueList() {
           <option value="oldest">Oldest</option>
           <option value="a-z">A-Z</option>
           <option value="z-a">Z-A</option>
+          <option value="price-low-high">Price: Low to High</option>
+          <option value="price-high-low">Price: High to Low</option>
         </select>
       </div>
 
