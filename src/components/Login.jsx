@@ -2,6 +2,14 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { loginUser } from '../api/auth';
 
+/**
+ * Login component that allows users to authenticate by providing
+ * their email and password. Displays error messages for incorrect login attempts
+ * and navigates the user to the profile page upon successful login.
+ *
+ * @component
+ * @returns {JSX.Element} The login form.
+ */
 const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -9,6 +17,12 @@ const Login = () => {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
+  /**
+   * Handles form submission for user login.
+   * Calls the API and updates state based on the response.
+   *
+   * @param {React.FormEvent} event - The form submission event.
+   */
   const handleSubmit = async (event) => {
     event.preventDefault();
     setLoading(true);
