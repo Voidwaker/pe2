@@ -5,6 +5,12 @@ import {
   API_PROFILE_VENUES
 } from "../config/constants";
 
+/**
+ * Retrieves authentication headers for API requests.
+ *
+ * @returns {Object} Headers containing Authorization and API Key.
+ * @throws {Error} If token or API key is missing.
+ */
 function getAuthHeaders() {
   const token = localStorage.getItem("Token");
   const apiKey = localStorage.getItem("ApiKey");
@@ -20,10 +26,20 @@ function getAuthHeaders() {
   };
 }
 
+/**
+ * Fetches a list of venues with optional search and sorting.
+ *
+ * @param {Object} [options] - Search and sorting options.
+ * @param {string} [options.search] - Search query.
+ * @param {string} [options.sort="created"] - Sorting criteria.
+ * @param {string} [options.sortOrder="desc"] - Sorting order.
+ * @returns {Promise<Array>} List of venues.
+ * @throws {Error} If the request fails.
+ */
 export async function fetchVenues({ search = "", sort = "created", sortOrder = "desc" } = {}) {
   try {
     const url = new URL(`${API_BASE}${API_VENUES}`);
-    
+
     if (search) url.searchParams.append("q", search);
     if (sort) url.searchParams.append("sort", sort);
     if (sortOrder) url.searchParams.append("sortOrder", sortOrder);
@@ -37,11 +53,23 @@ export async function fetchVenues({ search = "", sort = "created", sortOrder = "
     const data = await response.json();
     return data.data;
   } catch (error) {
-    console.error("Error fetching venues:", error);
     throw error;
   }
 }
 
+/**
+ * Creates a new venue.
+ *
+ * @param {Object} venueData - Venue details.
+ * @param {string} venueData.name - Name of the venue.
+ * @param {string} venueData.description - Description of the venue.
+ * @param {Object} venueData.location - Location details.
+ * @param {number} venueData.price - Price per night.
+ * @param {number} venueData.maxGuests - Maximum number of guests.
+ * @param {Array} venueData.media - Media URLs.
+ * @returns {Promise<Object>} Created venue data.
+ * @throws {Error} If the request fails.
+ */
 export async function createVenue({ name, description, location, price, maxGuests, media }) {
   try {
     const payload = {
@@ -74,14 +102,19 @@ export async function createVenue({ name, description, location, price, maxGuest
 
     return await response.json();
   } catch (error) {
-    console.error("Error creating venue:", error);
     throw error;
   }
 }
 
+/**
+ * Retrieves venues created by a specific user.
+ *
+ * @param {string} username - The username of the venue owner.
+ * @returns {Promise<Array>} List of venues.
+ * @throws {Error} If the request fails or username is missing.
+ */
 export async function getUserVenues(username) {
   if (!username) {
-    console.error(" Error: Username is undefined. Make sure the user is logged in.");
     return [];
   }
 
@@ -97,11 +130,17 @@ export async function getUserVenues(username) {
     const data = await response.json();
     return data.data;
   } catch (error) {
-    console.error("Error fetching user venues:", error);
     throw error;
   }
 }
 
+/**
+ * Retrieves a venue by its ID.
+ *
+ * @param {string} venueId - The ID of the venue.
+ * @returns {Promise<Object>} Venue details.
+ * @throws {Error} If the request fails.
+ */
 export async function getVenueById(venueId) {
   try {
     const response = await fetch(`${API_BASE}${API_VENUE_BY_ID(venueId)}`, {
@@ -115,11 +154,18 @@ export async function getVenueById(venueId) {
     const data = await response.json();
     return data.data;
   } catch (error) {
-    console.error("Error fetching venue details:", error);
     throw error;
   }
 }
 
+/**
+ * Updates an existing venue.
+ *
+ * @param {string} venueId - The ID of the venue to update.
+ * @param {Object} updatedData - Updated venue details.
+ * @returns {Promise<Object>} Updated venue data.
+ * @throws {Error} If the request fails.
+ */
 export async function updateVenue(venueId, updatedData) {
   try {
     const response = await fetch(`${API_BASE}${API_VENUE_BY_ID(venueId)}`, {
@@ -135,11 +181,17 @@ export async function updateVenue(venueId, updatedData) {
 
     return await response.json();
   } catch (error) {
-    console.error("Error updating venue:", error);
     throw error;
   }
 }
 
+/**
+ * Deletes a venue by its ID.
+ *
+ * @param {string} venueId - The ID of the venue to delete.
+ * @returns {Promise<boolean>} True if deletion was successful.
+ * @throws {Error} If the request fails.
+ */
 export async function deleteVenue(venueId) {
   try {
     const response = await fetch(`${API_BASE}${API_VENUE_BY_ID(venueId)}`, {
@@ -153,7 +205,6 @@ export async function deleteVenue(venueId) {
 
     return true;
   } catch (error) {
-    console.error("Error deleting venue:", error);
     throw error;
   }
 }

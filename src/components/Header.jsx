@@ -2,6 +2,13 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { useAuth } from './../hooks/useAuth';
 
+/**
+ * Header component displaying the navigation bar.
+ * It adjusts based on the user's authentication status.
+ *
+ * @component
+ * @returns {JSX.Element} The navigation bar.
+ */
 function Header() {
   const { authData, logout } = useAuth(); 
 
@@ -31,7 +38,6 @@ function Header() {
               <Link className="nav-link" to="/venues">Venues</Link>
             </li>
 
-            {}
             {authData && (
               <>
                 <li className="nav-item">
@@ -46,7 +52,6 @@ function Header() {
                   </Link>
                 </li>
 
-                {}
                 {authData.profile?.venueManager && (
                   <li className="nav-item">
                     <Link className="nav-link" to="/create-venue">
@@ -63,7 +68,6 @@ function Header() {
               </>
             )}
 
-            {}
             {!authData && (
               <>
                 <li className="nav-item">

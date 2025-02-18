@@ -1,13 +1,23 @@
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import "../styles/VenueDetails.css";
 
 const API_URL = "https://v2.api.noroff.dev/holidaze/venues";
 
+/**
+ * VenueDetails Component
+ *
+ * Fetches and displays details for a specific venue, including its description,
+ * pricing, amenities, rating, and location. Also allows users to make bookings.
+ *
+ * @component
+ * @returns {JSX.Element} The rendered VenueDetails component.
+ */
 function VenueDetails() {
   const { id } = useParams();
+  const navigate = useNavigate();
   const [venue, setVenue] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -17,8 +27,11 @@ function VenueDetails() {
   const [guests, setGuests] = useState(1);
   const [isUserLoggedIn, setIsUserLoggedIn] = useState(false);
 
+  /**
+   * Fetch venue details and bookings when the component mounts.
+   */
   useEffect(() => {
-    const user = localStorage.getItem("userProfile");
+    const user = localStorage.getItem("Profile");
     setIsUserLoggedIn(!!user);
 
     const fetchVenue = async () => {
@@ -40,17 +53,21 @@ function VenueDetails() {
           }
           return dates;
         });
+
         setBookedDates(bookedRanges);
       } catch (error) {
-        console.error("Error fetching venue details:", error);
         setError("Error fetching venue details");
       } finally {
         setLoading(false);
       }
     };
+
     fetchVenue();
   }, [id]);
 
+  /**
+   * Handles venue booking submission.
+   */
   const handleBooking = async () => {
     if (!selectedFrom || !selectedTo) {
       alert("Please select valid dates before booking.");
@@ -63,8 +80,8 @@ function VenueDetails() {
       return;
     }
 
-    let authToken = localStorage.getItem("Token")?.replace(/^"+|"+$/g, "").trim();
-    let API_KEY = localStorage.getItem("ApiKey")?.replace(/^"+|"+$/g, "").trim();
+    let authToken = localStorage.getItem("Token")?.trim();
+    let API_KEY = localStorage.getItem("ApiKey")?.trim();
     if (!authToken || !API_KEY) {
       alert("Authentication error. Please log out and log in again.");
       return;
@@ -93,16 +110,24 @@ function VenueDetails() {
         return;
       }
 
-      alert("🎉 Booking successful!");
-      setBookedDates([...bookedDates, selectedFrom, selectedTo]);
+      alert("🎉 Booking successful! Redirecting to venue list...");
+      navigate("/venues"); // 📌 REDIRECT TIL VENUE LIST
+
     } catch (error) {
-      console.error("❌ Unexpected error:", error);
       alert("⚠ Failed to make a booking. Please try again.");
     }
   };
 
   if (loading) return <div>Loading venue details...</div>;
   if (error) return <div>{error}</div>;
+
+  // 📌 Formatter location til én setning og filtrer ut tomme verdier
+  const formatLocation = (location) => {
+    if (!location) return null;
+    const { address, city, zip, country, continent } = location;
+    const locationParts = [address, city, zip, country, continent].filter(Boolean);
+    return locationParts.length > 0 ? locationParts.join(", ") : null;
+  };
 
   return (
     <div className="venue-details-container">
@@ -118,13 +143,17 @@ function VenueDetails() {
       <p className="venue-detail">Max Guests: {venue?.maxGuests || "N/A"}</p>
       <p className="venue-detail">Rating: {venue?.rating || "N/A"}</p>
 
+      {formatLocation(venue?.location) && (
+        <p className="venue-location"><strong>Location:</strong> {formatLocation(venue.location)}</p>
+      )}
+
       <div className="venue-features">
         <h3>Features</h3>
         <ul>
-          <li>WiFi: {venue?.meta?.wifi ? "Yes" : "No"}</li>
-          <li>Parking: {venue?.meta?.parking ? "Yes" : "No"}</li>
-          <li>Breakfast: {venue?.meta?.breakfast ? "Yes" : "No"}</li>
-          <li>Pets Allowed: {venue?.meta?.pets ? "Yes" : "No"}</li>
+          {venue?.meta?.wifi && <li>WiFi: Yes</li>}
+          {venue?.meta?.parking && <li>Parking: Yes</li>}
+          {venue?.meta?.breakfast && <li>Breakfast: Yes</li>}
+          {venue?.meta?.pets && <li>Pets Allowed: Yes</li>}
         </ul>
       </div>
 

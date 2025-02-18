@@ -1,6 +1,20 @@
 export const API_BASE = "https://v2.api.noroff.dev";
 import { createApiKey } from './create-api-key';
 
+/**
+ * Registers a new user.
+ *
+ * @param {Object} userData - The user data.
+ * @param {string} userData.name - The user's name.
+ * @param {string} userData.email - The user's email.
+ * @param {string} userData.password - The user's password.
+ * @param {string} [userData.bio] - The user's bio.
+ * @param {string} [userData.avatar] - The user's avatar URL.
+ * @param {string} [userData.banner] - The user's banner URL.
+ * @param {boolean} [userData.venueManager] - Whether the user is a venue manager.
+ * @returns {Promise<Object>} The response from the API.
+ * @throws {Error} If registration fails.
+ */
 export async function registerUser({ name, email, password, bio, avatar, banner, venueManager }) {
   const payload = {
     name,
@@ -27,13 +41,21 @@ export async function registerUser({ name, email, password, bio, avatar, banner,
 
   if (!response.ok) {
     const error = await response.json();
-    console.error("Registration failed:", error);
     throw new Error(error.message || "Registration failed");
   }
 
   return await response.json();
 }
 
+/**
+ * Logs in a user.
+ *
+ * @param {Object} credentials - The user credentials.
+ * @param {string} credentials.email - The user's email.
+ * @param {string} credentials.password - The user's password.
+ * @returns {Promise<Object>} The login response including accessToken, profile, apiKey, and venueManager status.
+ * @throws {Error} If login fails.
+ */
 export async function loginUser({ email, password }) {
   const payload = {
     email,
@@ -50,7 +72,6 @@ export async function loginUser({ email, password }) {
 
   if (!response.ok) {
     const error = await response.json();
-    console.error("Login failed:", error);
     throw new Error(error.message || "Login failed");
   }
 
@@ -61,24 +82,22 @@ export async function loginUser({ email, password }) {
 
     localStorage.setItem('Token', accessToken);
     localStorage.setItem('Profile', JSON.stringify(profile)); 
-
     localStorage.setItem('VenueManager', venueManager);
 
     const apiKey = await createApiKey(); 
     localStorage.setItem('ApiKey', apiKey);
 
-    console.log('Logged in successfully');
     return { accessToken, profile, apiKey, venueManager }; 
   } else {
-    console.error('Unexpected response format:', data);
     throw new Error('Unexpected response format');
   }
 }
 
+/**
+ * Logs out the current user by clearing authentication data from localStorage.
+ */
 export function logout() {
   localStorage.removeItem('Token');
   localStorage.removeItem('Profile');
   localStorage.removeItem('ApiKey'); 
-
-  console.log('Logged out successfully');
 }
