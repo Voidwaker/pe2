@@ -9,7 +9,7 @@ import VenueDetails from './pages/VenueDetails';
 import CreateVenue from './pages/CreateVenue';
 import MyVenues from './pages/MyVenues';
 import EditVenue from './pages/EditVenue';
-import EditProfile from './pages/EditProfile'; // ← Import EditProfile
+import EditProfile from './pages/EditProfile';
 import { useAuth } from './hooks/useAuth';
 import Modal from 'react-modal';
 
