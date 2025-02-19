@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from './../hooks/useAuth';
 import '../styles/header.css';
 
@@ -11,7 +11,16 @@ import '../styles/header.css';
  * @returns {JSX.Element} The navigation bar.
  */
 function Header() {
-  const { authData, logout } = useAuth(); 
+  const { authData, logout } = useAuth();
+  const navigate = useNavigate();
+
+  /**
+   * Handles user logout and redirects to the homepage.
+   */
+  const handleLogout = () => {
+    logout();
+    navigate('/'); // Redirects to HomePage after logging out
+  };
 
   return (
     <nav className="navbar navbar-expand-lg navbar-light bg-light">
@@ -62,7 +71,7 @@ function Header() {
                 )}
 
                 <li className="nav-item">
-                  <button className="btn btn-link nav-link" onClick={logout}>
+                  <button className="btn btn-link nav-link" onClick={handleLogout}>
                     Logout
                   </button>
                 </li>

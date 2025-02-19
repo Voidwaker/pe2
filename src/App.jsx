@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Routes, Route, useNavigate } from 'react-router-dom';
 import Header from './components/Header';
 import VenueList from './components/VenueList';
@@ -10,21 +10,26 @@ import CreateVenue from './pages/CreateVenue';
 import MyVenues from './pages/MyVenues';
 import EditVenue from './pages/EditVenue';
 import EditProfile from './pages/EditProfile';
-import HomePage from './pages/HomePage'; // ✅ Import HomePage
+import HomePage from './pages/HomePage'; 
 import { useAuth } from './hooks/useAuth';
 import Modal from 'react-modal';
 
 function App() {
-  const { authData, logout } = useAuth();
+  const { authData } = useAuth();
   const navigate = useNavigate();
+  const [refreshHeader, setRefreshHeader] = useState(false);
 
   useEffect(() => {
     Modal.setAppElement('#root');
   }, []);
 
+  useEffect(() => {
+    setRefreshHeader((prev) => !prev);
+  }, [authData]);
+
   return (
     <div>
-      <Header />
+      <Header key={refreshHeader} />
       <Routes>
         <Route path="/" element={<HomePage />} /> 
         <Route path="/venues" element={<VenueList />} />
@@ -43,4 +48,3 @@ function App() {
 }
 
 export default App;
-
