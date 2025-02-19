@@ -10,6 +10,7 @@ import CreateVenue from './pages/CreateVenue';
 import MyVenues from './pages/MyVenues';
 import EditVenue from './pages/EditVenue';
 import EditProfile from './pages/EditProfile';
+import HomePage from './pages/HomePage'; // ✅ Import HomePage
 import { useAuth } from './hooks/useAuth';
 import Modal from 'react-modal';
 
@@ -25,7 +26,7 @@ function App() {
     <div>
       <Header />
       <Routes>
-        <Route path="/" element={<div>Welcome to Holihub! hope you find the holiday u want!</div>} />
+        <Route path="/" element={<HomePage />} /> 
         <Route path="/venues" element={<VenueList />} />
         <Route path="/bookings" element={<h1>My Bookings</h1>} />
         <Route path="/profile" element={<Profile />} />
@@ -42,3 +43,4 @@ function App() {
 }
 
 export default App;
+
