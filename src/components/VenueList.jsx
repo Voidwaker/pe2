@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { fetchVenues } from '../services/venues';  
+import { fetchVenues } from '../services/venues';
+import { Helmet } from 'react-helmet-async';
 import './../styles/venueList.css';
 
 /**
@@ -77,6 +78,10 @@ function VenueList() {
 
   return (
     <div className="venue-container">
+      <Helmet>
+        <title>Explore Venues - Holihub</title>
+      </Helmet>
+
       <div className="venue-controls">
         <input
           type="text"
