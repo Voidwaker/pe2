@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { Helmet } from "react-helmet-async";
 import "../styles/editProfile.css";
 
 const API_BASE = "https://v2.api.noroff.dev";
@@ -99,6 +100,11 @@ const EditProfile = () => {
 
   return (
     <div className="edit-profile-container">
+      <Helmet>
+        <title>Edit Profile | Holihub</title>
+        <meta name="description" content="Edit your Holihub profile details including bio and avatar." />
+      </Helmet>
+
       <h2>Edit Profile</h2>
       {error && <p className="error-message">{error}</p>}
       {successMessage && <p className="success-message">{successMessage}</p>}

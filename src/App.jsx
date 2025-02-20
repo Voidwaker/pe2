@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Routes, Route, useNavigate } from 'react-router-dom';
 import Header from './components/Header';
+import Footer from './components/Footer'; 
 import VenueList from './components/VenueList';
 import Login from './components/Login';
 import Register from './components/Register';
@@ -28,21 +29,24 @@ function App() {
   }, [authData]);
 
   return (
-    <div>
+    <div className="app-container">
       <Header key={refreshHeader} />
-      <Routes>
-        <Route path="/" element={<HomePage />} /> 
-        <Route path="/venues" element={<VenueList />} />
-        <Route path="/bookings" element={<h1>My Bookings</h1>} />
-        <Route path="/profile" element={<Profile />} />
-        <Route path="/venue/:id" element={<VenueDetails />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/register" element={<Register />} />
-        <Route path="/create-venue" element={<CreateVenue />} />
-        <Route path="/my-venues" element={<MyVenues />} />
-        <Route path="/edit-venue/:id" element={<EditVenue />} />
-        <Route path="/edit-profile" element={<EditProfile />} />
-      </Routes>
+      <main className="content">
+        <Routes>
+          <Route path="/" element={<HomePage />} /> 
+          <Route path="/venues" element={<VenueList />} />
+          <Route path="/bookings" element={<h1>My Bookings</h1>} />
+          <Route path="/profile" element={<Profile />} />
+          <Route path="/venue/:id" element={<VenueDetails />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
+          <Route path="/create-venue" element={<CreateVenue />} />
+          <Route path="/my-venues" element={<MyVenues />} />
+          <Route path="/edit-venue/:id" element={<EditVenue />} />
+          <Route path="/edit-profile" element={<EditProfile />} />
+        </Routes>
+      </main>
+      <Footer />
     </div>
   );
 }

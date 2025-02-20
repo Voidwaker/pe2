@@ -1,17 +1,18 @@
 import React, { useState, useEffect } from "react";
+import { Helmet } from "react-helmet-async";
 import { useNavigate } from "react-router-dom";
 import "../styles/profile.css";
 
 const API_BASE = "https://v2.api.noroff.dev";
 
 /**
- * Profile component.
- *
- * Retrieves the authenticated user's profile and bookings from localStorage and API,
- * and displays the profile information along with the bookings in a card layout.
+ * Profile Component
+ * 
+ * Displays the authenticated user's profile, avatar, bio, and a list of bookings.
+ * Users can edit their profile, create venues, and view past bookings.
  *
  * @component
- * @returns {JSX.Element} The Profile page.
+ * @returns {JSX.Element} The Profile page layout.
  */
 const Profile = () => {
   const [authData, setAuthData] = useState(null);
@@ -21,11 +22,12 @@ const Profile = () => {
   const navigate = useNavigate();
 
   /**
-   * Fetches stored authentication data from localStorage on component mount.
+   * Loads user authentication data from localStorage.
    */
   useEffect(() => {
     const storedProfile = localStorage.getItem("Profile");
     const storedToken = localStorage.getItem("Token");
+
     if (storedProfile && storedToken) {
       setAuthData({
         profile: JSON.parse(storedProfile),
@@ -35,7 +37,7 @@ const Profile = () => {
   }, []);
 
   /**
-   * Fetches the user's booked venues from the API if authenticated.
+   * Fetches the user's booked venues from the API.
    */
   useEffect(() => {
     if (authData && authData.profile?.name) {
@@ -44,9 +46,7 @@ const Profile = () => {
           const token = localStorage.getItem("Token");
           const apiKey = localStorage.getItem("ApiKey");
 
-          if (!token || !apiKey) {
-            return;
-          }
+          if (!token || !apiKey) return;
 
           const response = await fetch(
             `${API_BASE}/holidaze/profiles/${authData.profile.name}/bookings?_venue=true`,
@@ -77,20 +77,20 @@ const Profile = () => {
     }
   }, [authData]);
 
-  if (!authData) {
-    return <div>Loading...</div>;
-  }
-
-  if (loadingBookings) {
-    return <div>Loading your bookings...</div>;
-  }
-
-  if (error) {
-    return <div>{error}</div>;
-  }
+  if (!authData) return <div>Loading...</div>;
+  if (loadingBookings) return <div>Loading your bookings...</div>;
+  if (error) return <div>{error}</div>;
 
   return (
     <div className="profile-container">
+      <Helmet>
+        <title>Profile | Holihub</title>
+        <meta 
+          name="description" 
+          content="Manage your profile, view your bookings, and create new venues." 
+        />
+      </Helmet>
+
       <div>
         <img
           src={authData.profile?.avatar?.url || "https://via.placeholder.com/150"}

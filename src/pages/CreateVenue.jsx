@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { createVenue } from '../api/venues';
+import { Helmet } from 'react-helmet-async';
 import './../styles/createVenue.css';
 
 /**
@@ -58,17 +59,17 @@ const CreateVenue = () => {
     setLoading(true);
     setError(null);
     setSuccessMessage("");
-  
+
     const token = localStorage.getItem("Token");
     const apiKey = localStorage.getItem("ApiKey");
     const storedProfile = JSON.parse(localStorage.getItem("Profile"));
-  
+
     if (!token || !apiKey || !storedProfile) {
       setError("Authentication details missing.");
       setLoading(false);
       return;
     }
-  
+
     const venueData = {
       name: formData.name,
       description: formData.description,
@@ -95,27 +96,31 @@ const CreateVenue = () => {
       },
       owner: { name: storedProfile.name },
     };
-  
+
     try {
       const response = await createVenue(venueData);
       setSuccessMessage("Venue created successfully!");
-  
+
       if (!storedProfile._count) {
         storedProfile._count = { venues: 0 }; 
       }
       storedProfile._count.venues += 1; 
       localStorage.setItem("Profile", JSON.stringify(storedProfile));
-  
+
       setTimeout(() => navigate("/profile"), 2000);
     } catch (err) {
       setError(err.message || "Failed to create venue. Please try again.");
     } finally {
       setLoading(false);
     }
-  };  
+  };
 
   return (
     <div className="create-venue-container">
+      <Helmet>
+        <title>Create a Venue | Holihub</title>
+      </Helmet>
+
       <h2>Create New Venue</h2>
       {error && <div className="alert alert-danger">{error}</div>}
       {successMessage && <div className="alert alert-success">{successMessage}</div>}
