@@ -14,21 +14,21 @@ import "../styles/header.css";
 function Header() {
   const { authData, logout } = useAuth();
   const navigate = useNavigate();
-  const [user, setUser] = useState(authData); // Lokal state for å holde authData
+  const [user, setUser] = useState(authData); 
 
   /**
-   * Oppdaterer header når authData endres.
+   * Updated header when  authData changes.
    */
   useEffect(() => {
     setUser(authData);
-  }, [authData]); // Lytter etter endringer i authData
+  }, [authData]); 
 
   /**
    * Handles user logout and redirects to the homepage.
    */
   const handleLogout = () => {
     logout();
-    navigate("/"); // Redirects to HomePage after logging out
+    navigate("/"); 
   };
 
   return (
