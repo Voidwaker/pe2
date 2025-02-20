@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { registerUser } from '../api/auth';
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { registerUser } from "../api/auth";
 
 /**
  * Register Component
@@ -11,12 +11,12 @@ import { registerUser } from '../api/auth';
  * @component
  */
 const Register = () => {
-  const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
   const [venueManager, setVenueManager] = useState(false);
-  const [avatarUrl, setAvatarUrl] = useState('');
+  const [avatarUrl, setAvatarUrl] = useState("");
   const [error, setError] = useState(null);
   const navigate = useNavigate();
 
@@ -38,22 +38,24 @@ const Register = () => {
       email,
       password,
       venueManager,
-      avatar: avatarUrl || undefined, // 📌 Sender kun avatar om det er oppgitt
+      avatar: avatarUrl || undefined,
     };
 
     try {
       await registerUser(userData);
-      navigate('/profile');
+      navigate("/profile");
     } catch (err) {
-      setError(err.message || 'Failed to register. Please try again.');
+      setError(err.message || "Failed to register. Please try again.");
     }
   };
 
   return (
-    <div className="container mt-5">
-      <h2>Register</h2>
-      {error && <div className="alert alert-danger">{error}</div>}
-      <form onSubmit={handleSubmit} className="mt-4">
+    <div className="container mt-5 mb-5" style={{ maxWidth: "500px" }}>
+      <h2 className="text-center mb-4">Register</h2>
+
+      {error && <div className="alert alert-danger text-center">{error}</div>}
+
+      <form onSubmit={handleSubmit} className="p-4 border rounded shadow bg-white">
         <div className="mb-3">
           <label htmlFor="name" className="form-label">Name</label>
           <input
@@ -113,7 +115,7 @@ const Register = () => {
           />
         </div>
 
-        <div className="mb-3 form-check">
+        <div className="form-check mb-3">
           <input
             type="checkbox"
             id="venueManager"
@@ -124,7 +126,7 @@ const Register = () => {
           <label htmlFor="venueManager" className="form-check-label">I want to be a Venue Manager</label>
         </div>
 
-        <button type="submit" className="btn btn-primary">Register</button>
+        <button type="submit" className="btn btn-primary w-100">Register</button>
       </form>
     </div>
   );

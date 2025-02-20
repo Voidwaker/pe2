@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
-import "../styles/editProfile.css";
+import "bootstrap/dist/css/bootstrap.min.css";
 
 const API_BASE = "https://v2.api.noroff.dev";
 
@@ -24,9 +24,6 @@ const EditProfile = () => {
   const [error, setError] = useState(null);
   const [successMessage, setSuccessMessage] = useState("");
 
-  /**
-   * Loads user profile data from localStorage on component mount.
-   */
   useEffect(() => {
     const storedProfile = JSON.parse(localStorage.getItem("Profile"));
     if (storedProfile) {
@@ -39,21 +36,11 @@ const EditProfile = () => {
     }
   }, []);
 
-  /**
-   * Handles input changes and updates the form data state.
-   *
-   * @param {React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>} e - The input change event.
-   */
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  /**
-   * Handles form submission, updating user bio and avatar URL via API.
-   *
-   * @param {React.FormEvent<HTMLFormElement>} e - The form submit event.
-   */
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError(null);
@@ -99,51 +86,73 @@ const EditProfile = () => {
   };
 
   return (
-    <div className="edit-profile-container">
-      <Helmet>
-        <title>Edit Profile | Holihub</title>
-        <meta name="description" content="Edit your Holihub profile details including bio and avatar." />
-      </Helmet>
-
-      <h2>Edit Profile</h2>
-      {error && <p className="error-message">{error}</p>}
-      {successMessage && <p className="success-message">{successMessage}</p>}
-
-      <form onSubmit={handleSubmit} className="edit-profile-form">
-        <div className="form-group">
-          <label>Name</label>
-          <input type="text" name="name" value={formData.name} readOnly />
-        </div>
-        
-        <div className="form-group">
-          <label>Email</label>
-          <input type="email" name="email" value={formData.email} readOnly />
-        </div>
-
-        <div className="form-group">
-          <label>Bio</label>
-          <textarea name="bio" value={formData.bio} onChange={handleChange} />
-        </div>
-
-        <div className="form-group">
-          <label>Avatar URL</label>
-          <input type="url" name="avatarUrl" value={formData.avatarUrl} onChange={handleChange} />
-        </div>
-
-        {formData.avatarUrl && (
-          <img src={formData.avatarUrl} alt="Profile Avatar" className="avatar-preview" />
-        )}
-
-        <div className="button-group">
-          <button type="submit">Save Changes</button>
-          <button type="button" className="cancel-button" onClick={() => navigate("/profile")}>
-            Cancel
-          </button>
-        </div>
-      </form>
+    <div className="d-flex flex-column min-vh-100">
+      <div className="container mt-5 flex-grow-1" style={{ maxWidth: "500px" }}>
+        <Helmet>
+          <title>Edit Profile | Holihub</title>
+          <meta name="description" content="Edit your Holihub profile details including bio and avatar." />
+        </Helmet>
+  
+        <h2 className="text-center mb-4">Edit Profile</h2>
+  
+        {error && <div className="alert alert-danger text-center">{error}</div>}
+        {successMessage && <div className="alert alert-success text-center">{successMessage}</div>}
+  
+        <form onSubmit={handleSubmit} className="p-4 border rounded shadow bg-white">
+          <div className="mb-3">
+            <label className="form-label">Name</label>
+            <input type="text" name="name" className="form-control" value={formData.name} readOnly />
+          </div>
+          
+          <div className="mb-3">
+            <label className="form-label">Email</label>
+            <input type="email" name="email" className="form-control" value={formData.email} readOnly />
+          </div>
+  
+          <div className="mb-3">
+            <label className="form-label">Bio</label>
+            <textarea 
+              name="bio" 
+              className="form-control" 
+              rows="4" 
+              value={formData.bio} 
+              onChange={handleChange} 
+            />
+          </div>
+  
+          <div className="mb-3">
+            <label className="form-label">Avatar URL</label>
+            <input 
+              type="url" 
+              name="avatarUrl" 
+              className="form-control" 
+              value={formData.avatarUrl} 
+              onChange={handleChange} 
+            />
+          </div>
+  
+          {formData.avatarUrl && (
+            <div className="text-center mb-3">
+              <img 
+                src={formData.avatarUrl} 
+                alt="Profile Avatar" 
+                className="img-thumbnail" 
+                style={{ maxWidth: "100px", borderRadius: "50%" }} 
+              />
+            </div>
+          )}
+  
+          <div className="d-flex justify-content-between">
+            <button type="submit" className="btn btn-primary w-50">Save</button>
+            <button type="button" className="btn btn-danger w-50" onClick={() => navigate("/profile")}>
+              Cancel
+            </button>
+          </div>
+        </form>
+      </div>
     </div>
   );
-};
+};  
 
 export default EditProfile;
 

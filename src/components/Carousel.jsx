@@ -12,14 +12,16 @@ const Carousel = ({ images }) => {
     slidesToShow: 1,
     slidesToScroll: 1,
     autoplay: true,
-    autoplaySpeed: 3000,
+    autoplaySpeed: 2500,
+    adaptiveHeight: true,
+    arrows: false, // Fjerner piler for bedre mobiltilpasning
   };
 
   return (
     <div className="carousel-container">
       <Slider {...settings}>
         {images.map((image, index) => (
-          <div key={index}>
+          <div key={index} className="carousel-slide">
             <img src={image.url} alt={image.alt || "Slide"} className="carousel-image" />
           </div>
         ))}

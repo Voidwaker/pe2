@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Helmet } from "react-helmet-async";
 import Carousel from "../components/Carousel";
 import { fetchVenues } from "../services/venues";
+import "bootstrap/dist/css/bootstrap.min.css";
 import "../styles/homePage.css";
 
 /**
@@ -25,7 +26,7 @@ const HomePage = () => {
         const venues = await fetchVenues();
         const sortedVenues = venues
           .sort((a, b) => b.rating - a.rating)
-          .slice(0, 5); 
+          .slice(0, 5);
         setFeaturedVenues(sortedVenues);
       } catch (error) {
         console.error("Error fetching venues:", error);
@@ -36,7 +37,7 @@ const HomePage = () => {
   }, []);
 
   return (
-    <div className="homepage-container">
+    <div className="container py-5">
       <Helmet>
         <title>Welcome to Holihub | Your Travel Hub</title>
         <meta 
@@ -45,17 +46,22 @@ const HomePage = () => {
         />
       </Helmet>
 
-      <h1>Welcome to Holihub</h1>
-      <Carousel images={featuredVenues.map(venue => ({ url: venue.media[0]?.url, alt: venue.name }))} />
-
+      <h1 className="text-center mb-4">Welcome to Holihub</h1>
+      <div className="mb-5 carousel-wrapper">
+        <Carousel images={featuredVenues.map(venue => ({ url: venue.media[0]?.url, alt: venue.name }))} />
+      </div>
       <section className="popular-destinations">
-        <h2>Popular Destinations</h2>
-        <div className="destinations-grid">
+        <h2 className="text-center mb-4">Popular Destinations</h2>
+        <div className="row g-4">
           {featuredVenues.map((venue) => (
-            <div key={venue.id} className="destination-card">
-              <img src={venue.media[0]?.url || "https://via.placeholder.com/150"} alt={venue.name} />
-              <h3>{venue.name}</h3>
-              <p>{venue.location.city}, {venue.location.country}</p>
+            <div key={venue.id} className="col-md-4 d-flex justify-content-center">
+              <div className="card shadow-sm text-center" style={{ width: "18rem" }}>
+                <img className="card-img-top" src={venue.media[0]?.url || "https://via.placeholder.com/150"} alt={venue.name} />
+                <div className="card-body">
+                  <h5 className="card-title">{venue.name}</h5>
+                  <p className="card-text">{venue.location.city}, {venue.location.country}</p>
+                </div>
+              </div>
             </div>
           ))}
         </div>
@@ -65,3 +71,4 @@ const HomePage = () => {
 };
 
 export default HomePage;
+
