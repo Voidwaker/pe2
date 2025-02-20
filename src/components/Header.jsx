@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from './../hooks/useAuth';
+import 'bootstrap/dist/css/bootstrap.min.css';
 import '../styles/header.css';
 
 /**
@@ -23,7 +24,7 @@ function Header() {
   };
 
   return (
-    <nav className="navbar navbar-expand-lg">
+    <nav className="navbar navbar-expand-lg navbar-dark bg-dark sticky-top shadow">
       <div className="container-fluid">
         <Link className="navbar-brand" to="/">Holihub</Link>
 
@@ -51,27 +52,21 @@ function Header() {
             {authData && (
               <>
                 <li className="nav-item">
-                  <Link className="nav-link" to="/profile">
-                    Profile
-                  </Link>
+                  <Link className="nav-link" to="/profile">Profile</Link>
                 </li>
 
                 <li className="nav-item">
-                  <Link className="nav-link" to="/my-venues">
-                    My Venues
-                  </Link>
+                  <Link className="nav-link" to="/my-venues">My Venues</Link>
                 </li>
 
                 {authData.profile?.venueManager && (
                   <li className="nav-item">
-                    <Link className="nav-link" to="/create-venue">
-                      Create Venue
-                    </Link>
+                    <Link className="nav-link" to="/create-venue">Create Venue</Link>
                   </li>
                 )}
 
                 <li className="nav-item">
-                  <button className="btn btn-link nav-link" onClick={handleLogout}>
+                  <button className="btn btn-outline-light nav-link" onClick={handleLogout}>
                     Logout
                   </button>
                 </li>
@@ -81,14 +76,10 @@ function Header() {
             {!authData && (
               <>
                 <li className="nav-item">
-                  <Link className="nav-link" to="/login">
-                    Login
-                  </Link>
+                  <Link className="nav-link" to="/login">Login</Link>
                 </li>
                 <li className="nav-item">
-                  <Link className="nav-link" to="/register">
-                    Register
-                  </Link>
+                  <Link className="nav-link" to="/register">Register</Link>
                 </li>
               </>
             )}

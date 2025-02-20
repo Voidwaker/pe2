@@ -1,116 +1,60 @@
-.venue-container {
-  padding: 20px;
-}
-
-.venue-controls {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 20px;
-}
-
-.search-input {
-  flex: 1;
-  padding: 10px;
-  border: 1px solid #ddd;
-  border-radius: 5px;
-  font-size: 16px;
-}
-
-.sort-dropdown {
-  margin-left: 10px;
-  padding: 10px;
-  border: 1px solid #ddd;
-  border-radius: 5px;
-  font-size: 16px;
-}
-
-.venue-cards {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-  gap: 20px;
-  padding: 20px;
-}
-
-.venue-card {
-  background-color: white;
-  border-radius: 10px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  padding: 20px;
-  text-align: center;
-  transition: transform 0.3s, box-shadow 0.3s;
-  position: relative;
-}
-
-.venue-card:hover {
-  transform: translateY(-10px);
-  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
-}
-
 .venue-image {
   width: 100%;
   height: 200px;
   object-fit: cover;
-  border-radius: 10px;
-  margin-bottom: 20px;
+  border-radius: 5px;
+  margin-bottom: 15px;
 }
 
-.venue-info h3 {
-  font-size: 1.5rem;
-  margin: 10px 0;
-  word-wrap: break-word; 
-  overflow-wrap: break-word;
-  white-space: normal; 
-  max-width: 100%;
+.card-title {
+  font-size: 1.25rem;
+  font-weight: bold;
   text-align: center;
 }
 
-.venue-info p {
+.card-text {
   font-size: 1rem;
   color: #555;
-  overflow: hidden;
+}
+
+.text-truncate {
   display: -webkit-box;
   -webkit-line-clamp: 3;
   line-clamp: 3;
   -webkit-box-orient: vertical;
+  overflow: hidden;
   height: 60px;
 }
 
-.view-more-btn {
-  background-color: #007bff;
-  color: white;
-  border: none;
-  padding: 10px 20px;
-  border-radius: 5px;
-  cursor: pointer;
-  position: absolute;
-  bottom: 20px;
-  left: 50%;
-  transform: translateX(-50%);
-}
-
-.view-more-btn:hover {
-  background-color: #0056b3;
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 @media (max-width: 768px) {
-  .venue-cards {
-    grid-template-columns: 1fr;
-  }
-
-  .venue-info h3 {
-    font-size: 1.25rem;
-    word-wrap: break-word;
-    overflow-wrap: break-word;
+  .card-title {
+    font-size: 1.1rem;
   }
 }
 
 @media (max-width: 600px) {
-  .venue-info h3 {
+  .card-title {
     font-size: 1rem;
   }
-
   .venue-image {
     height: 150px;
+  }
+}
+
+@media (max-width: 300px) {
+  .card-title {
+    font-size: 0.9rem;
+  }
+  .venue-image {
+    height: 120px;
+  }
+  .card-text {
+    font-size: 0.85rem;
   }
 }
