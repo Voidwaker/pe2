@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
+import { Helmet } from "react-helmet-async";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import "../styles/VenueDetails.css";
@@ -41,21 +42,19 @@ function VenueDetails() {
         const data = await response.json();
         setVenue(data.data);
 
-        const bookings = data.data.bookings || [];
-        const bookedRanges = bookings.flatMap((booking) => {
+        const bookedRanges = data.data.bookings?.flatMap((booking) => {
           let dates = [];
           let current = new Date(booking.dateFrom);
           let end = new Date(booking.dateTo);
-
           while (current <= end) {
             dates.push(new Date(current));
             current.setDate(current.getDate() + 1);
           }
           return dates;
-        });
+        }) || [];
 
         setBookedDates(bookedRanges);
-      } catch (error) {
+      } catch {
         setError("Error fetching venue details");
       } finally {
         setLoading(false);
@@ -80,8 +79,8 @@ function VenueDetails() {
       return;
     }
 
-    let authToken = localStorage.getItem("Token")?.trim();
-    let API_KEY = localStorage.getItem("ApiKey")?.trim();
+    const authToken = localStorage.getItem("Token")?.trim();
+    const API_KEY = localStorage.getItem("ApiKey")?.trim();
     if (!authToken || !API_KEY) {
       alert("Authentication error. Please log out and log in again.");
       return;
@@ -95,7 +94,7 @@ function VenueDetails() {
     };
 
     try {
-      const response = await fetch("https://v2.api.noroff.dev/holidaze/bookings", {
+      const response = await fetch(`${API_URL}/../bookings`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -111,9 +110,8 @@ function VenueDetails() {
       }
 
       alert("🎉 Booking successful! Redirecting to venue list...");
-      navigate("/venues"); // 📌 REDIRECT TIL VENUE LIST
-
-    } catch (error) {
+      navigate("/venues");
+    } catch {
       alert("⚠ Failed to make a booking. Please try again.");
     }
   };
@@ -121,16 +119,25 @@ function VenueDetails() {
   if (loading) return <div>Loading venue details...</div>;
   if (error) return <div>{error}</div>;
 
-  // 📌 Formatter location til én setning og filtrer ut tomme verdier
+  /**
+   * Formats location into a readable string.
+   * @param {object} location - The location object containing address details.
+   * @returns {string|null} The formatted location string or null if no location exists.
+   */
   const formatLocation = (location) => {
     if (!location) return null;
-    const { address, city, zip, country, continent } = location;
-    const locationParts = [address, city, zip, country, continent].filter(Boolean);
-    return locationParts.length > 0 ? locationParts.join(", ") : null;
+    return [location.address, location.city, location.zip, location.country, location.continent]
+      .filter(Boolean)
+      .join(", ") || null;
   };
 
   return (
     <div className="venue-details-container">
+      <Helmet>
+        <title>{venue?.name ? `${venue.name} | Holihub` : "Venue Details | Holihub"}</title>
+        <meta name="description" content={venue?.description || "Explore venue details and book your stay."} />
+      </Helmet>
+
       {venue?.media?.length > 0 ? (
         <img className="venue-hero" src={venue.media[0].url} alt={venue.media[0].alt || "Venue Image"} />
       ) : (
@@ -160,35 +167,15 @@ function VenueDetails() {
       <div className="venue-calendar">
         <h2>Availability Calendar</h2>
         <label htmlFor="fromDate">From:</label>
-        <DatePicker
-          id="fromDate"
-          selected={selectedFrom}
-          onChange={(date) => setSelectedFrom(date)}
-          excludeDates={bookedDates}
-          minDate={new Date()}
-          dateFormat="yyyy-MM-dd"
-          placeholderText="Select start date"
-        />
+        <DatePicker id="fromDate" selected={selectedFrom} onChange={setSelectedFrom} excludeDates={bookedDates} minDate={new Date()} dateFormat="yyyy-MM-dd" placeholderText="Select start date" />
 
         <label htmlFor="toDate">To:</label>
-        <DatePicker
-          id="toDate"
-          selected={selectedTo}
-          onChange={(date) => setSelectedTo(date)}
-          excludeDates={bookedDates}
-          minDate={selectedFrom || new Date()}
-          dateFormat="yyyy-MM-dd"
-          placeholderText="Select end date"
-        />
+        <DatePicker id="toDate" selected={selectedTo} onChange={setSelectedTo} excludeDates={bookedDates} minDate={selectedFrom || new Date()} dateFormat="yyyy-MM-dd" placeholderText="Select end date" />
 
-        <div>
-          <label htmlFor="guests">Number of Guests:</label>
-          <select id="guests" value={guests} onChange={(e) => setGuests(parseInt(e.target.value))}>
-            {Array.from({ length: venue?.maxGuests || 1 }, (_, i) => (
-              <option key={i + 1} value={i + 1}>{i + 1}</option>
-            ))}
-          </select>
-        </div>
+        <label htmlFor="guests">Number of Guests:</label>
+        <select id="guests" value={guests} onChange={(e) => setGuests(parseInt(e.target.value))}>
+          {Array.from({ length: venue?.maxGuests || 1 }, (_, i) => <option key={i + 1} value={i + 1}>{i + 1}</option>)}
+        </select>
 
         <button onClick={handleBooking} className="booking-button">Book Venue</button>
       </div>

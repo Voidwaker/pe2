@@ -1,11 +1,16 @@
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
+import { Helmet } from "react-helmet-async";
 import { getVenueById, updateVenue } from "../api/venues";
 import "../styles/createVenue.css";
 
 /**
- * EditVenue Component - Allows a venue manager to edit a venue they manage.
- * @returns {JSX.Element} The rendered component.
+ * EditVenue Component
+ * 
+ * Allows a venue manager to edit a venue they manage.
+ * Fetches the venue data, updates the fields, and submits changes via API.
+ *
+ * @component
  */
 const EditVenue = () => {
   const { id } = useParams();
@@ -19,6 +24,9 @@ const EditVenue = () => {
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
 
+  /**
+   * Fetches venue details from API when component mounts.
+   */
   useEffect(() => {
     const fetchVenue = async () => {
       try {
@@ -44,7 +52,7 @@ const EditVenue = () => {
 
   /**
    * Handles venue update submission.
-   * @param {Event} event - The form submission event.
+   * @param {React.FormEvent<HTMLFormElement>} event - The form submission event.
    */
   const handleUpdate = async (event) => {
     event.preventDefault();
@@ -71,6 +79,11 @@ const EditVenue = () => {
 
   return (
     <div className="create-venue-container">
+      <Helmet>
+        <title>Edit Venue | Holihub</title>
+        <meta name="description" content={`Edit details for ${name} on Holihub.`} />
+      </Helmet>
+
       <h2>Edit Venue</h2>
       <form onSubmit={handleUpdate} className="create-venue-form">
         <label>Venue Name:</label>

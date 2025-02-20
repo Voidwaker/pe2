@@ -1,11 +1,24 @@
 import React, { useEffect, useState } from "react";
+import { Helmet } from "react-helmet-async";
 import Carousel from "../components/Carousel";
 import { fetchVenues } from "../services/venues";
 import "../styles/homePage.css";
 
+/**
+ * HomePage Component
+ * 
+ * The main landing page of Holihub. Displays a featured carousel with highly-rated venues
+ * and a section showcasing popular destinations.
+ *
+ * @component
+ * @returns {JSX.Element} The homepage layout.
+ */
 const HomePage = () => {
   const [featuredVenues, setFeaturedVenues] = useState([]);
 
+  /**
+   * Fetches venue data and selects the top 5 highest-rated venues for display.
+   */
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -24,6 +37,14 @@ const HomePage = () => {
 
   return (
     <div className="homepage-container">
+      <Helmet>
+        <title>Welcome to Holihub | Your Travel Hub</title>
+        <meta 
+          name="description" 
+          content="Discover top-rated holiday venues, explore popular destinations, and book your next adventure with Holihub."
+        />
+      </Helmet>
+
       <h1>Welcome to Holihub</h1>
       <Carousel images={featuredVenues.map(venue => ({ url: venue.media[0]?.url, alt: venue.name }))} />
 
