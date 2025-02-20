@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Helmet } from "react-helmet-async";
 import { useNavigate } from "react-router-dom";
-import "bootstrap/dist/css/bootstrap.min.css"; // Import Bootstrap
+import "bootstrap/dist/css/bootstrap.min.css";
 import "../styles/profile.css";
 
 const API_BASE = "https://v2.api.noroff.dev";
@@ -91,7 +91,6 @@ const Profile = () => {
           content="Manage your profile, view your bookings, and create new venues." 
         />
       </Helmet>
-
       <div className="text-center">
         <img
           src={authData.profile?.avatar?.url || "https://via.placeholder.com/150"}
@@ -102,12 +101,10 @@ const Profile = () => {
         <p className="text-muted">{authData.profile?.email}</p>
         {authData.profile?.bio && <p className="profile-bio">{authData.profile.bio}</p>}
       </div>
-
       <div className="d-flex justify-content-center gap-3 mt-4">
         <button className="btn btn-primary" onClick={() => navigate('/edit-profile')}>Edit Profile</button>
         <button className="btn btn-outline-primary" onClick={() => navigate("/create-venue")}>Create Venue</button>
       </div>
-
       <div className="mt-5">
         <h2 className="text-center">Your Bookings</h2>
         {bookedVenues.length === 0 ? (
