@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { createVenue } from '../api/venues';
-import { Helmet } from 'react-helmet-async';
-import './../styles/createVenue.css';
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { createVenue } from "../api/venues";
+import { Helmet } from "react-helmet-async";
+import "bootstrap/dist/css/bootstrap.min.css";
 
 /**
  * CreateVenue Component
@@ -16,18 +16,18 @@ import './../styles/createVenue.css';
 const CreateVenue = () => {
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
-    name: '',
-    description: '',
-    price: '',
-    maxGuests: '',
-    rating: '',
-    mediaUrl: '',
-    mediaAlt: '',
-    address: '',
-    city: '',
-    zip: '',
-    country: '',
-    continent: '',
+    name: "",
+    description: "",
+    price: "",
+    maxGuests: "",
+    rating: "",
+    mediaUrl: "",
+    mediaAlt: "",
+    address: "",
+    city: "",
+    zip: "",
+    country: "",
+    continent: "",
     wifi: false,
     parking: false,
     breakfast: false,
@@ -36,24 +36,16 @@ const CreateVenue = () => {
 
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
-  const [successMessage, setSuccessMessage] = useState('');
+  const [successMessage, setSuccessMessage] = useState("");
 
-  /**
-   * Handles input changes and updates state.
-   * @param {React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>} e 
-   */
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
     setFormData((prev) => ({
       ...prev,
-      [name]: type === 'checkbox' ? checked : value,
+      [name]: type === "checkbox" ? checked : value,
     }));
   };
 
-  /**
-   * Handles form submission and sends data to API.
-   * @param {React.FormEvent<HTMLFormElement>} e 
-   */
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
@@ -98,13 +90,13 @@ const CreateVenue = () => {
     };
 
     try {
-      const response = await createVenue(venueData);
+      await createVenue(venueData);
       setSuccessMessage("Venue created successfully!");
 
       if (!storedProfile._count) {
-        storedProfile._count = { venues: 0 }; 
+        storedProfile._count = { venues: 0 };
       }
-      storedProfile._count.venues += 1; 
+      storedProfile._count.venues += 1;
       localStorage.setItem("Profile", JSON.stringify(storedProfile));
 
       setTimeout(() => navigate("/profile"), 2000);
@@ -116,86 +108,73 @@ const CreateVenue = () => {
   };
 
   return (
-    <div className="create-venue-container">
+    <div className="container mt-5">
       <Helmet>
         <title>Create a Venue | Holihub</title>
       </Helmet>
-
-      <h2>Create New Venue</h2>
-      {error && <div className="alert alert-danger">{error}</div>}
-      {successMessage && <div className="alert alert-success">{successMessage}</div>}
-
-      <form onSubmit={handleSubmit} className="create-venue-form">
-        <div className="form-group">
-          <label>Venue Name*</label>
-          <input type="text" name="name" value={formData.name} onChange={handleChange} required />
+      <h2 className="text-center mb-4">Create New Venue</h2>
+      {error && <div className="alert alert-danger text-center">{error}</div>}
+      {successMessage && <div className="alert alert-success text-center">{successMessage}</div>}
+      <form onSubmit={handleSubmit} className="mx-auto p-4 border rounded shadow-sm bg-light" style={{ maxWidth: "600px" }}>
+        <div className="mb-3">
+          <label className="form-label">Venue Name*</label>
+          <input type="text" name="name" className="form-control" value={formData.name} onChange={handleChange} required />
         </div>
-
-        <div className="form-group">
-          <label>Description*</label>
-          <textarea name="description" value={formData.description} onChange={handleChange} required />
+        <div className="mb-3">
+          <label className="form-label">Description*</label>
+          <textarea name="description" className="form-control" value={formData.description} onChange={handleChange} required />
         </div>
-
-        <div className="form-group">
-          <label>Image URL</label>
-          <input type="url" name="mediaUrl" value={formData.mediaUrl} onChange={handleChange} />
+        <div className="mb-3">
+          <label className="form-label">Image URL</label>
+          <input type="url" name="mediaUrl" className="form-control" value={formData.mediaUrl} onChange={handleChange} />
         </div>
-
-        <div className="form-group">
-          <label>Image Alt Text</label>
-          <input type="text" name="mediaAlt" value={formData.mediaAlt} onChange={handleChange} />
+        <div className="mb-3">
+          <label className="form-label">Image Alt Text</label>
+          <input type="text" name="mediaAlt" className="form-control" value={formData.mediaAlt} onChange={handleChange} />
         </div>
-
-        <div className="form-group">
-          <label>Price per Night (USD)*</label>
-          <input type="number" name="price" value={formData.price} onChange={handleChange} required min="1" />
+        <div className="row g-3">
+          <div className="col-md-6">
+            <label className="form-label">Price per Night (USD)*</label>
+            <input type="number" name="price" className="form-control" value={formData.price} onChange={handleChange} required min="1" />
+          </div>
+          <div className="col-md-6">
+            <label className="form-label">Maximum Guests*</label>
+            <input type="number" name="maxGuests" className="form-control" value={formData.maxGuests} onChange={handleChange} required min="1" />
+          </div>
         </div>
-
-        <div className="form-group">
-          <label>Maximum Guests*</label>
-          <input type="number" name="maxGuests" value={formData.maxGuests} onChange={handleChange} required min="1" />
+        <div className="mt-3">
+          <label className="form-label">Rating (0-5)</label>
+          <input type="number" name="rating" className="form-control" value={formData.rating} onChange={handleChange} min="0" max="5" />
         </div>
-
-        <div className="form-group">
-          <label>Rating (0-5)</label>
-          <input type="number" name="rating" value={formData.rating} onChange={handleChange} min="0" max="5" />
+        <div className="mt-4 text-center">
+          <h5>Features</h5>
+          <div className="d-flex flex-column align-items-center gap-2">
+    <div className="form-check d-flex align-items-center gap-2">
+      <input type="checkbox" name="wifi" className="form-check-input bigger-checkbox" checked={formData.wifi} onChange={handleChange} />
+      <label className="form-check-label fw-bold">WiFi</label>
+    </div>
+    <div className="form-check d-flex align-items-center gap-2">
+      <input type="checkbox" name="parking" className="form-check-input bigger-checkbox" checked={formData.parking} onChange={handleChange} />
+      <label className="form-check-label fw-bold">Parking</label>
+    </div>
+    <div className="form-check d-flex align-items-center gap-2">
+      <input type="checkbox" name="breakfast" className="form-check-input bigger-checkbox" checked={formData.breakfast} onChange={handleChange} />
+      <label className="form-check-label fw-bold">Breakfast</label>
+    </div>
+    <div className="form-check d-flex align-items-center gap-2">
+      <input type="checkbox" name="pets" className="form-check-input bigger-checkbox" checked={formData.pets} onChange={handleChange} />
+      <label className="form-check-label fw-bold">Pets Allowed</label>
+    </div>
+  </div>
+</div>
+        <div className="d-flex justify-content-between mt-4">
+          <button type="submit" className="btn btn-primary w-45" disabled={loading}>
+            {loading ? "Creating..." : "Create Venue"}
+          </button>
+          <button type="button" className="btn btn-danger w-45" onClick={() => navigate("/profile")}>
+            Cancel
+          </button>
         </div>
-
-        <div className="amenities-section">
-          <label><input type="checkbox" name="wifi" checked={formData.wifi} onChange={handleChange} /> WiFi</label>
-          <label><input type="checkbox" name="parking" checked={formData.parking} onChange={handleChange} /> Parking</label>
-          <label><input type="checkbox" name="breakfast" checked={formData.breakfast} onChange={handleChange} /> Breakfast</label>
-          <label><input type="checkbox" name="pets" checked={formData.pets} onChange={handleChange} /> Pets Allowed</label>
-        </div>
-
-        <div className="form-group">
-          <label>Address</label>
-          <input type="text" name="address" value={formData.address} onChange={handleChange} />
-        </div>
-
-        <div className="form-group">
-          <label>City</label>
-          <input type="text" name="city" value={formData.city} onChange={handleChange} />
-        </div>
-
-        <div className="form-group">
-          <label>Zip Code</label>
-          <input type="text" name="zip" value={formData.zip} onChange={handleChange} />
-        </div>
-
-        <div className="form-group">
-          <label>Country</label>
-          <input type="text" name="country" value={formData.country} onChange={handleChange} />
-        </div>
-
-        <div className="form-group">
-          <label>Continent</label>
-          <input type="text" name="continent" value={formData.continent} onChange={handleChange} />
-        </div>
-
-        <button type="submit" disabled={loading}>
-          {loading ? "Creating Venue..." : "Create Venue"}
-        </button>
       </form>
     </div>
   );
