@@ -1,13 +1,14 @@
 .my-venues-container {
-  max-width: 900px;
+  max-width: 1200px;
   margin: auto;
   padding: 20px;
 }
 
-.venues-list {
+/* .venues-list {
   display: flex;
   flex-wrap: wrap;
   gap: 20px;
+  justify-content: center;
 }
 
 .venue-card {
@@ -15,14 +16,20 @@
   border-radius: 10px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   padding: 15px;
-  width: 100%;
-  max-width: 300px;
+  flex: 1 1 300px;
+  max-width: 400px;
   text-align: center;
-}
+  display: flex;
+  flex-direction: column;
+} */
 
 .venue-card img {
   width: 100%;
+  height: auto;
+  max-height: 230px;
+  /* height: 200px; */
   border-radius: 10px;
+  object-fit: cover;
 }
 
 .view-more-btn, .edit-btn, .delete-btn {
@@ -51,7 +58,6 @@
   cursor: pointer;
 }
 
-/* ▼▼▼ STYLING FOR DROPDOWN ▼▼▼ */
 .bookings-dropdown {
   margin-top: 10px;
   text-align: center;
@@ -72,7 +78,6 @@
   background-color: #5a6268;
 }
 
-/* Style for dropdown-listen */
 .booking-list {
   list-style: none;
   padding: 0;
@@ -108,4 +113,4 @@
   opacity: 1;
   visibility: visible;
   padding: 10px;
-}
+} 

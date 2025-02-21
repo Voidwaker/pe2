@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
 import { getVenueById, updateVenue } from "../api/venues";
-import "../styles/createVenue.css";
+import "bootstrap/dist/css/bootstrap.min.css";
 
 /**
  * EditVenue Component
@@ -74,49 +74,75 @@ const EditVenue = () => {
     }
   };
 
-  if (loading) return <div>Loading venue details...</div>;
-  if (error) return <div>{error}</div>;
+  if (loading) return <div className="text-center mt-5">Loading venue details...</div>;
+  if (error) return <div className="alert alert-danger text-center mt-5">{error}</div>;
 
   return (
-    <div className="create-venue-container">
+    <div className="container mt-5" style={{ maxWidth: "700px" }}>
       <Helmet>
         <title>Edit Venue | Holihub</title>
         <meta name="description" content={`Edit details for ${name} on Holihub.`} />
       </Helmet>
 
-      <h2>Edit Venue</h2>
-      <form onSubmit={handleUpdate} className="create-venue-form">
-        <label>Venue Name:</label>
-        <input value={name} onChange={(e) => setName(e.target.value)} required />
+      <h2 className="text-center mb-4">Edit Venue</h2>
+      
+      <form onSubmit={handleUpdate} className="p-4 border rounded shadow bg-white">
+        <div className="mb-3">
+          <label className="form-label">Venue Name:</label>
+          <input
+            type="text"
+            className="form-control"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            required
+          />
+        </div>
 
-        <label>Description:</label>
-        <textarea value={description} onChange={(e) => setDescription(e.target.value)} required />
+        <div className="mb-3">
+          <label className="form-label">Description:</label>
+          <textarea
+            className="form-control"
+            rows="4"
+            value={description}
+            onChange={(e) => setDescription(e.target.value)}
+            required
+          ></textarea>
+        </div>
 
-        <label>Price:</label>
-        <input
-          type="number"
-          value={price}
-          onChange={(e) => setPrice(e.target.value)}
-          required
-        />
+        <div className="mb-3">
+          <label className="form-label">Price ($):</label>
+          <input
+            type="number"
+            className="form-control"
+            value={price}
+            onChange={(e) => setPrice(e.target.value)}
+            required
+          />
+        </div>
 
-        <label>Max Guests:</label>
-        <input
-          type="number"
-          value={maxGuests}
-          onChange={(e) => setMaxGuests(Number(e.target.value))}
-          required
-        />
+        <div className="mb-3">
+          <label className="form-label">Max Guests:</label>
+          <input
+            type="number"
+            className="form-control"
+            value={maxGuests}
+            onChange={(e) => setMaxGuests(Number(e.target.value))}
+            required
+          />
+        </div>
 
-        <label>Image URL:</label>
-        <input
-          type="url"
-          value={imageUrl}
-          onChange={(e) => setImageUrl(e.target.value)}
-          required
-        />
+        <div className="mb-3">
+          <label className="form-label">Image URL:</label>
+          <input
+            type="url"
+            className="form-control"
+            value={imageUrl}
+            onChange={(e) => setImageUrl(e.target.value)}
+            required
+          />
+        </div>
 
-        <button type="submit" className="btn btn-primary">Save Changes</button>
+        <button type="submit" className="btn btn-primary w-100">Save Changes</button>
       </form>
     </div>
   );
