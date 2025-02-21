@@ -4,11 +4,13 @@ import { loginUser } from "../api/auth";
 
 /**
  * Login Component
- * 
+ *
  * Allows users to authenticate by providing their email and password.
  * Displays error messages for incorrect login attempts and redirects the user upon success.
+ * A temporary solution has been added to refresh the page after login to ensure the header updates dynamically.
  *
  * @component
+ * @returns {JSX.Element} The login form.
  */
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -20,6 +22,7 @@ const Login = () => {
   /**
    * Handles form submission for user login.
    * Calls the API and updates state based on the response.
+   * A temporary refresh solution is included to ensure the header updates properly.
    *
    * @param {React.FormEvent} event - The form submission event.
    */
@@ -31,6 +34,12 @@ const Login = () => {
     try {
       await loginUser({ email, password });
       navigate("/profile");
+
+      // 🚀 Temporary solution: Refresh after login to update the header
+      setTimeout(() => {
+        window.location.reload();
+      }, 500);
+      
     } catch (err) {
       setError("Failed to login. Please check your credentials.");
     } finally {
@@ -87,3 +96,4 @@ const Login = () => {
 };
 
 export default Login;
+
