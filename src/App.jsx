@@ -15,7 +15,7 @@ import HomePage from './pages/HomePage';
 import { useAuth } from './hooks/useAuth';
 import Modal from 'react-modal';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import './app.css'; 
+import './App.css'; 
 
 /**
  * Main application component handling routing and layout.
