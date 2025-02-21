@@ -14,8 +14,8 @@ import EditProfile from './pages/EditProfile';
 import HomePage from './pages/HomePage'; 
 import { useAuth } from './hooks/useAuth';
 import Modal from 'react-modal';
-import 'bootstrap/dist/css/bootstrap.min.css'; // Import Bootstrap
-import '../src/app.css'; // Import custom CSS
+import 'bootstrap/dist/css/bootstrap.min.css';
+import './app.css'; 
 
 /**
  * Main application component handling routing and layout.
