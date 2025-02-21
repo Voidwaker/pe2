@@ -1,12 +1,16 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { registerUser } from "../api/auth";
+import { registerUser, loginUser } from "../api/auth";
 
 /**
  * Register Component
  * 
  * Allows new users to register with a name, email, password, and an optional avatar URL.
  * Users can also opt to register as a Venue Manager.
+ *
+ * This component includes email validation to ensure that only users with 
+ * `@noroff.no` or `@stud.noroff.no` email addresses can register.
+ * After successful registration, the user is automatically logged in.
  *
  * @component
  */
@@ -21,12 +25,28 @@ const Register = () => {
   const navigate = useNavigate();
 
   /**
+   * Validates the email format to allow only @noroff.no or @stud.noroff.no domains.
+   *
+   * @param {string} email - The email entered by the user.
+   * @returns {boolean} True if the email is valid, otherwise false.
+   */
+  const isValidNoroffEmail = (email) => {
+    return /@noroff\.no$|@stud\.noroff\.no$/i.test(email);
+  };
+
+  /**
    * Handles form submission, validating passwords and registering the user.
+   * If registration is successful, the user is automatically logged in and the page refreshes.
    *
    * @param {React.FormEvent<HTMLFormElement>} event - The form submit event.
    */
   const handleSubmit = async (event) => {
     event.preventDefault();
+    
+    if (!isValidNoroffEmail(email)) {
+      setError("Only @noroff.no or @stud.noroff.no emails are allowed.");
+      return;
+    }
 
     if (password !== confirmPassword) {
       setError("Passwords do not match");
@@ -43,7 +63,9 @@ const Register = () => {
 
     try {
       await registerUser(userData);
+      await loginUser({ email, password }); // Automatically log the user in after registration
       navigate("/profile");
+      window.location.reload(); // Refresh the page to update the header
     } catch (err) {
       setError(err.message || "Failed to register. Please try again.");
     }
@@ -133,3 +155,4 @@ const Register = () => {
 };
 
 export default Register;
+
