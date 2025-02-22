@@ -35,7 +35,7 @@ const Login = () => {
       await loginUser({ email, password });
       navigate("/profile");
 
-      //  Temporary solution: Refresh after login to update the header, might be fixed later if i got time for it.
+      //  this is a temporary solution to refresh the page after login, so the header updates properly (will be replaced with a better solution when i got time to fix it)
       setTimeout(() => {
         window.location.reload();
       }, 500);

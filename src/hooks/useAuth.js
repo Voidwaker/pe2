@@ -2,9 +2,9 @@ import { useState, useEffect } from 'react';
 
 /**
  * Custom hook for managing authentication state.
- * Retrieves authentication data from localStorage and provides a logout function.
+ * Retrieves authentication data from localStorage and provides login/logout functions.
  * 
- * @returns {object} An object containing `authData` and `logout` function.
+ * @returns {object} An object containing `authData`, `login`, and `logout` functions.
  */
 export function useAuth() {
   const [authData, setAuthData] = useState(null);
@@ -24,6 +24,15 @@ export function useAuth() {
   }, []);
 
   /**
+   * Handles user login by updating state and storing data in localStorage.
+   */
+  const login = (userData) => {
+    localStorage.setItem('Token', userData.token);
+    localStorage.setItem('Profile', JSON.stringify(userData.profile));
+    setAuthData(userData);
+  };
+
+  /**
    * Logs out the user by removing authentication data from localStorage.
    */
   const logout = () => {
@@ -32,5 +41,5 @@ export function useAuth() {
     setAuthData(null);
   };
 
-  return { authData, logout };
+  return { authData, login, logout };
 }

@@ -10,6 +10,7 @@ import { registerUser, loginUser } from "../api/auth";
  *
  * This component includes email validation to ensure that only users with 
  * `@noroff.no` or `@stud.noroff.no` email addresses can register.
+ * If a user selects Venue Manager, only `@stud.noroff.no` emails are allowed.
  * After successful registration, the user is automatically logged in.
  *
  * @component
@@ -35,6 +36,16 @@ const Register = () => {
   };
 
   /**
+   * Validates if the email is eligible for Venue Manager registration.
+   *
+   * @param {string} email - The email entered by the user.
+   * @returns {boolean} True if the email is a valid @stud.noroff.no email.
+   */
+  const isValidVenueManagerEmail = (email) => {
+    return /@stud\.noroff\.no$/i.test(email);
+  };
+
+  /**
    * Handles form submission, validating passwords and registering the user.
    * If registration is successful, the user is automatically logged in and the page refreshes.
    *
@@ -45,6 +56,11 @@ const Register = () => {
     
     if (!isValidNoroffEmail(email)) {
       setError("Only @noroff.no or @stud.noroff.no emails are allowed.");
+      return;
+    }
+
+    if (venueManager && !isValidVenueManagerEmail(email)) {
+      setError("Only @stud.noroff.no emails can register as Venue Managers.");
       return;
     }
 
@@ -63,9 +79,9 @@ const Register = () => {
 
     try {
       await registerUser(userData);
-      await loginUser({ email, password }); // Automatically log the user in after registration
+      await loginUser({ email, password }); 
       navigate("/profile");
-      window.location.reload(); // Refresh the page to update the header
+      window.location.reload(); 
     } catch (err) {
       setError(err.message || "Failed to register. Please try again.");
     }
@@ -155,4 +171,5 @@ const Register = () => {
 };
 
 export default Register;
+
 

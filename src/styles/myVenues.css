@@ -4,30 +4,10 @@
   padding: 20px;
 }
 
-/* .venues-list {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 20px;
-  justify-content: center;
-}
-
-.venue-card {
-  background: white;
-  border-radius: 10px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  padding: 15px;
-  flex: 1 1 300px;
-  max-width: 400px;
-  text-align: center;
-  display: flex;
-  flex-direction: column;
-} */
-
 .venue-card img {
   width: 100%;
   height: auto;
   max-height: 230px;
-  /* height: 200px; */
   border-radius: 10px;
   object-fit: cover;
 }

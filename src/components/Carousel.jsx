@@ -14,7 +14,7 @@ const Carousel = ({ images }) => {
     autoplay: true,
     autoplaySpeed: 2500,
     adaptiveHeight: true,
-    arrows: false, // Fjerner piler for bedre mobiltilpasning
+    arrows: false,
   };
 
   return (
