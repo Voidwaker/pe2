@@ -90,7 +90,7 @@ const Register = () => {
   return (
     <div className="container mt-5 mb-5" style={{ maxWidth: "500px" }}>
       <h2 className="text-center mb-4">Register</h2>
-      <p>fields with * is mandatory</p>
+      <small className="text-muted">* Required fields</small>
       {error && <div className="alert alert-danger text-center">{error}</div>}
       <form onSubmit={handleSubmit} className="p-4 border rounded shadow bg-white">
         <div className="mb-3">
@@ -116,7 +116,6 @@ const Register = () => {
             required
           />
         </div>
-
         <div className="mb-3">
           <label htmlFor="password" className="form-label">Password * </label>
           <input
@@ -128,7 +127,6 @@ const Register = () => {
             required
           />
         </div>
-
         <div className="mb-3">
           <label htmlFor="confirmPassword" className="form-label">Confirm Password * </label>
           <input
@@ -140,7 +138,6 @@ const Register = () => {
             required
           />
         </div>
-
         <div className="mb-3">
           <label htmlFor="avatarUrl" className="form-label">Avatar URL (optional)</label>
           <input
@@ -151,7 +148,6 @@ const Register = () => {
             onChange={(e) => setAvatarUrl(e.target.value)}
           />
         </div>
-
         <div className="form-check mb-3">
           <input
             type="checkbox"
@@ -162,7 +158,6 @@ const Register = () => {
           />
           <label htmlFor="venueManager" className="form-check-label">I want to be a Venue Manager</label>
         </div>
-
         <button type="submit" className="btn btn-primary w-100">Register</button>
       </form>
     </div>
