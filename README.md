@@ -37,10 +37,24 @@ Holidaze is a **front-end application** that interacts with the Noroff API to en
 
 ```
 /src  
+│── _test_/  
+│   │── auth.test.jsx
+│   │── logout.test.jsx 
+│── api/  
+│   │── auth.js  
+│   │── bookings.js  
+│   │── create-api-key.js
+│   │── venues.js  
 │── components/  
 │   │── Header.jsx  
 │   │── Footer.jsx  
 │   │── VenueCard.jsx  
+│   │── Calendar.jsx  
+│   │── createVenue.jsx  
+│   │── login.jsx  
+│   │── registration.jsx  
+│   │── venueCard.jsx
+│   │── venuelist.jsx
 │── pages/  
 │   │── HomePage.jsx  
 │   │── VenueListPage.jsx  
