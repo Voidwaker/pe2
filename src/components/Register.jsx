@@ -9,7 +9,7 @@ import { registerUser, loginUser } from "../api/auth";
  * Users can also opt to register as a Venue Manager.
  *
  * This component includes email validation to ensure that only users with 
- * `@noroff.no` or `@stud.noroff.no` email addresses can register.
+ * `@stud.noroff.no` email addresses can register.
  * If a user selects Venue Manager, only `@stud.noroff.no` emails are allowed.
  * After successful registration, the user is automatically logged in.
  *
@@ -32,7 +32,7 @@ const Register = () => {
    * @returns {boolean} True if the email is valid, otherwise false.
    */
   const isValidNoroffEmail = (email) => {
-    return /@noroff\.no$|@stud\.noroff\.no$/i.test(email);
+    return /@stud\.noroff\.no$/i.test(email);
   };
 
   /**
@@ -55,7 +55,7 @@ const Register = () => {
     event.preventDefault();
     
     if (!isValidNoroffEmail(email)) {
-      setError("Only @noroff.no or @stud.noroff.no emails are allowed.");
+      setError("@stud.noroff.no emails are allowed.");
       return;
     }
 
@@ -90,12 +90,11 @@ const Register = () => {
   return (
     <div className="container mt-5 mb-5" style={{ maxWidth: "500px" }}>
       <h2 className="text-center mb-4">Register</h2>
-
+      <p>fields with * is mandatory</p>
       {error && <div className="alert alert-danger text-center">{error}</div>}
-
       <form onSubmit={handleSubmit} className="p-4 border rounded shadow bg-white">
         <div className="mb-3">
-          <label htmlFor="name" className="form-label">Name</label>
+          <label htmlFor="name" className="form-label">Name* </label> 
           <input
             type="text"
             id="name"
@@ -105,9 +104,9 @@ const Register = () => {
             required
           />
         </div>
-
         <div className="mb-3">
-          <label htmlFor="email" className="form-label">Email</label>
+          <label htmlFor="email" className="form-label">Email* </label>
+          <small className="form-text text-muted">  Only @stud.noroff.no emails are allowed.</small>
           <input
             type="email"
             id="email"
@@ -119,7 +118,7 @@ const Register = () => {
         </div>
 
         <div className="mb-3">
-          <label htmlFor="password" className="form-label">Password</label>
+          <label htmlFor="password" className="form-label">Password * </label>
           <input
             type="password"
             id="password"
@@ -131,7 +130,7 @@ const Register = () => {
         </div>
 
         <div className="mb-3">
-          <label htmlFor="confirmPassword" className="form-label">Confirm Password</label>
+          <label htmlFor="confirmPassword" className="form-label">Confirm Password * </label>
           <input
             type="password"
             id="confirmPassword"
