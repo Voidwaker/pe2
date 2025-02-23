@@ -110,11 +110,15 @@ Go to `http://localhost:5173`
 
 ---
 
-## 💼 Features  
+## 💼 Features 
+
+### **Venuepage**  
+✔️ Displays a list of venues fetched from the API.  
+✔️ Search functionality for filtering venues. 
 
 ### **Homepage**  
-✔️ Displays a list of venues fetched from the API.  
-✔️ Search functionality for filtering venues.  
+✔️ a carouselle with 5 of the most populare destinations  
+✔️ a section with a recomended 5 destinations  
 
 ### **Venue Details Page**  
 ✔️ Shows venue information (name, description, price, amenities).  
@@ -143,8 +147,7 @@ Go to `http://localhost:5173`
 
 ## 🛠️ Testing  
 
-- **Unit Testing**: `npm run test` (Vitest)  
-- **E2E Testing**: `npx cypress open` (Cypress)  
+- **Unit Testing**: `npm run test` (Vitest)   
 
 ---
 
@@ -156,13 +159,6 @@ Go to `http://localhost:5173`
 
 ---
 
-## 🙌 Acknowledgments  
-
-- **Noroff API** for backend services.  
-- **React Documentation** for guidance.  
-- **Bootstrap** for responsive styling.  
-
----
 
 💻 **Developed by [Voidwaker](https://github.com/Voidwaker)**  
 
